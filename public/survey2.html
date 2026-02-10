@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Survey Form | SJCB Household Profiling</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+  <style>
+    .bg-church { background-color: #457507; }
+    .btn-church { background-color: #457507; color: white; }
+    .table-responsive { overflow-x: auto; }
+    .table thead th { font-size: 0.75rem; white-space: nowrap; background-color: #f8f9fa; }
+    .form-control-sm, .form-select-sm { font-size: 0.8rem; }
+    .instruction-text { font-size: 0.7rem; color: #666; font-style: italic; }
+    
+    /* Mobile responsive improvements */
+    @media (max-width: 768px) {
+      .table { font-size: 0.7rem; }
+      .form-control-sm, .form-select-sm { font-size: 0.75rem; padding: 0.25rem 0.5rem; }
+      .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.75rem; }
+    }
+  </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+<nav class="navbar shadow-sm py-3 bg-church">
+  <div class="container-fluid px-4">
+    <a class="d-flex align-items-center text-white text-decoration-none">
+      <img src="/images/logo.jpg" width="40" height="40" class="rounded-circle me-2">
+      <span class="fw-bold fs-4">Archdiocese of Tuguegarao</span>
+    </a>
+  </div>
+</nav>
+
+<main class="container-fluid px-4 my-4">
+  <div class="progress mb-4" style="height: 25px;">
+    <div class="progress-bar bg-success" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Step 2 of 4</div>
+  </div>
+  <div class="card shadow-sm mb-4">
+    <div class="card-header fw-bold text-center bg-light">
+      PRIMARY INFORMATION
+    </div>
+    <div class="card-body">
+      
+      <h6 class="fw-bold border-bottom pb-2">Parents Profile</h6>
+      <div class="table-responsive mb-4">
+        <table class="table table-bordered table-sm align-middle">
+          <thead class="table-light text-center">
+            <tr>
+              <th style="width: 15%">Role</th>
+              <th>Full Name</th>
+              <th>Type of Marriage</th>
+              <th>Religion</th>
+              <th style="width: 80px">Sex</th>
+              <th style="width: 80px">Age</th>
+              <th>Highest Educ. Attainment</th>
+              <th>Occupation</th>
+              <th>Status of Work</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-bold">HH Head:</td>
+              <td><input type="text" class="form-control form-control-sm"></td>
+              <td><input type="text" class="form-control form-control-sm"></td>
+              <td>
+                <select class="form-select form-select-sm">
+                  <option value="1">1- Roman Catholic</option>
+                  <option value="2">2- Islam</option>
+                  <option value="99">99- Others</option>
+                </select>
+              </td>
+              <td><select class="form-select form-select-sm"><option value="1">1-M</option><option value="2">2-F</option></select></td>
+              <td><input type="number" class="form-control form-control-sm"></td>
+              <td><input type="text" class="form-control form-control-sm"></td>
+              <td><input type="text" class="form-control form-control-sm"></td>
+              <td>
+                <select class="form-select form-select-sm">
+                  <option value="1">1- Regular</option>
+                  <option value="2">2- Contractual</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="fw-bold">Spouse:</td>
+              <td><input type="text" class="form-control form-control-sm"></td>
+              <td><input type="text" class="form-control form-control-sm"></td>
+              <td><select class="form-select form-select-sm"><option value="1">1- Roman Catholic</option><option value="2">2- Islam</option></select></td>
+              <td><select class="form-select form-select-sm"><option value="2">2-F</option><option value="1">1-M</option></select></td>
+              <td><input type="number" class="form-control form-control-sm"></td>
+              <td><input type="text" class="form-control form-control-sm"></td>
+              <td><input type="text" class="form-control form-control-sm"></td>
+              <td><select class="form-select form-select-sm"><option value="1">1- Regular</option><option value="2">2- Contractual</option></select></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-end mb-2">
+        <div>
+          <h6 class="fw-bold mb-0">Name of Household Members</h6>
+          <p class="instruction-text mb-0">Order: Never-Married Children (Oldest to Youngest), Ever-Married, Other Relatives, Nonrelatives.</p>
+        </div>
+        <button type="button" class="btn btn-sm btn-success" onclick="addRow()">
+          <i class="bi bi-plus-circle"></i> Add Member
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-sm text-center align-middle" id="membersTable">
+          <thead class="table-light">
+            <tr>
+              <th>Name</th>
+              <th>Relation</th>
+              <th>Sex</th>
+              <th>Age</th>
+              <th>Civil Status</th>
+              <th>Religion</th>
+              <th>Sacraments</th>
+              <th>Studying</th>
+              <th>Highest Educ.</th>
+              <th>Occupation</th>
+              <th>Status of Work</th>
+              <th title="Only for children 0-5 years old">Fully Immunized (?)</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-end gap-2 mt-2 w-100">
+                <div class="col-auto">
+                    <a href="./survey.html" class="btn btn-secondary fs-5">Previous</a>
+                </div>
+                <div class="col-auto"> 
+                    <a href="./survey4.html" class="btn btn-success fs-5">Next</a>
+                </div>
+            </div>
+</main>
+
+<footer class="bg-dark text-white mt-auto">
+  <div class="container py-2 d-flex justify-content-between">
+    <div><h6 class="mb-0">Household Survey Profiling</h6><small>SJCB BSIT-2 Project</small></div>
+    <div><i class="bi bi-facebook me-2"></i><i class="bi bi-twitter-x me-2"></i><i class="bi bi-instagram"></i></div>
+  </div>
+  <div class="text-center py-1 bg-success small">© 2026 SJCB BSIT-2 | All Rights Reserved</div>
+</footer>
+
+<script>
+  function addRow() {
+    const table = document.getElementById("membersTable").getElementsByTagName('tbody')[0];
+    const newRow = table.insertRow();
+    newRow.innerHTML = `
+      <td><input class="form-control form-control-sm"></td>
+      <td>
+        <select class="form-select form-select-sm">
+          <option value="1">1- Son</option><option value="2">2- Daughter</option><option value="3">3- Stepson</option>
+          <option value="7">7- Grandson</option><option value="13">13- Relative</option><option value="99">99- Others</option>
+        </select>
+      </td>
+      <td><select class="form-select form-select-sm"><option value="1">1-M</option><option value="2">2-F</option></select></td>
+      <td><input type="number" class="form-control form-control-sm" min="0"></td>
+      <td>
+        <select class="form-select form-select-sm">
+          <option value="1">1- Single</option><option value="2">2- Married</option>
+          <option value="3">3- Common Law</option><option value="4">4- Widowed</option>
+        </select>
+      </td>
+      <td>
+        <select class="form-select form-select-sm">
+          <option value="1">1- Roman Catholic</option><option value="2">2- Islam</option>
+          <option value="6">6- Iglesia ni Cristo</option><option value="99">99- Others</option>
+        </select>
+      </td>
+      <td>
+        <select class="form-select form-select-sm">
+          <option value="1">1- Not Yet Baptized</option><option value="2">2- Baptism Only</option>
+          <option value="3">3- Baptism & Conf.</option><option value="66">66- N/A</option>
+        </select>
+      </td>
+      <td><select class="form-select form-select-sm"><option value="1">1- Yes</option><option value="2">2- No</option></select></td>
+      <td><input class="form-control form-control-sm"></td>
+      <td><input class="form-control form-control-sm"></td>
+      <td><select class="form-select form-select-sm"><option value="1">1- Regular</option><option value="2">2- Contractual</option><option value="66">66- N/A</option></select></td>
+      <td><select class="form-select form-select-sm"><option value="1">1- Yes</option><option value="2">2- No</option><option value="66" selected>66- N/A</option></select></td>
+      <td><button class="btn btn-sm btn-danger" onclick="this.closest('tr').remove()"><i class="bi bi-trash"></i></button></td>
+    `;
+  }
+
+  // Add one row by default on load
+  window.onload = addRow;
+</script>
+
+</body>
+</html>

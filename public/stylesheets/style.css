@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+* {
+  font-family: "Nunito", sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.btn-success, .bg-success {
+  background-color:#457507 !important;
+}
+
+
+#mainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 600px;
+  width: 100%;
+  min-height: 60vh;
+  margin: auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#surveyContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#startSurveyBtn {
+  font-size: 16.7px;
+  font-weight: bold;
+}
+
+#pagination button {
+  font-size: 19px;
+}

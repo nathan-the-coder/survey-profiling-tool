@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SJCB Household Profiling</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+
+  <body class="d-flex flex-column min-vh-100 overflow-hidden">
+    <!-- header -->
+    <nav class="navbar shadow-sm py-3" style="background-color: #457507">
+      <div
+        class="container-fluid px-4 d-flex justify-content-between align-items-center"
+      >
+        <!-- Left: Logo and Title -->
+        <a
+          href="#"
+          class="d-flex align-items-center text-white text-decoration-none"
+        >
+          <img
+            class="rounded-circle"
+            src="/images/logo.jpg"
+            width="45"
+            height="45"
+            class="me-2"
+          />
+          <span class="fw-bold fs-4 mx-2 text-white"
+            >Archdiocese of Tuguegarao</span
+          >
+        </a>
+
+        <div class="dropdown">
+          <a
+            href="#"
+            class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+            id="profileDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <span id="name" class="d-none d-sm-inline">Username</span>
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-end shadow"
+            aria-labelledby="profileDropdown"
+          >
+            <li>
+              <a
+                class="dropdown-item text-danger"
+                id="signoutBtn"
+                href="login.html"
+                ><i class="bi bi-box-arrow-right me-2"></i> Sign out</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <main class="flex-grow-1 d-flex">
+      <div
+        class="container d-flex flex-column align-items-center rounded-0 bg-light p-5"
+      >
+        <h3>Search Participants</h3>
+
+        <div class="mb-3 position-relative" style="width: 350px">
+          <input
+            class="form-control"
+            type="text"
+            id="searchInput"
+            placeholder="Enter name"
+            autocomplete="off"
+          />
+          <div
+            id="autocompleteList"
+            class="position-absolute w-100 shadow-sm rounded bg-white d-none"
+            style="z-index: 1000; max-height: 250px; overflow-y: auto"
+          ></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="bg-dark text-white">
+      <div class="container py-2">
+        <div class="row align-items-center">
+          <div class="col-md-9">
+            <h6 class="fw-bold mb-0">Household Survey Profiling</h6>
+            <p class="small mb-0" style="font-size: 0.75rem">
+              SJCB BSIT-2 Project
+            </p>
+          </div>
+
+          <div class="col-md-3 text-md-end">
+            <small class="fw-bold d-block d-md-inline me-2">Follow Us:</small>
+            <a href="#" class="text-white me-2"
+              ><i class="bi bi-facebook"></i
+            ></a>
+            <a href="#" class="text-white me-2"
+              ><i class="bi bi-twitter-x"></i
+            ></a>
+            <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center py-1 bg-success" style="font-size: 0.8rem">
+        © 2026 SJCB BSIT-2 | All Rights Reserved
+      </div>
+    </footer>
+
+    <!-- Participant Details Modal -->
+    <div class="modal fade" id="participantModal" tabindex="-1" aria-labelledby="participantModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="participantModalLabel">Participant Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="text-primary">Household Information</h6>
+                <p><strong>Name:</strong> <span id="modalFullName">N/A</span></p>
+                <p><strong>Address:</strong> <span id="modalAddress">N/A</span></p>
+                <p><strong>Parish:</strong> <span id="modalParish">N/A</span></p>
+                <p><strong>Family Members:</strong> <span id="modalFamilyCount">N/A</span></p>
+                <p><strong>Years in Community:</strong> <span id="modalYearsResidency">N/A</span></p>
+              </div>
+              <div class="col-md-6">
+                <h6 class="text-primary">Socio-Economic</h6>
+                <p><strong>Income Range:</strong> <span id="modalIncome">N/A</span></p>
+                <p><strong>House Ownership:</strong> <span id="modalHouseOwnership">N/A</span></p>
+                <p><strong>House Classification:</strong> <span id="modalHouseClass">N/A</span></p>
+              </div>
+            </div>
+
+            <hr>
+            <h6 class="text-primary">Family Members</h6>
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Relation</th>
+                    <th>Age</th>
+                    <th>Education</th>
+                    <th>Occupation</th>
+                  </tr>
+                </thead>
+                <tbody id="modalFamilyTable">
+                  <tr>
+                    <td colspan="5" class="text-center">Loading...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <hr>
+            <h6 class="text-primary">Health Conditions</h6>
+            <div class="row">
+              <div class="col-md-6">
+                <p><strong>Common Illness:</strong> <span id="modalCommonIllness">N/A</span></p>
+                <p><strong>Water Source:</strong> <span id="modalWaterSource">N/A</span></p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Toilet Facility:</strong> <span id="modalToiletFacility">N/A</span></p>
+                <p><strong>Garbage Disposal:</strong> <span id="modalGarbageDisposal">N/A</span></p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const API_URL = "http://localhost:5500";
+      const searchInput = document.getElementById("searchInput");
+      const autocompleteList = document.getElementById("autocompleteList");
+      let debounceTimer;
+
+      console.log("API_URL:", API_URL);
+      console.log("searchInput:", searchInput);
+
+      searchInput.addEventListener("input", () => {
+        clearTimeout(debounceTimer);
+        const query = searchInput.value.trim();
+        console.log("Input value:", query);
+
+        if (query.length < 2) {
+          autocompleteList.classList.add("d-none");
+          return;
+        }
+
+        debounceTimer = setTimeout(() => fetchParticipants(query), 300);
+      });
+
+      // Better error handling
+        async function fetchParticipants(query) {
+        console.log("Fetching:", query);
+        try {
+          const url = `${API_URL}/search-participants?q=${encodeURIComponent(query)}`;
+          console.log("Fetching URL:", url);
+
+          const response = await fetch(url, {
+            headers: {
+              'X-Username': sessionStorage.getItem('username') || 'Guest'
+            }
+          });
+          console.log("Response status:", response.status);
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log("Data received:", data);
+
+          // Handle different response formats
+          const results = Array.isArray(data)
+            ? data
+            : data.results || data.data || [];
+          showAutocomplete(results);
+        } catch (err) {
+          console.error("Search failed:", err);
+          autocompleteList.innerHTML =
+            '<div class="p-2 text-danger">Search failed. Please try again.</div>';
+          autocompleteList.classList.remove("d-none");
+        }
+      }
+
+      function showAutocomplete(results) {
+        console.log("Showing results:", results.length);
+        autocompleteList.innerHTML = "";
+
+        if (results.length === 0) {
+          autocompleteList.innerHTML =
+            '<div class="p-2 text-muted">No results found</div>';
+          autocompleteList.classList.remove("d-none");
+          return;
+        }
+
+        results.forEach((item) => {
+          const div = document.createElement("div");
+          div.className = "p-2 border-bottom";
+          div.style.cursor = "pointer";
+          div.innerHTML = `<strong>${item.full_name}</strong><br><small class="text-muted">${item.relation_to_head_code || "Member"} - ${item.purok_gimong}, ${item.barangay_name}</small>`;
+          div.addEventListener("click", () => {
+            searchInput.value = item.full_name;
+            autocompleteList.classList.add("d-none");
+            fetchParticipantDetails(item.id);
+          });
+          autocompleteList.appendChild(div);
+        });
+
+        autocompleteList.classList.remove("d-none");
+        console.log("Dropdown shown with", results.length, "items");
+      }
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".position-relative")) {
+          autocompleteList.classList.add("d-none");
+        }
+      });
+
+      document.querySelector("#signoutBtn").addEventListener("click", () => {
+        sessionStorage.clear();
+        window.location.href = "login.html";
+      });
+      // Get username first
+      const username = sessionStorage.getItem("username");
+      document.querySelector("#name").textContent = username;
+      
+      // Initialize role and user info safely
+      let userRole = 'Guest';
+      if (username === 'Archdiocese of Tuguegarao') {
+          userRole = 'Archdiocese';
+      } else if (username && username.includes('Parish')) {
+          userRole = 'Parish';
+      }
+      
+      // Add role indicator
+      const roleBadge = document.createElement('span');
+      roleBadge.className = `badge ms-2 ${userRole === 'Archdiocese' ? 'bg-danger' : 'bg-primary'}`;
+      roleBadge.textContent = userRole;
+      document.querySelector("#name").appendChild(roleBadge);
+
+      // Participant Details Modal
+      const participantModal = new bootstrap.Modal(document.getElementById('participantModal'));
+
+      async function fetchParticipantDetails(participantId) {
+        try {
+          const response = await fetch(`${API_URL}/participant/${participantId}`, {
+            headers: {
+              'X-Username': sessionStorage.getItem('username') || 'Guest'
+            }
+          });
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          showParticipantDetails(data);
+        } catch (err) {
+          console.error("Failed to fetch participant details:", err);
+          detailsContent.innerHTML = `
+            <div class="alert alert-danger">
+              Failed to load participant details: ${err.message}
+            </div>
+          `;
+          participantModal.show();
+        }
+      }
+
+      function showParticipantDetails(data) {
+        const { household, family_members, health_conditions, socio_economic, userRole, userParish } = data;
+        
+        // Add access control info
+        let accessInfo = '';
+        if (userRole === 'parish' && userParish) {
+            accessInfo = `
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>
+                    <strong>Access Level:</strong> Parish User - Viewing ${household.parish_name || 'N/A'} data only
+                </div>
+            `;
+        } else if (userRole === 'archdiocese') {
+            accessInfo = `
+                <div class="alert alert-success">
+                    <i class="bi bi-shield-check me-2"></i>
+                    <strong>Access Level:</strong> Archdiocese User - Full access to all parishes
+                </div>
+            `;
+        }
+        
+        document.getElementById('modalFullName').textContent = family_members?.[0]?.full_name || 'N/A';
+        document.getElementById('modalAddress').textContent = 
+          `${household?.purok_gimong || 'N/A'}, ${household?.barangay_name || 'N/A'}, ${household?.municipality || 'N/A'}`;
+        document.getElementById('modalParish').textContent = household?.parish_name || 'N/A';
+        document.getElementById('modalFamilyCount').textContent = household?.num_family_members || 'N/A';
+        document.getElementById('modalYearsResidency').textContent = household?.years_residency || 'N/A';
+        document.getElementById('modalIncome').textContent = socio_economic?.income_monthly_code || 'N/A';
+        document.getElementById('modalHouseOwnership').textContent = socio_economic?.house_lot_ownership_code || 'N/A';
+        document.getElementById('modalHouseClass').textContent = socio_economic?.house_classification_code || 'N/A';
+        
+        // Health Conditions
+        document.getElementById('modalCommonIllness').textContent = health_conditions?.common_illness_codes || 'N/A';
+        document.getElementById('modalWaterSource').textContent = health_conditions?.potable_water_source_code || 'N/A';
+        document.getElementById('modalToiletFacility').textContent = health_conditions?.toilet_facility_code || 'N/A';
+        document.getElementById('modalGarbageDisposal').textContent = health_conditions?.garbage_disposal_code || 'N/A';
+        
+        // Family Members Table
+        const familyTableBody = document.getElementById('modalFamilyTable');
+        if (family_members && family_members.length > 0) {
+          familyTableBody.innerHTML = family_members.map(member => `
+            <tr>
+              <td>${member.full_name || 'N/A'}</td>
+              <td>${member.relation_to_head_code || 'N/A'}</td>
+              <td>${member.age || 'N/A'}</td>
+              <td>${member.educational_attainment_code || 'N/A'}</td>
+              <td>${member.occupation_code || 'N/A'}</td>
+            </tr>
+          `).join('');
+        } else {
+          familyTableBody.innerHTML = '<tr><td colspan="5" class="text-center">No family members found</td></tr>';
+        }
+        
+        // Insert access info at the beginning of modal body
+        const modalBody = document.querySelector('.modal-body');
+        modalBody.insertAdjacentHTML('afterbegin', accessInfo);
+
+        participantModal.show();
+      }
+      
+      // Add role-based styling
+      if (userRole === 'parish') {
+        document.querySelector('.navbar').style.backgroundColor = '#457507'; // Standard green
+      } else if (userRole === 'archdiocese') {
+        document.querySelector('.navbar').style.backgroundColor = '#dc3545'; // Darker red for archdiocese
+      } else {
+        document.querySelector('.navbar').style.backgroundColor = '#457507'; // Default green
+      }
+    </script>
+  </body>
+</html>

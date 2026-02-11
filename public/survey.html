@@ -1,208 +1,275 @@
 <!doctype html>
 <html lang="en">
-    <head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Survey Form | SJCB Household Profiling</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
-
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
     <link rel="stylesheet" href="/stylesheets/style.css" />
-    </head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
 
-    <body class="d-flex flex-column min-vh-100">
+    <style>
+      .bg-church {
+        background-color: #457507;
+      }
+      .btn-church {
+        background-color: #457507;
+        color: white;
+        border-color: #457507;
+      }
+      .btn-church:hover {
+        background-color: #3a6206;
+        color: white;
+        border-color: #3a6206;
+      }
+    </style>
+  </head>
+
+  <body class="d-flex flex-column min-vh-100">
     <header>
-        <!-- header -->
-        <nav class="navbar shadow-sm py-3" style="background-color: #457507">
-        <div
-            class="container-fluid px-4 d-flex justify-content-between align-items-center"
-        >
-            <!-- Left: Logo and Title -->
-            <a href="#" class="d-flex align-items-center text-white text-decoration-none">
-            <img
-            class="rounded-circle me-2"
-            src="/images/logo.jpg"
-            width="45"
-            height="45"
-            />
-            <span class="fw-bold fs-4 mx-2 text-white"
-            >Archdiocese of Tuguegarao</span
-            >
-            </a>
+      <nav class="navbar shadow-sm py-3" style="background-color: #457507">
+        <div class="container-fluid px-4 d-flex justify-content-between align-items-center">
+          <a href="#" class="d-flex align-items-center text-white text-decoration-none">
+            <img class="rounded-circle me-2" src="/images/logo.jpg" width="45" height="45" />
+            <span class="fw-bold fs-4 mx-2 text-white">Archdiocese of Tuguegarao</span>
+          </a>
         </div>
-        </nav>
+      </nav>
     </header>
 
     <main class="flex-grow-1 d-flex p-0">
-        <div id="surveyContainer" class="container-fluid bg-light p-4">
-            <div class="progress mb-4" style="height: 25px;">
-                <div class="progress-bar bg-success" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Step 1 of 4</div>
+      <div id="surveyContainer" class="container-fluid bg-light p-4">
+        <form action="./save_step1.php" method="POST">
+          <div class="progress mb-4" style="height: 25px">
+            <div
+              class="progress-bar bg-success"
+              role="progressbar"
+              style="width: 25%"
+              aria-valuenow="25"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              Step 1 of 4
             </div>
-            
-            <div class="card shadow-sm mb-4">
-                <div class="card-header text-center fw-bold bg-light">
-                    GENERAL INFORMATION
-                </div>
-<div class="card-body">
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <form action="">
-                        <div class="mb-3">
-                            <label for="purokGimong" class="form-label">BEC Purok-Gimong:</label>
-                            <input class="form-control" type="text" name="purokGimong" id="purokGimong" placeholder="Enter your Purok/Gimong">
-                        </div>
-                        <div class="mb-3">
-                            <label for="barangayName" class="form-label">Barangay Name:</label>
-                            <input class="form-control" type="text" name="barangayName" id="barangayName" placeholder="Enter your Barangay Name">
-                            </div>        
-                        <div class="mb-3">
-                            <label for="municipalityName" class="form-label">Municipality Name:</label>
-                            <input class="form-control" type="text" name="municipalityName" id="municipalityName" placeholder="Enter your Municipality">
-                        </div>
-                        <div class="mb-3">
-                            <label for="provinceName" class="form-label">Province Name:</label>
-                            <input class="form-control" type="text" name="provinceName" id="provinceName" placeholder="Enter your Province">
-                        </div>
-        
-                        <div class="mb-3">
-                            <label for="modeOfTransportation" class="form-label fw-semibold">Mode of Transportation</label>
-                            <select class="form-select shadow-sm" id="modeOfTransportation" name="modeOfTransportation">
-                                <option selected disabled>Choose mode of transportation...</option>
-                                <option value="walking">Walking</option>
-                                <option value="bicycle">Bicycle</option>
-                                <option value="motorcycle">Motorcycle</option>
-                                <option value="public_transport">Public Transport</option>
-                                <option value="private_vehicle">Private Vehicle</option>
-                            </select>
-                        </div>
-        
-                        <div class="mb-3">
-                            <label for="roadStructure" class="form-label">Road Structure:</label>
-                            <select class="form-select shadow-sm" id="road_Structure" name="road_Structure">
-                            <option selected disabled>Choose Road Structure</option>
-                                <option value="paved">Paved</option>
-                                <option value="roughroad">Rough Road</option>
-                                <option value="cemented">Cemented</option>
-                            </select>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="urban_ruralClassification" class="form-label">Urban/Rural Classification:</label>
-                            <select class="form-select shadow-sm" id="urban_ruralClassification" name="urban_ruralClassification">
-                                <option selected disabled>Choose classification</option>
-                                <option value="rural">Rural</option>
-                                <option value="urban">Urban</option>
-                            </select>
-                        </div>
-                    </form>
-                    </div>
-                </div>
-                
+          </div>
+
+          <div id="genCard" class="card shadow-sm mb-4">
+            <div class="card-header text-center fw-bold bg-light">
+              GENERAL INFORMATION
+            </div>
+            <div class="card-body">
+              <div class="row">
                 <div class="col-12 col-md-6">
-                    <div class="mb-3">
-                        <label for="nameOfParish" class="form-label">Name Of Parish:</label>
-                        <input class="form-control" id="nameOfParish" type="text" placeholder="Enter your Name Of Parish">
-                    </div>
+                  <div class="mb-3">
+                    <label for="purokGimong" class="form-label">BEC Purok-Gimong:</label>
+                    <input class="form-control" type="text" name="purokGimong" id="purokGimong" placeholder="Enter your Purok/Gimong" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="barangayName" class="form-label">Barangay Name:</label>
+                    <input class="form-control" type="text" name="barangayName" id="barangayName" placeholder="Enter your Barangay Name" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="municipality-select" class="form-label">Municipality Name:</label>
+                    <select class="form-select" name="municipality-select" id="municipality-select">
+                        <option selected>Select a municipality</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="provinceName" class="form-label">Province Name:</label>
+                    <input class="form-control" type="text" name="provinceName" id="provinceName" placeholder="Enter your Province" />
+                  </div>
 
-                    <div class="mb-3">
-                        <label for="diocesePrelatureName" class="form-label">Diocese/Prelature Name:</label>
-                        <input class="form-control" id="diocesePrelatureName" name="diocesePrelatureName" type="text" placeholder="Enter your Diocese/Prelature Name">
-                    </div>
+                  <div class="mb-3">
+                    <label for="modeOfTransportation" class="form-label fw-semibold">Mode of Transportation</label>
+                    <select class="form-select shadow-sm" id="modeOfTransportation" name="modeOfTransportation">
+                      <option selected disabled>Choose mode of transportation...</option>
+                      <option value="walking">Walking</option>
+                      <option value="bicycle">Bicycle</option>
+                      <option value="motorcycle">Motorcycle</option>
+                      <option value="public_transport">Public Transport</option>
+                      <option value="private_vehicle">Private Vehicle</option>
+                    </select>
+                  </div>
 
-                    <div class="mb-3">
-                        <label for="yrOfResInTheCommunity" class="form-label fw-semibold">Year of Residency</label>
-                        <select class="form-select shadow-sm" id="yrOfResInTheCommunity" name="yrOfResInTheCommunity">
-                            <option selected disabled>Choose duration...</option>
-                            <option value="Less than 1 year">Less than 1 year</option>
-                            <option value="1-5 years">1-5 years</option>
-                            <option value="6-10 years">6-10 years</option>
-                            <option value="11-20 years">11-20 years</option>
-                            <option value="20+ years">More than 20 years</option>
-                        </select>
-                    </div>
+                  <div class="mb-3">
+                    <label for="road_Structure" class="form-label">Road Structure:</label>
+                    <select class="form-select shadow-sm" id="road_Structure" name="road_Structure">
+                      <option selected disabled>Choose Road Structure</option>
+                      <option value="paved">Paved</option>
+                      <option value="roughroad">Rough Road</option>
+                      <option value="cemented">Cemented</option>
+                    </select>
+                  </div>
 
-                    <div class="mb-3">
-                        <label for="numOfFamMembers" class="form-label fw-semibold">Number of Family Members</label>
-                        <select class="form-select shadow-sm" name="numOfFamMembers" id="numOfFamMembers">
-                            <option selected disabled>Select number...</option>
-                            <option value="1">1 Member</option>
-                            <option value="2">2 Members</option>
-                            <option value="3">3 Members</option>
-                            <option value="4">4 Members</option>
-                            <option value="5+">5 or more Members</option>
-                        </select>
-                    </div>
-                        
-                    <div class="mb-3">
-                        <label for="familyStructure" class="form-label fw-semibold">Family Structure</label>
-                        <select class="form-select shadow-sm" id="familyStructure" name="familyStructure">
-                            <option selected disabled>Select structure...</option>
-                            <option value="Nuclear">Nuclear (Parents & Children)</option>
-                            <option value="Extended">Extended (With Relatives)</option>
-                            <option value="Single Parent">Single Parent</option>
-                            <option value="Couple Only">Couple Only</option>
-                            <option value="Grandparent-Led">Grandparent-Led</option>
-                            <option value="Blended">Blended (Step-family)</option>
-                            <option value="Single Person">Single Person (Solo)</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="lclDialect" class="form-label">Local Dialect:</label>
-                        <input class="form-control" id="lclDialect" type="text" placeholder="Enter your Local Dialect">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="ethnicity" class="form-label">Ethnicity:</label>
-                        <input class="form-control" id="ethnicity" type="text" placeholder="Enter your Ethnicity">
-                    </div>
-                    </div>
+                  <div class="mb-3">
+                    <label for="urban_ruralClassification" class="form-label">Urban/Rural Classification:</label>
+                    <select class="form-select shadow-sm" id="urban_ruralClassification" name="urban_ruralClassification">
+                      <option selected disabled>Choose classification</option>
+                      <option value="rural">Rural</option>
+                      <option value="urban">Urban</option>
+                    </select>
+                  </div>
                 </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="mb-3">
+                    <label for="nameOfParish" class="form-label">Name Of Parish:</label>
+                    <input class="form-control" id="nameOfParish" name="nameOfParish" type="text" placeholder="Enter your Name Of Parish" />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="diocesePrelatureName" class="form-label">Diocese/Prelature Name:</label>
+                    <input class="form-control" id="diocesePrelatureName" name="diocesePrelatureName" type="text" placeholder="Enter your Diocese/Prelature Name" />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="yrOfResInTheCommunity" class="form-label fw-semibold">Year of Residency</label>
+                    <select class="form-select shadow-sm" id="yrOfResInTheCommunity" name="yrOfResInTheCommunity">
+                      <option selected disabled>Choose duration...</option>
+                      <option value="Less than 1 year">Less than 1 year</option>
+                      <option value="1-5 years">1-5 years</option>
+                      <option value="6-10 years">6-10 years</option>
+                      <option value="11-20 years">11-20 years</option>
+                      <option value="20+ years">More than 20 years</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="numOfFamMembers" class="form-label fw-semibold">Number of Family Members</label>
+                    <select class="form-select shadow-sm" name="numOfFamMembers" id="numOfFamMembers">
+                      <option selected disabled>Select number...</option>
+                      <option value="1">1 Member</option>
+                      <option value="2">2 Members</option>
+                      <option value="3">3 Members</option>
+                      <option value="4">4 Members</option>
+                      <option value="5+">5 or more Members</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="familyStructure" class="form-label fw-semibold">Family Structure</label>
+                    <select class="form-select shadow-sm" id="familyStructure" name="familyStructure">
+                      <option selected disabled>Select structure...</option>
+                      <option value="Nuclear">Nuclear (Parents & Children)</option>
+                      <option value="Extended">Extended (With Relatives)</option>
+                      <option value="Single Parent">Single Parent</option>
+                      <option value="Couple Only">Couple Only</option>
+                      <option value="Grandparent-Led">Grandparent-Led</option>
+                      <option value="Blended">Blended (Step-family)</option>
+                      <option value="Single Person">Single Person (Solo)</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="lclDialect" class="form-label">Local Dialect:</label>
+                    <input class="form-control" id="lclDialect" name="lclDialect" type="text" placeholder="Enter your Local Dialect" />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="ethnicity" class="form-label">Ethnicity:</label>
+                    <input class="form-control" id="ethnicity" name="ethnicity" type="text" placeholder="Enter your Ethnicity" />
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <div class="row justify-content-end gap-2 mt-3 mb-4">
+            <div class="col-auto">
+              <a href="index.html" class="btn btn-secondary fs-5">Previous</a>
+            </div>
+<div class="col-auto">
+            <button type="button" onclick="goNext()" class="btn btn-church px-4">
+              Next
+            </button>
+          </div>
+          </div>
+
+          <input type="hidden" name="form_source" value="general_info">
+        </form>
         </div>
     </main>
 
-    <div class="container-fluid px-4">
-        <div class="row justify-content-end gap-2 mt-3 mb-4">
-            <div class="col-auto">
-                <a href="index.html" class="btn btn-secondary fs-5">Previous</a>
-            </div>
-            <div class="col-auto"> 
-                <a href="./survey2.html" class="btn btn-success fs-5">Next</a>
-            </div>
-        </div>
-    </div>
-
     <footer class="bg-dark text-white mt-auto">
-        <div class="container py-2">
+      <div class="container py-2">
         <div class="row align-items-center">
-            <div class="col-md-9">
+          <div class="col-md-9">
             <h6 class="fw-bold mb-0">Household Survey Profiling</h6>
-            <p class="small mb-0" style="font-size: 0.75rem">
-                SJCB BSIT-2 Project
-            </p>
-            </div>
-
-            <div class="col-md-3 text-md-end">
+            <p class="small mb-0" style="font-size: 0.75rem">SJCB BSIT-2 Project</p>
+          </div>
+          <div class="col-md-3 text-md-end">
             <small class="fw-bold d-block d-md-inline me-2">Follow Us:</small>
-            <a href="#" class="text-white me-2"
-                ><i class="bi bi-facebook"></i
-            ></a>
-            <a href="#" class="text-white me-2"
-                ><i class="bi bi-twitter-x"></i
-            ></a>
-            <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
-            </div>
+            <a href="https://www.facebook.com/sjcbiofficial" class="text-white me-2"><i class="bi bi-facebook"></i></a>
+          </div>
         </div>
-        </div>
-
-        <div class="text-center py-1 bg-success" style="font-size: 0.8rem">
+      </div>
+      <div class="text-center py-1 bg-church" style="font-size: 0.8rem">
         © 2026 SJCB BSIT-2 | All Rights Reserved
-        </div>
+      </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+    <script src="/javascripts/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      function saveFormData() {
+        const form = document.querySelector('form');
+        const formData = new FormData(form);
+        const data = {};
+        for (let [key, value] of formData.entries()) {
+          data[key] = value;
+        }
+        sessionStorage.setItem('survey_general', JSON.stringify(data));
+      }
+
+      function loadSavedData() {
+        const saved = JSON.parse(sessionStorage.getItem('survey_general') || '{}');
+        for (let key in saved) {
+          const el = document.querySelector(`[name="${key}"]`);
+          if (el) el.value = saved[key];
+        }
+      }
+
+      function goNext() {
+        saveFormData();
+        window.location.href = 'survey2.html';
+      }
+
+      window.onload = loadSavedData;
+
+      const municipalities = [
+      "Abulug", "Alcala", "Allacapan", "Amulung", "Aparri", 
+      "Baggao", "Ballesteros", "Buguey", "Calayan", "Camalaniugan", 
+      "Claveria", "Enrile", "Gattaran", "Gonzaga", "Iguig", 
+      "Lal-lo", "Lasam", "Pamplona", "Peñablanca", "Piat", 
+      "Rizal", "Sanchez-Mira", "Santa Ana", "Santa Praxedes", 
+      "Santa Teresita", "Santo Niño (Faire)", "Solana", "Tuao"
+      ];
+
+      const selectElement = document.getElementById('municipality-select');
+
+      // Loop through the array
+      municipalities.forEach(town => {
+          // Create a new <option> element
+          const option = document.createElement('option');
+          
+          // Set the value and the display text
+          option.value = town;
+          option.textContent = town;
+          
+          // Append it to the select tag
+          selectElement.appendChild(option);
+      });
+
+    </script>
+  </body>
 </html>

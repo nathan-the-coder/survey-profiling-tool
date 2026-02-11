@@ -4,247 +4,203 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Survey Form | SJCB Household Profiling</title>
-
- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
 </head>
 
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100 bg-light">
 
-<!-- HEADER -->
 <nav class="navbar shadow-sm py-3" style="background-color:#457507;">
     <div class="container-fluid px-4">
-    <a class="d-flex align-items-center text-white text-decoration-none">
-    <img src="/images/logo.jpg" width="45" height="45" class="rounded-circle me-2">
-    <span class="fw-bold fs-4">Archdiocese of Tuguegarao</span>
-    </a>
+        <a class="d-flex align-items-center text-white text-decoration-none">
+            <img src="/images/logo.jpg" width="45" height="45" class="rounded-circle me-2">
+            <span class="fw-bold fs-4">Archdiocese of Tuguegarao</span>
+        </a>
     </div>
 </nav>
 
-<main class="container-fluid px-4 my-4">
-  <div class="progress mb-4" style="height: 25px;">
-    <div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">Step 3 of 4</div>
-  </div>
-
-<!-- III. HEALTH AND LIVING CONDITIONS -->
-<div class="card shadow-sm mb-4">
-    <div class="card-header text-center fw-bold">
-    HEALTH AND LIVING CONDITIONS
-    </div>
-  
-
-  <div class="card-body">
-    <div class="row g-3">
-
-        <!-- Common Illnesses -->
-        <div class="col-md-4">
-        <label class="fw-bold">Common illnesses (last 3 months)</label>
-        <select class="form-select mt-1">
-            <option value=""></option>
-            <option value="00">None</option>
-            <option value="01">Fever</option>
-            <option value="02">Flu</option>
-            <option value="03">Cough</option>
-            <option value="04">Cold</option>
-            <option value="05">Diarrhea</option>
-            <option value="06">Cholera</option>
-            <option value="07">Asthma</option>
-            <option value="08">Typhoid Fever</option>
-            <option value="09">Dengue</option>
-            <option value="10">Pneumonia</option>
-            <option value="11">Chicken Pox</option>
-            <option value="12">Measles</option>
-            <option value="13">Heart Disease</option>
-            <option value="14">Lung Disease</option>
-            <option value="15">High Blood</option>
-            <option value="16">Anemia</option>
-            <option value="17">Malaria</option>
-            <option value="99">Others</option>
-        </select>
-        <input type="text" class="form-control form-control-sm mt-1" placeholder="If others, specify">
+<main class="container-fluid px-4 my-4 flex-fill">
+    <div class="progress mb-4" style="height: 25px;">
+        <div class="progress-bar bg-success" role="progressbar" style="width: 75%;">Step 3 of 4</div>
     </div>
 
-    <!-- Treatment Source -->
-    <div class="col-md-4">
-        <label class="fw-bold">Where do household go for treatment?</label>
-        <select class="form-select mt-1">
-            <option value=""></option>
-            <option value="00">None</option>
-            <option value="01">Traditional Healers</option>
-            <option value="02">Private Doctors</option>
-            <option value="03">RHU Doctors</option>
-            <option value="04">Self-medication</option>
-            <option value="05">Brgy. Health Station</option>
-            <option value="06">Rural Health Unit</option>
-            <option value="07">Brgy. Health Worker</option>
-            <option value="08">Brgy. Nutrition Scholar</option>
-            <option value="09">CBHP/DHW</option>
-            <option value="10">Private Clinic</option>
-            <option value="99">Others</option>
-        </select>
-        <input type="text" class="form-control form-control-sm mt-1" placeholder="If others, specify">
-    </div>
+    <form action="" method="POST">
+        
+        <div class="card shadow-sm mb-4">
+            <div class="card-header text-center fw-bold bg-white">
+                III. HEALTH AND LIVING CONDITIONS
+            </div>
+            
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <label for="illness" class="fw-bold">Common illnesses (last 3 months)</label>
+                        <select name="common_illness" id="illness" class="form-select mt-1">
+                            <option value="" selected disabled>Select Illness</option>
+                            <option value="00">None</option>
+                            <option value="01">Fever</option>
+                            <option value="02">Flu</option>
+                            <option value="03">Cough</option>
+                            <option value="04">Cold</option>
+                            <option value="05">Diarrhea</option>
+                            <option value="07">Asthma</option>
+                            <option value="13">Heart Disease</option>
+                            <option value="15">High Blood</option>
+                            <option value="99">Others</option>
+                        </select>
+                        <input type="text" name="common_illness_others" class="form-control form-control-sm mt-1" placeholder="If others, specify">
+                    </div>
 
-    <!-- Source of Potable Water -->
-    <div class="col-md-4">
-        <label class="fw-bold">Source of potable water</label>
-        <select class="form-select mt-1">
-            <option value=""></option>
-            <option value="1">Local Water System</option>
-            <option value="2">Spring Water</option>
-            <option value="3">River</option>
-            <option value="4">Open Well</option>
-            <option value="5">Own Artesian Well</option>
-            <option value="6">Community Artesian Well</option>
-            <option value="7">Community Faucet</option>
-            <option value="8">Electric Deep Well</option>
-            <option value="9">Free Flowing Water Pipe</option>
-            <option value="10">Rain Water</option>
-            <option value="11">Water Refilling Station</option>
-            <option value="12">NAWASA</option>
-            <option value="99">Others</option>
-        </select>
-        <input type="text" class="form-control form-control-sm mt-1" placeholder="If others, specify">
-    </div>
+                    <div class="col-md-4">
+                        <label for="treatment" class="fw-bold">Where do household go for treatment?</label>
+                        <select name="treatment_source" id="treatment" class="form-select mt-1">
+                            <option value="" selected disabled>Select Facility</option>
+                            <option value="01">Traditional Healers</option>
+                            <option value="02">Private Doctors</option>
+                            <option value="05">Brgy. Health Station</option>
+                            <option value="06">Rural Health Unit</option>
+                            <option value="10">Private Clinic</option>
+                            <option value="99">Others</option>
+                        </select>
+                        <input type="text" name="treatment_source_others" class="form-control form-control-sm mt-1" placeholder="If others, specify">
+                    </div>
 
-    </div>
+                    <div class="col-md-4">
+                        <label for="water" class="fw-bold">Source of potable water</label>
+                        <select name="water_source" id="water" class="form-select mt-1">
+                            <option value="" selected disabled>Select Water Source</option>
+                            <option value="1">Local Water System</option>
+                            <option value="5">Own Artesian Well</option>
+                            <option value="11">Water Refilling Station</option>
+                            <option value="12">NAWASA</option>
+                            <option value="99">Others</option>
+                        </select>
+                        <input type="text" name="water_source_others" class="form-control form-control-sm mt-1" placeholder="If others, specify">
+                    </div>
+                </div>
 
-    <hr>
+                <hr class="my-4">
 
-    <div class="row g-3">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <label for="lighting" class="fw-bold">Household lighting energy source</label>
+                        <select name="lighting_source" id="lighting" class="form-select mt-1">
+                            <option value="1">Electricity</option>
+                            <option value="2">Kerosene (Gaas)</option>
+                            <option value="4">Solar Lamp</option>
+                            <option value="99">Others</option>
+                        </select>
+                        <input type="text" name="lighting_others" class="form-control form-control-sm mt-1" placeholder="If others, specify">
+                    </div>
 
-    <!-- Lighting Energy -->
-    <div class="col-md-4">
-        <label class="fw-bold">Household lighting energy source</label>
-        <select class="form-select mt-1">
-            <option value=""></option>
-            <option value="1">Electricity</option>
-            <option value="2">Kerosene (Gaas)</option>
-            <option value="3">Liquefied Petroleum Gas (LPG)</option>
-            <option value="4">Solar Lamp</option>
-            <option value="5">Battery</option>
-            <option value="6">Generator</option>
-            <option value="7">None</option>
-            <option value="99">Others</option>
-        </select>
-        <input type="text" class="form-control form-control-sm mt-1" placeholder="If others, specify">
-    </div>
+                    <div class="col-md-4">
+                        <label for="cooking" class="fw-bold">Household cooking energy source</label>
+                        <select name="cooking_source" id="cooking" class="form-select mt-1">
+                            <option value="1">Woods</option>
+                            <option value="2">Charcoal</option>
+                            <option value="4">Liquefied Petroleum Gas (LPG)</option>
+                            <option value="5">Electricity</option>
+                            <option value="99">Others</option>
+                        </select>
+                        <input type="text" name="cooking_others" class="form-control form-control-sm mt-1" placeholder="If others, specify">
+                    </div>
 
-    <!-- Cooking Energy -->
-    <div class="col-md-4">
-        <label class="fw-bold">Household cooking energy source</label>
-        <select class="form-select mt-1">
-        <option value=""></option>
-        <option value="1">Woods</option>
-        <option value="2">Charcoal</option>
-        <option value="3">Kerosene (Gaas)</option>
-        <option value="4">Liquefied Petroleum Gas (LPG)</option>
-        <option value="5">Electricity</option>
-        <option value="99">Others</option>
-        </select>
-        <input type="text" class="form-control form-control-sm mt-1" placeholder="If others, specify">
-    </div>
+                    <div class="col-md-4">
+                        <label for="garbage" class="fw-bold">Way of disposing garbage</label>
+                        <select name="garbage_disposal" id="garbage" class="form-select mt-1">
+                            <option value="1">Segregating waste</option>
+                            <option value="2">Collected by garbage truck</option>
+                            <option value="6">Burning</option>
+                            <option value="99">Others</option>
+                        </select>
+                        <input type="text" name="garbage_others" class="form-control form-control-sm mt-1" placeholder="If others, specify">
+                    </div>
+                </div>
 
-    <!-- Garbage Disposal -->
-    <div class="col-md-4">
-        <label class="fw-bold">Way of disposing household garbage</label>
-        <select class="form-select mt-1">
-            <option value=""></option>
-            <option value="1">Segregating waste</option>
-            <option value="2">Collected by garbage truck</option>
-            <option value="3">Recycling / Reusing at home</option>
-            <option value="4">Selling / Giving away recyclables</option>
-            <option value="5">Composting</option>
-            <option value="6">Burning</option>
-            <option value="7">Dumping in pit with cover</option>
-            <option value="8">Dumping in pit without cover</option>
-            <option value="9">Throwing in uninhabited locations</option>
-            <option value="99">Others</option>
-        </select>
-        <input type="text" class="form-control form-control-sm mt-1" placeholder="If others, specify">
-    </div>
+                <hr class="my-4">
 
-    </div>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label for="toilet" class="fw-bold">Toilet facility of the household</label>
+                        <select name="toilet_type" id="toilet" class="form-select mt-1">
+                            <option value="1">Water-sealed flush (own)</option>
+                            <option value="2">Water-sealed flush (shared)</option>
+                            <option value="3">Closed pit</option>
+                            <option value="5">No toilet</option>
+                        </select>
+                    </div>
 
-    <hr>
-
-    <div class="row g-3">
-
-    <!-- Toilet Facility -->
-    <div class="col-md-6">
-        <label class="fw-bold">Toilet facility of the household</label>
-        <select class="form-select mt-1">
-            <option value=""></option>
-            <option value="1">Water-sealed flush (own)</option>
-            <option value="2">Water-sealed flush (shared)</option>
-            <option value="3">Closed pit</option>
-            <option value="4">Open pit</option>
-            <option value="5">No toilet</option>
-            <option value="99">Others</option>
-        </select>
-        <input type="text" class="form-control form-control-sm mt-1" placeholder="If others, specify">
-    </div>
-
-    <!-- Distance to Toilet -->
-    <div class="col-md-6">
-        <label class="fw-bold">
-        Distance from water source to nearest toilet facility
-        </label>
-        <select class="form-select mt-1">
-        <option value=""></option>
-        <option value="1">Below 200 meters</option>
-        <option value="2">201–500 meters</option>
-        <option value="3">501–700 meters</option>
-        <option value="4">701–1000 meters</option>
-        <option value="5">More than 1000 meters</option>
-        </select>
-    </div>
-
-    </div>
-    <div class="row justify-content-end gap-2 mt-2 w-100">
-                <div class="col-auto"> 
-                    <a href="./survey5.html" class="btn btn-success fs-5">Next</a>
+                    <div class="col-md-6">
+                        <label for="toilet_dist" class="fw-bold">Distance from water source to toilet</label>
+                        <select name="toilet_distance" id="toilet_dist" class="form-select mt-1">
+                            <option value="1">Below 200 meters</option>
+                            <option value="2">201–500 meters</option>
+                            <option value="5">More than 1000 meters</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-</div>
-</div>
+        </div>
 
+        <div class="d-flex justify-content-between mb-5">
+            <button type="button" onclick="goPrev()" class="btn btn-secondary px-4">Previous</button>
+            <button type="button" onclick="goNext()" class="btn btn-success px-5 fw-bold">Next <i class="bi bi-arrow-right"></i></button>
+        </div>
+
+        <input type="hidden" name="form_source" value="health_and_living_conditions">
+    </form>
 </main>
 
-<div class="container-fluid px-4 mb-4">
-    <div class="row justify-content-end gap-2 mt-2">
-    </div>
-</div>
-
-<!-- FOOTER -->
 <footer class="bg-dark text-white mt-auto">
-    <div class="container py-2">
-    <div class="row align-items-center">
-        <div class="col-md-9">
-        <h6 class="fw-bold mb-0">Household Survey Profiling</h6>
-        <p class="small mb-0" style="font-size: 0.75rem">
-            SJCB BSIT-2 Project
-        </p>
+      <div class="container py-2">
+        <div class="row align-items-center">
+          <div class="col-md-9">
+            <h6 class="fw-bold mb-0">Household Survey Profiling</h6>
+            <p class="small mb-0" style="font-size: 0.75rem">SJCB BSIT-2 Project</p>
+          </div>
+          <div class="col-md-3 text-md-end">
+            <small class="fw-bold d-block d-md-inline me-2">Follow Us:</small>
+            <a href="https://www.facebook.com/sjcbiofficial" class="text-white me-2"><i class="bi bi-facebook"></i></a>
+          </div>
         </div>
+      </div>
+      <div class="text-center py-1 bg-church" style="font-size: 0.8rem">
+        © 2026 SJCB BSIT-2 | All Rights Reserved
+      </div>
+    </footer>
 
-        <div class="col-md-3 text-md-end">
-        <small class="fw-bold d-block d-md-inline me-2">Follow Us:</small>
-        <a href="#" class="text-white me-2"
-            ><i class="bi bi-facebook"></i
-        ></a>
-        <a href="#" class="text-white me-2"
-            ><i class="bi bi-twitter-x"></i
-        ></a>
-        <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
-        </div>
-    </div>
-    </div>
+<script>
+    function saveFormData() {
+        const form = document.querySelector('form');
+        const formData = new FormData(form);
+        const data = {};
+        for (let [key, value] of formData.entries()) {
+            data[key] = value;
+        }
+        sessionStorage.setItem('survey_health', JSON.stringify(data));
+    }
 
-    <div class="text-center py-1 bg-success" style="font-size: 0.8rem">
-    © 2026 SJCB BSIT-2 | All Rights Reserved
-    </div>
-</footer>
+    function loadSavedData() {
+        const saved = JSON.parse(sessionStorage.getItem('survey_health') || '{}');
+        for (let key in saved) {
+            const el = document.querySelector(`[name="${key}"]`);
+            if (el) el.value = saved[key];
+        }
+    }
+
+    function goNext() {
+        saveFormData();
+        window.location.href = 'survey5.html';
+    }
+
+    function goPrev() {
+        saveFormData();
+        window.location.href = 'survey2.html';
+    }
+
+    window.onload = loadSavedData;
+</script>
 
 </body>
 </html>

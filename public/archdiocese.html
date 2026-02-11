@@ -93,7 +93,7 @@
       </div>
     </main>
 
-    <footer class="bg-dark text-white">
+    <footer class="bg-dark text-white mt-auto">
       <div class="container py-2">
         <div class="row align-items-center">
           <div class="col-md-9">
@@ -102,52 +102,82 @@
               SJCB BSIT-2 Project
             </p>
           </div>
-
           <div class="col-md-3 text-md-end">
             <small class="fw-bold d-block d-md-inline me-2">Follow Us:</small>
-            <a href="#" class="text-white me-2"
+            <a
+              href="https://www.facebook.com/sjcbiofficial"
+              class="text-white me-2"
               ><i class="bi bi-facebook"></i
             ></a>
-            <a href="#" class="text-white me-2"
-              ><i class="bi bi-twitter-x"></i
-            ></a>
-            <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
           </div>
         </div>
       </div>
-
       <div class="text-center py-1 bg-success" style="font-size: 0.8rem">
         © 2026 SJCB BSIT-2 | All Rights Reserved
       </div>
     </footer>
 
     <!-- Participant Details Modal -->
-    <div class="modal fade" id="participantModal" tabindex="-1" aria-labelledby="participantModalLabel" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="participantModal"
+      tabindex="-1"
+      aria-labelledby="participantModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="participantModalLabel">Participant Details</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h5 class="modal-title" id="participantModalLabel">
+              Participant Details
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body">
             <div class="row">
               <div class="col-md-6">
                 <h6 class="text-primary">Household Information</h6>
-                <p><strong>Name:</strong> <span id="modalFullName">N/A</span></p>
-                <p><strong>Address:</strong> <span id="modalAddress">N/A</span></p>
-                <p><strong>Parish:</strong> <span id="modalParish">N/A</span></p>
-                <p><strong>Family Members:</strong> <span id="modalFamilyCount">N/A</span></p>
-                <p><strong>Years in Community:</strong> <span id="modalYearsResidency">N/A</span></p>
+                <p>
+                  <strong>Name:</strong> <span id="modalFullName">N/A</span>
+                </p>
+                <p>
+                  <strong>Address:</strong> <span id="modalAddress">N/A</span>
+                </p>
+                <p>
+                  <strong>Parish:</strong> <span id="modalParish">N/A</span>
+                </p>
+                <p>
+                  <strong>Family Members:</strong>
+                  <span id="modalFamilyCount">N/A</span>
+                </p>
+                <p>
+                  <strong>Years in Community:</strong>
+                  <span id="modalYearsResidency">N/A</span>
+                </p>
               </div>
               <div class="col-md-6">
                 <h6 class="text-primary">Socio-Economic</h6>
-                <p><strong>Income Range:</strong> <span id="modalIncome">N/A</span></p>
-                <p><strong>House Ownership:</strong> <span id="modalHouseOwnership">N/A</span></p>
-                <p><strong>House Classification:</strong> <span id="modalHouseClass">N/A</span></p>
+                <p>
+                  <strong>Income Range:</strong>
+                  <span id="modalIncome">N/A</span>
+                </p>
+                <p>
+                  <strong>House Ownership:</strong>
+                  <span id="modalHouseOwnership">N/A</span>
+                </p>
+                <p>
+                  <strong>House Classification:</strong>
+                  <span id="modalHouseClass">N/A</span>
+                </p>
               </div>
             </div>
 
-            <hr>
+            <hr />
             <h6 class="text-primary">Family Members</h6>
             <div class="table-responsive">
               <table class="table table-sm">
@@ -168,21 +198,39 @@
               </table>
             </div>
 
-            <hr>
+            <hr />
             <h6 class="text-primary">Health Conditions</h6>
             <div class="row">
               <div class="col-md-6">
-                <p><strong>Common Illness:</strong> <span id="modalCommonIllness">N/A</span></p>
-                <p><strong>Water Source:</strong> <span id="modalWaterSource">N/A</span></p>
+                <p>
+                  <strong>Common Illness:</strong>
+                  <span id="modalCommonIllness">N/A</span>
+                </p>
+                <p>
+                  <strong>Water Source:</strong>
+                  <span id="modalWaterSource">N/A</span>
+                </p>
               </div>
               <div class="col-md-6">
-                <p><strong>Toilet Facility:</strong> <span id="modalToiletFacility">N/A</span></p>
-                <p><strong>Garbage Disposal:</strong> <span id="modalGarbageDisposal">N/A</span></p>
+                <p>
+                  <strong>Toilet Facility:</strong>
+                  <span id="modalToiletFacility">N/A</span>
+                </p>
+                <p>
+                  <strong>Garbage Disposal:</strong>
+                  <span id="modalGarbageDisposal">N/A</span>
+                </p>
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
           </div>
         </div>
       </div>
@@ -190,7 +238,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      const API_URL = "http://localhost:5500";
+      const API_URL = "https://survey-profiling-tool-backend.vercel.app";
       const searchInput = document.getElementById("searchInput");
       const autocompleteList = document.getElementById("autocompleteList");
       let debounceTimer;
@@ -212,7 +260,7 @@
       });
 
       // Better error handling
-        async function fetchParticipants(query) {
+      async function fetchParticipants(query) {
         console.log("Fetching:", query);
         try {
           const url = `${API_URL}/search-participants?q=${encodeURIComponent(query)}`;
@@ -220,8 +268,8 @@
 
           const response = await fetch(url, {
             headers: {
-              'X-Username': sessionStorage.getItem('username') || 'Guest'
-            }
+              "X-Username": sessionStorage.getItem("username") || "Guest",
+            },
           });
           console.log("Response status:", response.status);
 
@@ -286,32 +334,37 @@
       // Get username first
       const username = sessionStorage.getItem("username");
       document.querySelector("#name").textContent = username;
-      
+
       // Initialize role and user info safely
-      let userRole = 'Guest';
-      if (username === 'Archdiocese of Tuguegarao') {
-          userRole = 'Archdiocese';
-      } else if (username && username.includes('Parish')) {
-          userRole = 'Parish';
+      let userRole = "Guest";
+      if (username === "Archdiocese of Tuguegarao") {
+        userRole = "Archdiocese";
+      } else if (username && username.includes("Parish")) {
+        userRole = "Parish";
       }
-      
+
       // Add role indicator
-      const roleBadge = document.createElement('span');
-      roleBadge.className = `badge ms-2 ${userRole === 'Archdiocese' ? 'bg-danger' : 'bg-primary'}`;
+      const roleBadge = document.createElement("span");
+      roleBadge.className = `badge ms-2 ${userRole === "Archdiocese" ? "bg-danger" : "bg-primary"}`;
       roleBadge.textContent = userRole;
       document.querySelector("#name").appendChild(roleBadge);
 
       // Participant Details Modal
-      const participantModal = new bootstrap.Modal(document.getElementById('participantModal'));
+      const participantModal = new bootstrap.Modal(
+        document.getElementById("participantModal"),
+      );
 
       async function fetchParticipantDetails(participantId) {
         try {
-          const response = await fetch(`${API_URL}/participant/${participantId}`, {
-            headers: {
-              'X-Username': sessionStorage.getItem('username') || 'Guest'
-            }
-          });
-          
+          const response = await fetch(
+            `${API_URL}/participant/${participantId}`,
+            {
+              headers: {
+                "X-Username": sessionStorage.getItem("username") || "Guest",
+              },
+            },
+          );
+
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
@@ -330,72 +383,95 @@
       }
 
       function showParticipantDetails(data) {
-        const { household, family_members, health_conditions, socio_economic, userRole, userParish } = data;
-        
+        const {
+          household,
+          family_members,
+          health_conditions,
+          socio_economic,
+          userRole,
+          userParish,
+        } = data;
+
         // Add access control info
-        let accessInfo = '';
-        if (userRole === 'parish' && userParish) {
-            accessInfo = `
+        let accessInfo = "";
+        if (userRole === "parish" && userParish) {
+          accessInfo = `
                 <div class="alert alert-info">
                     <i class="bi bi-info-circle me-2"></i>
-                    <strong>Access Level:</strong> Parish User - Viewing ${household.parish_name || 'N/A'} data only
+                    <strong>Access Level:</strong> Parish User - Viewing ${household.parish_name || "N/A"} data only
                 </div>
             `;
-        } else if (userRole === 'archdiocese') {
-            accessInfo = `
+        } else if (userRole === "archdiocese") {
+          accessInfo = `
                 <div class="alert alert-success">
                     <i class="bi bi-shield-check me-2"></i>
                     <strong>Access Level:</strong> Archdiocese User - Full access to all parishes
                 </div>
             `;
         }
-        
-        document.getElementById('modalFullName').textContent = family_members?.[0]?.full_name || 'N/A';
-        document.getElementById('modalAddress').textContent = 
-          `${household?.purok_gimong || 'N/A'}, ${household?.barangay_name || 'N/A'}, ${household?.municipality || 'N/A'}`;
-        document.getElementById('modalParish').textContent = household?.parish_name || 'N/A';
-        document.getElementById('modalFamilyCount').textContent = household?.num_family_members || 'N/A';
-        document.getElementById('modalYearsResidency').textContent = household?.years_residency || 'N/A';
-        document.getElementById('modalIncome').textContent = socio_economic?.income_monthly_code || 'N/A';
-        document.getElementById('modalHouseOwnership').textContent = socio_economic?.house_lot_ownership_code || 'N/A';
-        document.getElementById('modalHouseClass').textContent = socio_economic?.house_classification_code || 'N/A';
-        
+
+        document.getElementById("modalFullName").textContent =
+          family_members?.[0]?.full_name || "N/A";
+        document.getElementById("modalAddress").textContent =
+          `${household?.purok_gimong || "N/A"}, ${household?.barangay_name || "N/A"}, ${household?.municipality || "N/A"}`;
+        document.getElementById("modalParish").textContent =
+          household?.parish_name || "N/A";
+        document.getElementById("modalFamilyCount").textContent =
+          household?.num_family_members || "N/A";
+        document.getElementById("modalYearsResidency").textContent =
+          household?.years_residency || "N/A";
+        document.getElementById("modalIncome").textContent =
+          socio_economic?.income_monthly_code || "N/A";
+        document.getElementById("modalHouseOwnership").textContent =
+          socio_economic?.house_lot_ownership_code || "N/A";
+        document.getElementById("modalHouseClass").textContent =
+          socio_economic?.house_classification_code || "N/A";
+
         // Health Conditions
-        document.getElementById('modalCommonIllness').textContent = health_conditions?.common_illness_codes || 'N/A';
-        document.getElementById('modalWaterSource').textContent = health_conditions?.potable_water_source_code || 'N/A';
-        document.getElementById('modalToiletFacility').textContent = health_conditions?.toilet_facility_code || 'N/A';
-        document.getElementById('modalGarbageDisposal').textContent = health_conditions?.garbage_disposal_code || 'N/A';
-        
+        document.getElementById("modalCommonIllness").textContent =
+          health_conditions?.common_illness_codes || "N/A";
+        document.getElementById("modalWaterSource").textContent =
+          health_conditions?.potable_water_source_code || "N/A";
+        document.getElementById("modalToiletFacility").textContent =
+          health_conditions?.toilet_facility_code || "N/A";
+        document.getElementById("modalGarbageDisposal").textContent =
+          health_conditions?.garbage_disposal_code || "N/A";
+
         // Family Members Table
-        const familyTableBody = document.getElementById('modalFamilyTable');
+        const familyTableBody = document.getElementById("modalFamilyTable");
         if (family_members && family_members.length > 0) {
-          familyTableBody.innerHTML = family_members.map(member => `
+          familyTableBody.innerHTML = family_members
+            .map(
+              (member) => `
             <tr>
-              <td>${member.full_name || 'N/A'}</td>
-              <td>${member.relation_to_head_code || 'N/A'}</td>
-              <td>${member.age || 'N/A'}</td>
-              <td>${member.educational_attainment_code || 'N/A'}</td>
-              <td>${member.occupation_code || 'N/A'}</td>
+              <td>${member.full_name || "N/A"}</td>
+              <td>${member.relation_to_head_code || "N/A"}</td>
+              <td>${member.age || "N/A"}</td>
+              <td>${member.educational_attainment_code || "N/A"}</td>
+              <td>${member.occupation_code || "N/A"}</td>
             </tr>
-          `).join('');
+          `,
+            )
+            .join("");
         } else {
-          familyTableBody.innerHTML = '<tr><td colspan="5" class="text-center">No family members found</td></tr>';
+          familyTableBody.innerHTML =
+            '<tr><td colspan="5" class="text-center">No family members found</td></tr>';
         }
-        
+
         // Insert access info at the beginning of modal body
-        const modalBody = document.querySelector('.modal-body');
-        modalBody.insertAdjacentHTML('afterbegin', accessInfo);
+        const modalBody = document.querySelector(".modal-body");
+        modalBody.insertAdjacentHTML("afterbegin", accessInfo);
 
         participantModal.show();
       }
-      
+
       // Add role-based styling
-      if (userRole === 'parish') {
-        document.querySelector('.navbar').style.backgroundColor = '#457507'; // Standard green
-      } else if (userRole === 'archdiocese') {
-        document.querySelector('.navbar').style.backgroundColor = '#dc3545'; // Darker red for archdiocese
+      if (userRole === "parish") {
+        document.querySelector(".navbar").style.backgroundColor = "#457507"; // Standard green
+      } else if (userRole === "archdiocese") {
+        document.querySelector(".navbar").style.backgroundColor = "#dc3545"; // Darker red for archdiocese
       } else {
-        document.querySelector('.navbar').style.backgroundColor = '#457507'; // Default green
+        document.querySelector(".navbar").style.backgroundColor = "#457507"; // Default green
       }
     </script>
   </body>

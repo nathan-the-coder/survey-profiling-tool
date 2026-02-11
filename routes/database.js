@@ -18,11 +18,13 @@ class DatabaseAdapter {
             const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
             
             if (!supabaseUrl || !supabaseKey) {
-                throw new Error('Supabase credentials not found in environment variables');
+                // Fallback to MySQL for now
+                this.useSupabase = false;
+                this.initializeConnection();
+                return;
             }
             
             this.supabaseClient = createClient(supabaseUrl, supabaseKey);
-            console.log('🟢 Connected to Supabase (Production)');
         } else {
             // Development: Use MySQL
             this.mysqlPool = mysql.createPool({
@@ -34,7 +36,6 @@ class DatabaseAdapter {
                 connectionLimit: 10,
                 queueLimit: 0
             });
-            console.log('🔵 Connected to MySQL (Development)');
         }
     }
 
@@ -96,7 +97,6 @@ class DatabaseAdapter {
                 return rows;
             }
         } catch (error) {
-            console.error('Error searching participants:', error);
             throw error;
         }
     }
@@ -170,7 +170,6 @@ class DatabaseAdapter {
                 };
             }
         } catch (error) {
-            console.error('Error getting participant details:', error);
             throw error;
         }
     }

@@ -89,14 +89,28 @@
 
                   <div class="mb-3">
                     <label for="modeOfTransportation" class="form-label fw-semibold">Mode of Transportation</label>
-                    <select class="form-select shadow-sm" id="modeOfTransportation" name="modeOfTransportation">
-                      <option selected disabled>Choose mode of transportation...</option>
-                      <option value="walking">Walking</option>
-                      <option value="bicycle">Bicycle</option>
-                      <option value="motorcycle">Motorcycle</option>
-                      <option value="public_transport">Public Transport</option>
-                      <option value="private_vehicle">Private Vehicle</option>
-                    </select>
+                    <div class="d-flex flex-wrap gap-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="modeOfTransportation" value="walking" id="trans1">
+                        <label for="trans1">Walking</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="modeOfTransportation" value="bicycle" id="trans2">
+                        <label for="trans2">Bicycle</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="modeOfTransportation" value="motorcycle" id="trans3">
+                        <label for="trans3">Motorcycle</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="modeOfTransportation" value="public_transport" id="trans4">
+                        <label for="trans4">Public Transport</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="modeOfTransportation" value="private_vehicle" id="trans5">
+                        <label for="trans5">Private Vehicle</label>
+                      </div>
+                    </div>
                   </div>
 
                   <div class="mb-3">
@@ -122,7 +136,9 @@
                 <div class="col-12 col-md-6">
                   <div class="mb-3">
                     <label for="nameOfParish" class="form-label">Name Of Parish:</label>
-                    <input class="form-control" id="nameOfParish" name="nameOfParish" type="text" placeholder="Enter your Name Of Parish" />
+                    <select class="form-select" id="nameOfParish" name="nameOfParish">
+                      <option selected disabled>Select a parish</option>
+                    </select>
                   </div>
 
                   <div class="mb-3">
@@ -134,11 +150,11 @@
                     <label for="yrOfResInTheCommunity" class="form-label fw-semibold">Year of Residency</label>
                     <select class="form-select shadow-sm" id="yrOfResInTheCommunity" name="yrOfResInTheCommunity">
                       <option selected disabled>Choose duration...</option>
-                      <option value="Less than 1 year">Less than 1 year</option>
-                      <option value="1-5 years">1-5 years</option>
-                      <option value="6-10 years">6-10 years</option>
-                      <option value="11-20 years">11-20 years</option>
-                      <option value="20+ years">More than 20 years</option>
+                      <option value="0">Less than 1 year</option>
+                      <option value="3">1-5 years</option>
+                      <option value="8">6-10 years</option>
+                      <option value="15">11-20 years</option>
+                      <option value="25">More than 20 years</option>
                     </select>
                   </div>
 
@@ -150,7 +166,7 @@
                       <option value="2">2 Members</option>
                       <option value="3">3 Members</option>
                       <option value="4">4 Members</option>
-                      <option value="5+">5 or more Members</option>
+                      <option value="5">5 or more Members</option>
                     </select>
                   </div>
 
@@ -269,6 +285,25 @@
           // Append it to the select tag
           selectElement.appendChild(option);
       });
+
+      async function loadParishes() {
+        try {
+          const response = await fetch('https://survey-profiling-tool-backend.vercel.app/parishes');
+          const parishes = await response.json();
+          const parishSelect = document.getElementById('nameOfParish');
+          
+          parishes.forEach(parish => {
+            const option = document.createElement('option');
+            option.value = parish;
+            option.textContent = parish;
+            parishSelect.appendChild(option);
+          });
+        } catch (err) {
+          console.error('Failed to load parishes:', err);
+        }
+      }
+
+      loadParishes();
 
     </script>
   </body>

@@ -104,139 +104,113 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td class="fw-bold">HH Head:</td>
-                    <td>
-                      <input
-                        type="text"
-                        name="head_name"
-                        class="form-control form-control-sm"
-                        required
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="head_marriage"
-                        class="form-control form-control-sm"
-                      />
-                    </td>
-                    <td>
-                      <select
-                        name="head_religion"
-                        class="form-select form-select-sm"
-                      >
-                        <option value="1">1- Roman Catholic</option>
-                        <option value="2">2- Islam</option>
-                        <option value="99">99- Others</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        name="head_sex"
-                        class="form-select form-select-sm"
-                      >
-                        <option value="1">1-M</option>
-                        <option value="2">2-F</option>
-                      </select>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        name="head_age"
-                        class="form-control form-control-sm"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="head_educ"
-                        class="form-control form-control-sm"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="head_job"
-                        class="form-control form-control-sm"
-                      />
-                    </td>
-                    <td>
-                      <select
-                        name="head_work_status"
-                        class="form-select form-select-sm"
-                      >
-                        <option value="1">1- Regular</option>
-                        <option value="2">2- Contractual</option>
-                        <option value="3">3- Unemployed</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="fw-bold">Spouse:</td>
-                    <td>
-                      <input
-                        type="text"
-                        name="spouse_name"
-                        class="form-control form-control-sm"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="spouse_marriage"
-                        class="form-control form-control-sm"
-                      />
-                    </td>
-                    <td>
-                      <select
-                        name="spouse_religion"
-                        class="form-select form-select-sm"
-                      >
-                        <option value="1">1- Roman Catholic</option>
-                        <option value="2">2- Islam</option>
-                      </select>
-                    </td>
-                    <td>
-                      <select
-                        name="spouse_sex"
-                        class="form-select form-select-sm"
-                      >
-                        <option value="2">2-F</option>
-                        <option value="1">1-M</option>
-                      </select>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        name="spouse_age"
-                        class="form-control form-control-sm"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="spouse_educ"
-                        class="form-control form-control-sm"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        name="spouse_job"
-                        class="form-control form-control-sm"
-                      />
-                    </td>
-                    <td>
-                      <select
-                        name="spouse_work_status"
-                        class="form-select form-select-sm"
-                      >
-                        <option value="1">1- Regular</option>
-                        <option value="2">2- Contractual</option>
-                      </select>
-                    </td>
-                  </tr>
+                    <tr>
+                      <td class="fw-bold">HH Head:</td>
+                      <td>
+                        <input
+                          type="text"
+                          name="head_name"
+                          class="form-control form-control-sm"
+                          required
+                        />
+                      </td>
+                      <td>
+                        <select name="head_marriage" class="form-select form-select-sm">
+                          <option value="">Select...</option>
+                          <option value="Civil">Civil</option>
+                          <option value="Religious">Religious</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select name="head_religion" class="form-select form-select-sm">
+                          <option value="1">Roman Catholic</option>
+                          <option value="2">Islam</option>
+                          <option value="99">Others</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select name="head_sex" class="form-select form-select-sm">
+                          <option value="1">Male</option>
+                          <option value="2">Female</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="number" name="head_age" class="form-control form-control-sm" />
+                      </td>
+                      <td>
+                        <select name="head_educ" class="form-select form-select-sm">
+                          <option value="">Select...</option>
+                          <option value="Pre-School">Pre-School</option>
+                          <option value="Elementary">Elementary</option>
+                          <option value="Junior High">Junior High</option>
+                          <option value="Senior High">Senior High</option>
+                          <option value="College">College</option>
+                          <option value="Post-Graduate">Post-Graduate</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="text" name="head_job" class="form-control form-control-sm" />
+                      </td>
+                      <td>
+                        <select name="head_work_status" class="form-select form-select-sm">
+                          <option value="">Select...</option>
+                          <option value="1">Regular</option>
+                          <option value="2">Contractual</option>
+                          <option value="3">Unemployed</option>
+                          <option value="4">Self-Employed</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="fw-bold">Spouse:</td>
+                      <td>
+                        <input type="text" name="spouse_name" class="form-control form-control-sm" />
+                      </td>
+                      <td>
+                        <select name="spouse_marriage" class="form-select form-select-sm">
+                          <option value="">Select...</option>
+                          <option value="Civil">Civil</option>
+                          <option value="Religious">Religious</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select name="spouse_religion" class="form-select form-select-sm">
+                          <option value="1">Roman Catholic</option>
+                          <option value="2">Islam</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select name="spouse_sex" class="form-select form-select-sm">
+                          <option value="2">Female</option>
+                          <option value="1">Male</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="number" name="spouse_age" class="form-control form-control-sm" />
+                      </td>
+                      <td>
+                        <select name="spouse_educ" class="form-select form-select-sm">
+                          <option value="">Select...</option>
+                          <option value="Pre-School">Pre-School</option>
+                          <option value="Elementary">Elementary</option>
+                          <option value="Junior High">Junior High</option>
+                          <option value="Senior High">Senior High</option>
+                          <option value="College">College</option>
+                          <option value="Post-Graduate">Post-Graduate</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="text" name="spouse_job" class="form-control form-control-sm" />
+                      </td>
+                      <td>
+                        <select name="spouse_work_status" class="form-select form-select-sm">
+                          <option value="">Select...</option>
+                          <option value="1">Regular</option>
+                          <option value="2">Contractual</option>
+                          <option value="4">Self-Employed</option>
+                        </select>
+                      </td>
+                    </tr>
                 </tbody>
               </table>
             </div>
@@ -327,40 +301,70 @@
 
     <script>
       function addRow() {
-        const table = document
-          .getElementById("membersTable")
-          .getElementsByTagName("tbody")[0];
+        const table = document.getElementById("membersTable").getElementsByTagName("tbody")[0];
         const newRow = table.insertRow();
         newRow.innerHTML = `
         <td><input name="m_name[]" class="form-control form-control-sm" required></td>
         <td>
           <select name="m_relation[]" class="form-select form-select-sm">
-            <option value="1">1- Son</option><option value="2">2- Daughter</option><option value="3">3- Stepson</option>
-            <option value="7">7- Grandson</option><option value="13">13- Relative</option><option value="99">99- Others</option>
+            <option value="">Select...</option>
+            <option value="Son">Son</option>
+            <option value="Daughter">Daughter</option>
+            <option value="Stepson">Stepson</option>
+            <option value="Grandson">Grandson</option>
+            <option value="Relative">Relative</option>
+            <option value="Others">Others</option>
           </select>
         </td>
-        <td><select name="m_sex[]" class="form-select form-select-sm"><option value="1">1-M</option><option value="2">2-F</option></select></td>
+        <td><select name="m_sex[]" class="form-select form-select-sm"><option value="1">Male</option><option value="2">Female</option></select></td>
         <td><input name="m_age[]" type="number" class="form-control form-control-sm" min="0"></td>
         <td>
           <select name="m_civil[]" class="form-select form-select-sm">
-            <option value="1">1- Single</option><option value="2">2- Married</option>
-            <option value="3">3- Common Law</option><option value="4">4- Widowed</option>
+            <option value="">Select...</option>
+            <option value="1">Single</option>
+            <option value="2">Married</option>
+            <option value="3">Common Law</option>
+            <option value="4">Widowed</option>
           </select>
         </td>
         <td>
           <select name="m_religion[]" class="form-select form-select-sm">
-            <option value="1">1- Roman Catholic</option><option value="2">2- Islam</option><option value="99">99- Others</option>
+            <option value="">Select...</option>
+            <option value="1">Roman Catholic</option>
+            <option value="2">Islam</option>
+            <option value="99">Others</option>
           </select>
         </td>
         <td>
           <select name="m_sacraments[]" class="form-select form-select-sm">
-            <option value="1">1- None</option><option value="2">2- Baptism</option><option value="3">3- Confirmation</option>
+            <option value="">Select...</option>
+            <option value="1">None</option>
+            <option value="2">Baptism</option>
+            <option value="3">Confirmation</option>
           </select>
         </td>
         <td><select name="m_studying[]" class="form-select form-select-sm"><option value="1">Yes</option><option value="2">No</option></select></td>
-        <td><input name="m_educ[]" class="form-control form-control-sm"></td>
+        <td>
+          <select name="m_educ[]" class="form-select form-select-sm">
+            <option value="">Select...</option>
+            <option value="Pre-School">Pre-School</option>
+            <option value="Elementary">Elementary</option>
+            <option value="Junior High">Junior High</option>
+            <option value="Senior High">Senior High</option>
+            <option value="College">College</option>
+            <option value="Post-Graduate">Post-Graduate</option>
+          </select>
+        </td>
         <td><input name="m_job[]" class="form-control form-control-sm"></td>
-        <td><select name="m_work_status[]" class="form-select form-select-sm"><option value="1">Reg</option><option value="2">Con</option></select></td>
+        <td>
+          <select name="m_work_status[]" class="form-select form-select-sm">
+            <option value="">Select...</option>
+            <option value="1">Regular</option>
+            <option value="2">Contractual</option>
+            <option value="3">Unemployed</option>
+            <option value="4">Self-Employed</option>
+          </select>
+        </td>
         <td><select name="m_immunized[]" class="form-select form-select-sm"><option value="66">N/A</option><option value="1">Yes</option><option value="2">No</option></select></td>
         <td><button type="button" class="btn btn-sm btn-danger" onclick="this.closest('tr').remove()"><i class="bi bi-trash"></i></button></td>
       `;
@@ -411,51 +415,70 @@
             <td><input name="m_name[]" class="form-control form-control-sm" value="${name || ''}" required></td>
             <td>
               <select name="m_relation[]" class="form-select form-select-sm">
-                <option value="1" ${saved.m_relation?.[idx] === '1' ? 'selected' : ''}>1- Son</option>
-                <option value="2" ${saved.m_relation?.[idx] === '2' ? 'selected' : ''}>2- Daughter</option>
-                <option value="3" ${saved.m_relation?.[idx] === '3' ? 'selected' : ''}>3- Stepson</option>
-                <option value="7" ${saved.m_relation?.[idx] === '7' ? 'selected' : ''}>7- Grandson</option>
-                <option value="13" ${saved.m_relation?.[idx] === '13' ? 'selected' : ''}>13- Relative</option>
-                <option value="99" ${saved.m_relation?.[idx] === '99' ? 'selected' : ''}>99- Others</option>
+                <option value="">Select...</option>
+                <option value="Son" ${saved.m_relation?.[idx] === 'Son' ? 'selected' : ''}>Son</option>
+                <option value="Daughter" ${saved.m_relation?.[idx] === 'Daughter' ? 'selected' : ''}>Daughter</option>
+                <option value="Stepson" ${saved.m_relation?.[idx] === 'Stepson' ? 'selected' : ''}>Stepson</option>
+                <option value="Grandson" ${saved.m_relation?.[idx] === 'Grandson' ? 'selected' : ''}>Grandson</option>
+                <option value="Relative" ${saved.m_relation?.[idx] === 'Relative' ? 'selected' : ''}>Relative</option>
+                <option value="Others" ${saved.m_relation?.[idx] === 'Others' ? 'selected' : ''}>Others</option>
               </select>
             </td>
             <td><select name="m_sex[]" class="form-select form-select-sm">
-              <option value="1" ${saved.m_sex?.[idx] === '1' ? 'selected' : ''}>1-M</option>
-              <option value="2" ${saved.m_sex?.[idx] === '2' ? 'selected' : ''}>2-F</option>
+              <option value="1" ${saved.m_sex?.[idx] === '1' ? 'selected' : ''}>Male</option>
+              <option value="2" ${saved.m_sex?.[idx] === '2' ? 'selected' : ''}>Female</option>
             </select></td>
             <td><input name="m_age[]" type="number" class="form-control form-control-sm" value="${saved.m_age?.[idx] || ''}"></td>
             <td>
               <select name="m_civil[]" class="form-select form-select-sm">
-                <option value="1" ${saved.m_civil?.[idx] === '1' ? 'selected' : ''}>1- Single</option>
-                <option value="2" ${saved.m_civil?.[idx] === '2' ? 'selected' : ''}>2- Married</option>
-                <option value="3" ${saved.m_civil?.[idx] === '3' ? 'selected' : ''}>3- Common Law</option>
-                <option value="4" ${saved.m_civil?.[idx] === '4' ? 'selected' : ''}>4- Widowed</option>
+                <option value="">Select...</option>
+                <option value="1" ${saved.m_civil?.[idx] === '1' ? 'selected' : ''}>Single</option>
+                <option value="2" ${saved.m_civil?.[idx] === '2' ? 'selected' : ''}>Married</option>
+                <option value="3" ${saved.m_civil?.[idx] === '3' ? 'selected' : ''}>Common Law</option>
+                <option value="4" ${saved.m_civil?.[idx] === '4' ? 'selected' : ''}>Widowed</option>
               </select>
             </td>
             <td>
               <select name="m_religion[]" class="form-select form-select-sm">
-                <option value="1" ${saved.m_religion?.[idx] === '1' ? 'selected' : ''}>1- Roman Catholic</option>
-                <option value="2" ${saved.m_religion?.[idx] === '2' ? 'selected' : ''}>2- Islam</option>
-                <option value="99" ${saved.m_religion?.[idx] === '99' ? 'selected' : ''}>99- Others</option>
+                <option value="">Select...</option>
+                <option value="1" ${saved.m_religion?.[idx] === '1' ? 'selected' : ''}>Roman Catholic</option>
+                <option value="2" ${saved.m_religion?.[idx] === '2' ? 'selected' : ''}>Islam</option>
+                <option value="99" ${saved.m_religion?.[idx] === '99' ? 'selected' : ''}>Others</option>
               </select>
             </td>
             <td>
               <select name="m_sacraments[]" class="form-select form-select-sm">
-                <option value="1" ${saved.m_sacraments?.[idx] === '1' ? 'selected' : ''}>1- None</option>
-                <option value="2" ${saved.m_sacraments?.[idx] === '2' ? 'selected' : ''}>2- Baptism</option>
-                <option value="3" ${saved.m_sacraments?.[idx] === '3' ? 'selected' : ''}>3- Confirmation</option>
+                <option value="">Select...</option>
+                <option value="1" ${saved.m_sacraments?.[idx] === '1' ? 'selected' : ''}>None</option>
+                <option value="2" ${saved.m_sacraments?.[idx] === '2' ? 'selected' : ''}>Baptism</option>
+                <option value="3" ${saved.m_sacraments?.[idx] === '3' ? 'selected' : ''}>Confirmation</option>
               </select>
             </td>
             <td><select name="m_studying[]" class="form-select form-select-sm">
               <option value="1" ${saved.m_studying?.[idx] === '1' ? 'selected' : ''}>Yes</option>
               <option value="2" ${saved.m_studying?.[idx] === '2' ? 'selected' : ''}>No</option>
             </select></td>
-            <td><input name="m_educ[]" class="form-control form-control-sm" value="${saved.m_educ?.[idx] || ''}"></td>
+            <td>
+              <select name="m_educ[]" class="form-select form-select-sm">
+                <option value="">Select...</option>
+                <option value="Pre-School" ${saved.m_educ?.[idx] === 'Pre-School' ? 'selected' : ''}>Pre-School</option>
+                <option value="Elementary" ${saved.m_educ?.[idx] === 'Elementary' ? 'selected' : ''}>Elementary</option>
+                <option value="Junior High" ${saved.m_educ?.[idx] === 'Junior High' ? 'selected' : ''}>Junior High</option>
+                <option value="Senior High" ${saved.m_educ?.[idx] === 'Senior High' ? 'selected' : ''}>Senior High</option>
+                <option value="College" ${saved.m_educ?.[idx] === 'College' ? 'selected' : ''}>College</option>
+                <option value="Post-Graduate" ${saved.m_educ?.[idx] === 'Post-Graduate' ? 'selected' : ''}>Post-Graduate</option>
+              </select>
+            </td>
             <td><input name="m_job[]" class="form-control form-control-sm" value="${saved.m_job?.[idx] || ''}"></td>
-            <td><select name="m_work_status[]" class="form-select form-select-sm">
-              <option value="1" ${saved.m_work_status?.[idx] === '1' ? 'selected' : ''}>Reg</option>
-              <option value="2" ${saved.m_work_status?.[idx] === '2' ? 'selected' : ''}>Con</option>
-            </select></td>
+            <td>
+              <select name="m_work_status[]" class="form-select form-select-sm">
+                <option value="">Select...</option>
+                <option value="1" ${saved.m_work_status?.[idx] === '1' ? 'selected' : ''}>Regular</option>
+                <option value="2" ${saved.m_work_status?.[idx] === '2' ? 'selected' : ''}>Contractual</option>
+                <option value="3" ${saved.m_work_status?.[idx] === '3' ? 'selected' : ''}>Unemployed</option>
+                <option value="4" ${saved.m_work_status?.[idx] === '4' ? 'selected' : ''}>Self-Employed</option>
+              </select>
+            </td>
             <td><select name="m_immunized[]" class="form-select form-select-sm">
               <option value="66" ${saved.m_immunized?.[idx] === '66' ? 'selected' : ''}>N/A</option>
               <option value="1" ${saved.m_immunized?.[idx] === '1' ? 'selected' : ''}>Yes</option>

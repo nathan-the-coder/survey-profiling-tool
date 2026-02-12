@@ -10,6 +10,11 @@ body {
   color: #333;
 }
 
+#subtext {
+  position: absolute;
+  left: 200px;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: "Montserrat", sans-serif;
   font-weight: 600;

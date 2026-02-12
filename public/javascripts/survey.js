@@ -33,7 +33,6 @@ function goNext() {
 
 function loadParishes() {
     const parishSelect = document.getElementById('nameOfParish');
-    // Add default parishes in case API fails
     const defaultParishes = [
         'St. Louis Cathedral',
         'Our Lady of Perpetual Help',
@@ -42,7 +41,15 @@ function loadParishes() {
         'St. Mary Parish'
     ];
     
-    fetch('https://survey-profiling-tool-backend.vercel.app/parishes')
+    // Add cache-busting and proper headers
+    fetch('https://survey-profiling-tool-backend.vercel.app/parishes', {
+        headers: {
+            'X-Username': sessionStorage.getItem('username') || 'Guest',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache'
+        },
+        cache: 'no-store'
+    })
         .then(response => {
             if (!response.ok) throw new Error('API not available');
             return response.json();
@@ -56,7 +63,6 @@ function loadParishes() {
             });
         })
         .catch(err => {
-            // Use default parishes if API fails
             defaultParishes.forEach(parish => {
                 const option = document.createElement('option');
                 option.value = parish;

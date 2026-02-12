@@ -4,115 +4,21 @@
     headerType: 'survey',
     extraStyles: `
         <style>
-            .form-card {
-                background: white;
-                border-radius: 16px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            }
-            .section-title {
-                color: #457507;
-                font-weight: 600;
-                position: relative;
-                padding-bottom: 10px;
-                margin-bottom: 20px;
-            }
-            .section-title::after {
-                content: '';
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 60px;
-                height: 3px;
-                background: linear-gradient(90deg, #457507, #6ba32a);
-                border-radius: 2px;
-            }
-            .form-label {
-                font-weight: 500;
-                color: #444;
-                margin-bottom: 6px;
-            }
-            .form-control, .form-select {
-                border-radius: 10px;
-                border: 1.5px solid #e0e0e0;
-                padding: 12px 16px;
-                transition: all 0.2s ease;
-            }
-            .form-control:focus, .form-select:focus {
-                border-color: #457507;
-                box-shadow: 0 0 0 4px rgba(69, 117, 7, 0.1);
-            }
-            .member-card {
-                background: #f8faf5;
-                border: 1px solid #e0e0e0;
-                border-radius: 12px;
-                padding: 20px;
-                margin-bottom: 16px;
-                position: relative;
-                transition: all 0.2s ease;
-            }
-            .member-card:hover {
-                border-color: #457507;
-                box-shadow: 0 4px 12px rgba(69, 117, 7, 0.15);
-            }
-            .member-card h6 {
-                color: #457507;
-                font-weight: 600;
-                margin-bottom: 15px;
-            }
-            .remove-btn {
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                background: #fee2e2;
-                color: #dc2626;
-                border: none;
-                border-radius: 50%;
-                width: 32px;
-                height: 32px;
-                cursor: pointer;
-                transition: all 0.2s ease;
-            }
-            .remove-btn:hover {
-                background: #dc2626;
-                color: white;
-            }
-            .btn-modern {
-                padding: 12px 32px;
-                border-radius: 25px;
-                font-weight: 600;
-                transition: all 0.3s ease;
-            }
-            .btn-church-modern {
-                background: linear-gradient(135deg, #457507 0%, #5a8f1a 100%);
-                color: white;
-                border: none;
-            }
-            .btn-church-modern:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(69, 117, 7, 0.35);
-                color: white;
-            }
-            .progress-custom {
-                height: 8px;
-                border-radius: 4px;
-                background: #e9ecef;
-            }
-            .parent-section {
-                background: linear-gradient(135deg, #f0f5e8 0%, #e8f0db 100%);
-                border-radius: 12px;
-                padding: 24px;
-                margin-bottom: 20px;
-            }
-            .role-badge {
-                display: inline-block;
-                padding: 6px 16px;
-                background: #457507;
-                color: white;
-                border-radius: 20px;
-                font-size: 0.85rem;
-                font-weight: 600;
-                margin-bottom: 15px;
-            }
+            .form-card { background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+            .section-title { color: #457507; font-weight: 600; position: relative; padding-bottom: 10px; margin-bottom: 20px; }
+            .section-title::after { content: ''; position: absolute; bottom: 0; left: 0; width: 60px; height: 3px; background: linear-gradient(90deg, #457507, #6ba32a); border-radius: 2px; }
+            .form-label { font-weight: 500; color: #444; margin-bottom: 6px; }
+            .form-control, .form-select { border-radius: 10px; border: 1.5px solid #e0e0e0; padding: 12px 16px; transition: all 0.2s ease; }
+            .form-control:focus, .form-select:focus { border-color: #457507; box-shadow: 0 0 0 4px rgba(69, 117, 7, 0.1); }
+            .member-card { background: #f8faf5; border: 1px solid #e0e0e0; border-radius: 12px; padding: 20px; margin-bottom: 16px; position: relative; transition: all 0.2s ease; }
+            .member-card:hover { border-color: #457507; box-shadow: 0 4px 12px rgba(69, 117, 7, 0.15); }
+            .member-card h6 { color: #457507; font-weight: 600; margin-bottom: 15px; }
+            .remove-btn { position: absolute; top: 10px; right: 10px; background: #fee2e2; color: #dc2626; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; transition: all 0.2s ease; }
+            .remove-btn:hover { background: #dc2626; color: white; }
+            .btn-modern { padding: 12px 32px; border-radius: 25px; font-weight: 600; transition: all 0.3s ease; }
+            .btn-church-modern { background: linear-gradient(135deg, #457507 0%, #5a8f1a 100%); color: white; border: none; }
+            .btn-church-modern:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(69, 117, 7, 0.35); color: white; }
+            .role-badge { display: inline-block; padding: 6px 16px; background: #457507; color: white; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-bottom: 15px; }
         </style>
     `,
     body: `
@@ -136,7 +42,7 @@
                                 
                                 <div class="row g-4">
                                     <div class="col-12 mb-3">
-                                        <span class="role-badge">👤 Household Head</span>
+                                        <span class="role-badge">Household Head</span>
                                         <div class="row g-3">
                                             <div class="col-md-4">
                                                 <label class="form-label">Full Name</label>
@@ -193,13 +99,26 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Occupation</label>
-                                                <input type="text" name="head_job" class="form-control" placeholder="e.g., Farmer, Teacher, etc.">
+                                                <select name="head_job" class="form-select" onchange="toggleOccupationInput(this, 'head_job_others')">
+                                                    <option value="">Select...</option>
+                                                    <option value="Farming">Farming</option>
+                                                    <option value="Tenant">Tenant</option>
+                                                    <option value="Fishing">Fishing</option>
+                                                    <option value="Vending">Vending</option>
+                                                    <option value="Hired Labor">Hired Labor</option>
+                                                    <option value="Employed">Employed</option>
+                                                    <option value="OFW">OFW</option>
+                                                    <option value="Domestic Worker">Domestic Worker</option>
+                                                    <option value="Entertainment">Entertainment</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
+                                                <input type="text" name="head_job_others" id="head_job_others" class="form-control mt-2 d-none" placeholder="Please specify occupation">
                                             </div>
                                         </div>
                                     </div>
                                     
                                     <div class="col-12">
-                                        <span class="role-badge" style="background: #6b8e23">💑 Spouse</span>
+                                        <span class="role-badge" style="background: #6b8e23">Spouse</span>
                                         <div class="row g-3">
                                             <div class="col-md-4">
                                                 <label class="form-label">Full Name</label>
@@ -254,7 +173,20 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Occupation</label>
-                                                <input type="text" name="spouse_job" class="form-control" placeholder="e.g., Farmer, Teacher, etc.">
+                                                <select name="spouse_job" class="form-select" onchange="toggleOccupationInput(this, 'spouse_job_others')">
+                                                    <option value="">Select...</option>
+                                                    <option value="Farming">Farming</option>
+                                                    <option value="Tenant">Tenant</option>
+                                                    <option value="Fishing">Fishing</option>
+                                                    <option value="Vending">Vending</option>
+                                                    <option value="Hired Labor">Hired Labor</option>
+                                                    <option value="Employed">Employed</option>
+                                                    <option value="OFW">OFW</option>
+                                                    <option value="Domestic Worker">Domestic Worker</option>
+                                                    <option value="Entertainment">Entertainment</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
+                                                <input type="text" name="spouse_job_others" id="spouse_job_others" class="form-control mt-2 d-none" placeholder="Please specify occupation">
                                             </div>
                                         </div>
                                     </div>
@@ -265,11 +197,9 @@
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <div>
                                         <h4 class="section-title mb-1">Household Members</h4>
-                                        <p class="text-muted mb-0" style="font-size: 0.9rem">Order: Never-Married Children → Ever-Married Children → Other Relatives → Nonrelatives</p>
+                                        <p class="text-muted mb-0" style="font-size: 0.9rem">Order: Never-Married Children, Ever-Married Children, Other Relatives, Nonrelatives</p>
                                     </div>
-                                    <button type="button" class="btn btn-church-modern btn-modern" onclick="addRow()">
-                                        ➕ Add Member
-                                    </button>
+                                    <button type="button" class="btn btn-church-modern btn-modern" onclick="addRow()">Add Member</button>
                                 </div>
                                 
                                 <div id="membersContainer">
@@ -278,12 +208,8 @@
                             </div>
                             
                             <div class="d-flex justify-content-between mt-4">
-                                <button type="button" onclick="goPrev()" class="btn btn-outline-secondary btn-modern">
-                                    ← Back
-                                </button>
-                                <button type="button" onclick="goNext()" class="btn btn-church-modern btn-modern">
-                                    Continue →
-                                </button>
+                                <button type="button" onclick="goPrev()" class="btn btn-outline-secondary btn-modern">Back</button>
+                                <button type="button" onclick="goNext()" class="btn btn-church-modern btn-modern">Continue</button>
                             </div>
                             
                             <input type="hidden" name="form_source" value="primary_info">
@@ -295,6 +221,14 @@
     `,
     extraScripts: `
         <script>
+        function toggleOccupationInput(select, inputId) {
+            const input = document.getElementById(inputId);
+            if (select.value === 'Others') {
+                input.classList.remove('d-none');
+            } else {
+                input.classList.add('d-none');
+            }
+        }
         function addRow() {
             const container = document.getElementById('membersContainer');
             const emptyMsg = container.querySelector('p');
@@ -303,7 +237,7 @@
             const card = document.createElement('div');
             card.className = 'member-card';
             card.innerHTML = \`
-                <button type="button" class="remove-btn" onclick="this.closest('.member-card').remove()">✕</button>
+                <button type="button" class="remove-btn" onclick="this.closest('.member-card').remove()">X</button>
                 <h6>Member #\${document.querySelectorAll('.member-card').length + 1}</h6>
                 <div class="row g-3">
                     <div class="col-md-4"><label class="form-label">Full Name</label><input type="text" name="m_name[]" class="form-control" placeholder="Enter name" required></div>
@@ -316,7 +250,7 @@
                     <div class="col-md-3"><label class="form-label">Sacraments</label><select name="m_sacraments[]" class="form-select"><option value="">Select...</option><option value="1">None</option><option value="2">Baptism</option><option value="3">Confirmation</option></select></div>
                     <div class="col-md-3"><label class="form-label">Studying?</label><select name="m_studying[]" class="form-select"><option value="1">Yes</option><option value="2">No</option></select></div>
                     <div class="col-md-4"><label class="form-label">Education</label><select name="m_educ[]" class="form-select"><option value="">Select...</option><option value="Pre-School">Pre-School</option><option value="Elementary">Elementary</option><option value="Junior High">Junior High</option><option value="Senior High">Senior High</option><option value="College">College</option><option value="Post-Graduate">Post-Graduate</option></select></div>
-                    <div class="col-md-4"><label class="form-label">Occupation</label><input type="text" name="m_job[]" class="form-control" placeholder="e.g., Student, Farmer"></div>
+                    <div class="col-md-4"><label class="form-label">Occupation</label><select name="m_job[]" class="form-select" onchange="toggleOccupationInput(this, 'm_job_others_\${document.querySelectorAll('.member-card').length}')"><option value="">Select...</option><option value="Farming">Farming</option><option value="Tenant">Tenant</option><option value="Fishing">Fishing</option><option value="Vending">Vending</option><option value="Hired Labor">Hired Labor</option><option value="Employed">Employed</option><option value="OFW">OFW</option><option value="Domestic Worker">Domestic Worker</option><option value="Entertainment">Entertainment</option><option value="Others">Others</option></select><input type="text" name="m_job_others" class="form-control mt-2 d-none" placeholder="Please specify occupation"></div>
                     <div class="col-md-4"><label class="form-label">Work Status</label><select name="m_work_status[]" class="form-select"><option value="">Select...</option><option value="1">Regular</option><option value="2">Contractual</option><option value="3">Unemployed</option><option value="4">Self-Employed</option></select></div>
                     <div class="col-md-4"><label class="form-label">Immunized? <small class="text-muted">(0-5 yrs)</small></label><select name="m_immunized[]" class="form-select"><option value="66">N/A</option><option value="1">Yes</option><option value="2">No</option></select></div>
                 </div>
@@ -340,6 +274,52 @@
         }
         function goNext() { saveFormData(); window.location.href = '/survey4'; }
         function goPrev() { saveFormData(); window.location.href = '/survey'; }
+        document.addEventListener('DOMContentLoaded', () => {
+            const saved = JSON.parse(sessionStorage.getItem('survey_primary') || '{}');
+            const fieldMappings = {
+                'head_name': 'head_name', 'head_marriage': 'head_marriage', 'head_religion': 'head_religion',
+                'head_sex': 'head_sex', 'head_age': 'head_age', 'head_educ': 'head_educ',
+                'head_work_status': 'head_work_status', 'head_job': 'head_job',
+                'spouse_name': 'spouse_name', 'spouse_marriage': 'spouse_marriage', 'spouse_religion': 'spouse_religion',
+                'spouse_sex': 'spouse_sex', 'spouse_age': 'spouse_age', 'spouse_educ': 'spouse_educ',
+                'spouse_work_status': 'spouse_work_status', 'spouse_job': 'spouse_job'
+            };
+            for (const [field, selector] of Object.entries(fieldMappings)) {
+                const el = document.querySelector('[name="' + selector + '"]');
+                if (el && saved[field]) {
+                    el.value = saved[field];
+                    if (el.onchange) el.onchange();
+                }
+            }
+            if (saved.m_name && Array.isArray(saved.m_name)) {
+                const container = document.getElementById('membersContainer');
+                container.innerHTML = '';
+                saved.m_name.forEach((name, idx) => {
+                    const card = document.createElement('div');
+                    card.className = 'member-card';
+                    card.innerHTML = \`
+                        <button type="button" class="remove-btn" onclick="this.closest('.member-card').remove()">X</button>
+                        <h6>Member #\${idx + 1}</h6>
+                        <div class="row g-3">
+                            <div class="col-md-4"><label class="form-label">Full Name</label><input type="text" name="m_name[]" class="form-control" value="\${name || ''}" placeholder="Enter name" required></div>
+                            <div class="col-md-4"><label class="form-label">Relation</label><select name="m_relation[]" class="form-select"><option value="">Select...</option><option value="1" \${(saved.m_relation?.[idx] === '1') ? 'selected' : ''}>Son</option><option value="2" \${(saved.m_relation?.[idx] === '2') ? 'selected' : ''}>Daughter</option><option value="3" \${(saved.m_relation?.[idx] === '3') ? 'selected' : ''}>Stepson</option><option value="7" \${(saved.m_relation?.[idx] === '7') ? 'selected' : ''}>Grandson</option><option value="13" \${(saved.m_relation?.[idx] === '13') ? 'selected' : ''}>Relative</option><option value="99" \${(saved.m_relation?.[idx] === '99') ? 'selected' : ''}>Others</option></select></div>
+                            <input type="hidden" name="m_role[]" value="Member">
+                            <div class="col-md-3"><label class="form-label">Sex</label><select name="m_sex[]" class="form-select"><option value="1" \${(saved.m_sex?.[idx] === '1') ? 'selected' : ''}>Male</option><option value="2" \${(saved.m_sex?.[idx] === '2') ? 'selected' : ''}>Female</option></select></div>
+                            <div class="col-md-2"><label class="form-label">Age</label><input type="number" name="m_age[]" class="form-control" value="\${saved.m_age?.[idx] || ''}" placeholder="Age"></div>
+                            <div class="col-md-3"><label class="form-label">Civil Status</label><select name="m_civil[]" class="form-select"><option value="">Select...</option><option value="1" \${(saved.m_civil?.[idx] === '1') ? 'selected' : ''}>Single</option><option value="2" \${(saved.m_civil?.[idx] === '2') ? 'selected' : ''}>Married</option><option value="3" \${(saved.m_civil?.[idx] === '3') ? 'selected' : ''}>Common Law</option><option value="4" \${(saved.m_civil?.[idx] === '4') ? 'selected' : ''}>Widowed</option></select></div>
+                            <div class="col-md-3"><label class="form-label">Religion</label><select name="m_religion[]" class="form-select"><option value="">Select...</option><option value="1" \${(saved.m_religion?.[idx] === '1') ? 'selected' : ''}>Roman Catholic</option><option value="2" \${(saved.m_religion?.[idx] === '2') ? 'selected' : ''}>Islam</option><option value="99" \${(saved.m_religion?.[idx] === '99') ? 'selected' : ''}>Others</option></select></div>
+                            <div class="col-md-3"><label class="form-label">Sacraments</label><select name="m_sacraments[]" class="form-select"><option value="">Select...</option><option value="1" \${(saved.m_sacraments?.[idx] === '1') ? 'selected' : ''}>None</option><option value="2" \${(saved.m_sacraments?.[idx] === '2') ? 'selected' : ''}>Baptism</option><option value="3" \${(saved.m_sacraments?.[idx] === '3') ? 'selected' : ''}>Confirmation</option></select></div>
+                            <div class="col-md-3"><label class="form-label">Studying?</label><select name="m_studying[]" class="form-select"><option value="1" \${(saved.m_studying?.[idx] === '1') ? 'selected' : ''}>Yes</option><option value="2" \${(saved.m_studying?.[idx] === '2') ? 'selected' : ''}>No</option></select></div>
+                            <div class="col-md-4"><label class="form-label">Education</label><select name="m_educ[]" class="form-select"><option value="">Select...</option><option value="Pre-School" \${(saved.m_educ?.[idx] === 'Pre-School') ? 'selected' : ''}>Pre-School</option><option value="Elementary" \${(saved.m_educ?.[idx] === 'Elementary') ? 'selected' : ''}>Elementary</option><option value="Junior High" \${(saved.m_educ?.[idx] === 'Junior High') ? 'selected' : ''}>Junior High</option><option value="Senior High" \${(saved.m_educ?.[idx] === 'Senior High') ? 'selected' : ''}>Senior High</option><option value="College" \${(saved.m_educ?.[idx] === 'College') ? 'selected' : ''}>College</option><option value="Post-Graduate" \${(saved.m_educ?.[idx] === 'Post-Graduate') ? 'selected' : ''}>Post-Graduate</option></select></div>
+                            <div class="col-md-4"><label class="form-label">Occupation</label><select name="m_job[]" class="form-select"><option value="">Select...</option><option value="Farming" \${(saved.m_job?.[idx] === 'Farming') ? 'selected' : ''}>Farming</option><option value="Tenant" \${(saved.m_job?.[idx] === 'Tenant') ? 'selected' : ''}>Tenant</option><option value="Fishing" \${(saved.m_job?.[idx] === 'Fishing') ? 'selected' : ''}>Fishing</option><option value="Vending" \${(saved.m_job?.[idx] === 'Vending') ? 'selected' : ''}>Vending</option><option value="Hired Labor" \${(saved.m_job?.[idx] === 'Hired Labor') ? 'selected' : ''}>Hired Labor</option><option value="Employed" \${(saved.m_job?.[idx] === 'Employed') ? 'selected' : ''}>Employed</option><option value="OFW" \${(saved.m_job?.[idx] === 'OFW') ? 'selected' : ''}>OFW</option><option value="Domestic Worker" \${(saved.m_job?.[idx] === 'Domestic Worker') ? 'selected' : ''}>Domestic Worker</option><option value="Entertainment" \${(saved.m_job?.[idx] === 'Entertainment') ? 'selected' : ''}>Entertainment</option><option value="Others" \${(saved.m_job?.[idx] === 'Others') ? 'selected' : ''}>Others</option></select><input type="text" name="m_job_others" class="form-control mt-2 \${(saved.m_job?.[idx] !== 'Others') ? 'd-none' : ''}" placeholder="Please specify occupation"></div>
+                            <div class="col-md-4"><label class="form-label">Work Status</label><select name="m_work_status[]" class="form-select"><option value="">Select...</option><option value="1" \${(saved.m_work_status?.[idx] === '1') ? 'selected' : ''}>Regular</option><option value="2" \${(saved.m_work_status?.[idx] === '2') ? 'selected' : ''}>Contractual</option><option value="3" \${(saved.m_work_status?.[idx] === '3') ? 'selected' : ''}>Unemployed</option><option value="4" \${(saved.m_work_status?.[idx] === '4') ? 'selected' : ''}>Self-Employed</option></select></div>
+                            <div class="col-md-4"><label class="form-label">Immunized?</label><select name="m_immunized[]" class="form-select"><option value="66" \${(saved.m_immunized?.[idx] === '66') ? 'selected' : ''}>N/A</option><option value="1" \${(saved.m_immunized?.[idx] === '1') ? 'selected' : ''}>Yes</option><option value="2" \${(saved.m_immunized?.[idx] === '2') ? 'selected' : ''}>No</option></select></div>
+                        </div>
+                    \`;
+                    container.appendChild(card);
+                });
+            }
+        });
         </script>
         <script src="/javascripts/survey2.js"></script>
     `

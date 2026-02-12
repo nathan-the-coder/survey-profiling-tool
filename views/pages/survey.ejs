@@ -103,10 +103,6 @@
                 border-radius: 4px;
                 transition: width 0.5s ease;
             }
-            .info-icon {
-                color: #457507;
-                cursor: help;
-            }
         </style>
     `,
     body: `
@@ -157,6 +153,10 @@
                                     <label class="form-label mb-3">Mode of Transportation</label>
                                     <div class="checkbox-group">
                                         <div class="checkbox-card">
+                                            <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="walking" id="trans1">
+                                            <label for="trans1">Walking</label>
+                                        </div>
+                                        <div class="checkbox-card">
                                             <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="bicycle" id="trans2">
                                             <label for="trans2">Bicycle</label>
                                         </div>
@@ -165,20 +165,24 @@
                                             <label for="trans3">Motorcycle</label>
                                         </div>
                                         <div class="checkbox-card">
-                                            <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="public_transport" id="trans4">
-                                            <label for="trans4">Tricy</label>
+                                            <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="tricycle" id="trans4">
+                                            <label for="trans4">Tricycle</label>
                                         </div>
                                         <div class="checkbox-card">
-                                            <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="public_transport" id="trans4">
+                                            <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="jeepney" id="trans5">
                                             <label for="trans5">Jeepney</label>
                                         </div>
                                         <div class="checkbox-card">
-                                            <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="public_transport" id="trans4">
+                                            <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="van" id="trans6">
                                             <label for="trans6">Van</label>
                                         </div>
                                         <div class="checkbox-card">
-                                            <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="private_vehicle" id="trans5">
+                                            <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="puv" id="trans7">
                                             <label for="trans7">PUV</label>
+                                        </div>
+                                        <div class="checkbox-card">
+                                            <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="private_vehicle" id="trans8">
+                                            <label for="trans8">Private Vehicle</label>
                                         </div>
                                     </div>
                                 </div>
@@ -188,17 +192,17 @@
                                         <label for="road_Structure" class="form-label">Road Structure</label>
                                         <select class="form-select" id="road_Structure" name="road_Structure">
                                             <option value="">Choose Road Structure</option>
-                                            <option value="Asphalt">🛣️ Asphalt</option>
-                                            <option value="roughroad">🌿 Rough Road</option>
-                                            <option value="cemented">🏗️ Cemented</option>
+                                            <option value="Asphalt">Asphalt</option>
+                                            <option value="roughroad">Rough Road</option>
+                                            <option value="cemented">Cemented</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="urban_ruralClassification" class="form-label">Classification</label>
                                         <select class="form-select" id="urban_ruralClassification" name="urban_ruralClassification">
                                             <option value="">Choose classification</option>
-                                            <option value="rural">🌾 Rural</option>
-                                            <option value="urban">🏙️ Urban</option>
+                                            <option value="rural">Rural</option>
+                                            <option value="urban">Urban</option>
                                         </select>
                                     </div>
                                 </div>
@@ -244,13 +248,13 @@
                                         <label for="familyStructure" class="form-label">Family Structure</label>
                                         <select class="form-select" id="familyStructure" name="familyStructure">
                                             <option value="">Select structure</option>
-                                            <option value="Nuclear">👨‍👩‍👧 Nuclear (Parents & Children)</option>
-                                            <option value="Extended">👨‍👩‍👧‍👦 Extended (With Relatives)</option>
-                                            <option value="Single Parent">👤 Single Parent</option>
-                                            <option value="Couple Only">💑 Couple Only</option>
-                                            <option value="Grandparent-Led">👴 Grandparent-Led</option>
-                                            <option value="Blended">🏠 Blended (Step-family)</option>
-                                            <option value="Single Person">🧑 Single Person</option>
+                                            <option value="Nuclear">Nuclear (Parents & Children)</option>
+                                            <option value="Extended">Extended (With Relatives)</option>
+                                            <option value="Single Parent">Single Parent</option>
+                                            <option value="Couple Only">Couple Only</option>
+                                            <option value="Grandparent-Led">Grandparent-Led</option>
+                                            <option value="Blended">Blended (Step-family)</option>
+                                            <option value="Single Person">Single Person</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
@@ -266,10 +270,10 @@
                             
                             <div class="d-flex justify-content-between mt-4">
                                 <a href="/" class="btn btn-outline-secondary btn-modern">
-                                    ← Back
+                                    Back
                                 </a>
                                 <button type="button" onclick="goNext()" class="btn btn-church-modern btn-modern">
-                                    Continue →
+                                    Continue
                                 </button>
                             </div>
                             

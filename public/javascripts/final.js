@@ -296,5 +296,5 @@ function loadSurveyData() {
     setText('soc-church', distMap[socio.distance_church] || '-');
     setText('soc-market', distMap[socio.distance_market] || '-');
     setText('soc-companion', socio.missionary_companion || '-');
-    setText('soc-date', socio.listing_date || '-');
+    setText('soc-date', socio.listening_date || '-');
 }

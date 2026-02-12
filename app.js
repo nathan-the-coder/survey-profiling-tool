@@ -33,7 +33,6 @@ app.use((req, res, next) => {
   const username = req.headers['x-username'] || req.session?.username;
   req.userRole = username === 'Archdiocese of Tuguegarao' ? 'archdiocese' : 'parish';
   req.userParish = username;
-  console.log(`User: ${username}, Role: ${req.userRole}`);
   next();
 });
 

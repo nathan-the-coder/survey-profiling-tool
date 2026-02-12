@@ -393,20 +393,17 @@
             data[key] = value;
           }
         }
-        console.log('Saving form data:', data);
         sessionStorage.setItem('survey_primary', JSON.stringify(data));
       }
 
       function loadSavedData() {
         let saved = JSON.parse(sessionStorage.getItem('survey_primary') || '{}');
-        console.log('Loading saved data:', saved);
         
         // Clear any cached data that might be old
         if (saved.m_relation && Array.isArray(saved.m_relation) && saved.m_relation.length > 0) {
           // Check if data is in old format (numeric) vs new format (text)
           const firstRel = saved.m_relation[0];
           if (firstRel && !isNaN(firstRel)) {
-            console.log('Old numeric format detected, clearing cached data');
             sessionStorage.removeItem('survey_primary');
             saved = {};
           }
@@ -430,7 +427,6 @@
         if (saved.spouse_work_status) document.querySelector('[name="spouse_work_status"]').value = saved.spouse_work_status;
 
         if (saved.m_name && Array.isArray(saved.m_name)) {
-          console.log('Restoring family members, count:', saved.m_name.length);
           const tbody = document.querySelector('#membersTable tbody');
           tbody.innerHTML = '';
           saved.m_name.forEach((name, idx) => {

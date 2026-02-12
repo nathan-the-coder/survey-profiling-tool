@@ -143,28 +143,22 @@
         async function fetchParticipants(query) {
             try {
                 const url = `${API_URL}/search-participants?q=${encodeURIComponent(query)}`;
-                console.log('Making request to:', url);
                 
                 const response = await fetch(url, {
                     headers: {
                         'X-Username': sessionStorage.getItem('username') || 'Guest'
                     }
                 });
-                console.log('Response status:', response.status);
-                console.log('Response headers:', response.headers);
 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    console.error('Error response body:', errorText);
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data = await response.json();
-                console.log('Response data:', data);
                 const results = Array.isArray(data) ? data : data.results || data.data || [];
                 showAutocomplete(results);
             } catch (err) {
-                console.error("Search failed:", err);
                 autocompleteList.innerHTML =
                     '<div class="p-2 text-danger">Search failed. Please try again.</div>';
                 autocompleteList.classList.remove("d-none");
@@ -225,7 +219,6 @@
                 
                 showParticipantDetails(data);
             } catch (err) {
-                console.error("Failed to fetch participant details:", err);
                 detailsContent.innerHTML = `
                     <div class="alert alert-danger">
                         Failed to load participant details: ${err.message}
@@ -394,7 +387,6 @@
                 const data = await response.json();
                 displayParticipantsTable(data);
             } catch (err) {
-                console.error('Failed to load participants:', err);
                 document.getElementById('participantsTableBody').innerHTML = `
                     <tr>
                         <td colspan="6" class="text-center text-danger">

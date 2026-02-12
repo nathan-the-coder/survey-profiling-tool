@@ -185,7 +185,7 @@
                 const results = Array.isArray(data) ? data : (data.results || []);
                 showAutocomplete(results);
             } catch (err) {
-                console.error("Search failed:", err);
+                // Search error handled silently
             }
         }
 

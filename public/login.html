@@ -172,14 +172,10 @@
           });
 
           try {
-            console.log("Attempting login for:", username);
-
             const response = await axios.post("https://survey-profiling-tool-backend.vercel.app/login", {
               username: username,
               password: password,
             });
-
-            console.log("Login response:", response.data);
 
             Swal.fire({
               icon: "success",
@@ -198,11 +194,8 @@
               }
             });
           } catch (error) {
-            console.error("Login error:", error);
-
             let errorMessage = "Login failed";
             if (error.response) {
-              console.log("Error response:", error.response);
               if (error.response.status === 401) {
                 errorMessage = "Invalid username or password";
               } else if (error.response.status === 500) {

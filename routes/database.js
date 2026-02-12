@@ -194,6 +194,38 @@ class DatabaseAdapter {
         }
     }
 
+    // Get all parishes from users table
+    async getAllParishes() {
+        try {
+            if (this.useSupabase) {
+                const { data, error } = await this.supabaseClient
+                    .from('users')
+                    .select('username')
+                    .order('username');
+                
+                if (error) throw error;
+                return data.map(item => item.username);
+            } else {
+                const [rows] = await this.mysqlPool.execute('SELECT username FROM users ORDER BY username');
+                return rows.map(item => item.username);
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // Close connections
+    async close() {
+        if (this.mysqlPool) {
+            await this.mysqlPool.end();
+        }
+    }
+}
+        } catch (error) {
+            return { success: false, error: error.message };
+        }
+    }
+
     // Close connections
     async close() {
         if (this.mysqlPool) {

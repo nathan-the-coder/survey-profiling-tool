@@ -100,4 +100,14 @@ router.get('/search', async function(req, res, next) {
   }
 });
 
+// Get all parishes
+router.get('/parishes', async function(req, res, next) {
+  try {
+    const parishes = await db.getAllParishes();
+    res.json(parishes);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch parishes' });
+  }
+});
+
 module.exports = router;

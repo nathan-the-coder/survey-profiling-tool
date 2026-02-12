@@ -221,18 +221,5 @@ class DatabaseAdapter {
         }
     }
 }
-        } catch (error) {
-            return { success: false, error: error.message };
-        }
-    }
-
-    // Close connections
-    async close() {
-        if (this.mysqlPool) {
-            await this.mysqlPool.end();
-        }
-        // Supabase client doesn't need explicit closing
-    }
-}
 
 module.exports = DatabaseAdapter;

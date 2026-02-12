@@ -212,11 +212,17 @@ if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearFilters);
 
 async function fetchParticipantDetails(id) {
     try {
+        console.log('Fetching details for participant ID:', id);
         const response = await fetch(`${API_URL}/participant/${id}`, {
             headers: { 'X-Username': username }
         });
         
+        console.log('Response status:', response.status);
+        
         if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Error response:', errorText);
+            
             if (response.status === 403) {
                 alert('Access denied. You can only view participants from your parish.');
                 return;
@@ -225,20 +231,36 @@ async function fetchParticipantDetails(id) {
         }
         
         const data = await response.json();
+        console.log('Received data:', data);
         showParticipantDetails(data, id);
-    } catch (_err) {
-        alert('Failed to fetch details.');
+    } catch (err) {
+        console.error('Fetch error:', err);
+        alert('Failed to fetch details. Check console for more information.');
     }
 }
 
 function showParticipantDetails(data, participantId) {
-    const { household, family_members, health_conditions, socio_economic } = data;
+    // Validate data
+    if (!data) {
+        console.error('No data received');
+        document.getElementById('detailsContent').innerHTML = '<div class="alert alert-danger">Failed to load participant details: No data received</div>';
+        participantModal.show();
+        return;
+    }
+    
+    // Destructure with defaults
+    const { 
+        household = {}, 
+        family_members = [], 
+        health_conditions = {}, 
+        socio_economic = {} 
+    } = data;
     
     // Show edit/delete buttons for archdiocese and admin
     const editBtn = document.getElementById('editBtn');
     const deleteBtn = document.getElementById('deleteBtn');
     
-    if (currentUserRole === 'archdiocese' || currentUserRole === 'admin') {
+    if (editBtn && deleteBtn && (currentUserRole === 'archdiocese' || currentUserRole === 'admin')) {
         editBtn.classList.remove('d-none');
         editBtn.onclick = () => enableEditMode(participantId, data);
         

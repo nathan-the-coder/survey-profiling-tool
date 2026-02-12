@@ -2,96 +2,222 @@
     title: 'Survey Form - Step 1',
     bodyClass: 'd-flex flex-column min-vh-100',
     headerType: 'survey',
-    extraStyles: `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />`,
+    extraStyles: `
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+        <style>
+            .form-card {
+                background: white;
+                border-radius: 16px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+            .form-card:hover {
+                box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            }
+            .section-title {
+                color: #457507;
+                font-weight: 600;
+                position: relative;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+            .section-title::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 60px;
+                height: 3px;
+                background: linear-gradient(90deg, #457507, #6ba32a);
+                border-radius: 2px;
+            }
+            .form-label {
+                font-weight: 500;
+                color: #444;
+                margin-bottom: 6px;
+            }
+            .form-control, .form-select {
+                border-radius: 10px;
+                border: 1.5px solid #e0e0e0;
+                padding: 12px 16px;
+                transition: all 0.2s ease;
+            }
+            .form-control:focus, .form-select:focus {
+                border-color: #457507;
+                box-shadow: 0 0 0 4px rgba(69, 117, 7, 0.1);
+            }
+            .form-control:hover, .form-select:hover {
+                border-color: #b8d48a;
+            }
+            .form-check-input:checked {
+                background-color: #457507;
+                border-color: #457507;
+            }
+            .form-check-input:focus {
+                box-shadow: 0 0 0 4px rgba(69, 117, 7, 0.2);
+            }
+            .checkbox-group {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .checkbox-card {
+                background: #f8faf5;
+                border: 1.5px solid #e0e0e0;
+                border-radius: 10px;
+                padding: 10px 16px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+            .checkbox-card:hover {
+                background: #f0f5e8;
+                border-color: #457507;
+            }
+            .checkbox-card input:checked + label {
+                color: #457507;
+                font-weight: 600;
+            }
+            .btn-modern {
+                padding: 12px 32px;
+                border-radius: 25px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+            .btn-church-modern {
+                background: linear-gradient(135deg, #457507 0%, #5a8f1a 100%);
+                color: white;
+                border: none;
+            }
+            .btn-church-modern:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(69, 117, 7, 0.35);
+                color: white;
+            }
+            .progress-custom {
+                height: 8px;
+                border-radius: 4px;
+                background: #e9ecef;
+            }
+            .progress-bar-custom {
+                background: linear-gradient(90deg, #457507, #6ba32a);
+                border-radius: 4px;
+                transition: width 0.5s ease;
+            }
+            .info-icon {
+                color: #457507;
+                cursor: help;
+            }
+        </style>
+    `,
     body: `
-        <main class="flex-grow-1 d-flex p-0">
-            <div id="surveyContainer" class="container-fluid bg-light p-4">
-                <form action="./save_step1.php" method="POST">
-                    <div class="progress mb-4" style="height: 25px">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Step 1 of 4</div>
-                    </div>
-                    
-                    <div id="genCard" class="card shadow-sm mb-4">
-                        <div class="card-header text-center fw-bold bg-light">GENERAL INFORMATION</div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 col-md-6">
-                                    <div class="mb-3">
-                                        <label for="purokGimong" class="form-label">BEC Purok-Gimong:</label>
+        <main class="flex-grow-1 d-flex">
+            <div class="container-fluid bg-light py-4">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-muted fw-medium">Step 1 of 4</span>
+                                <span class="text-muted">General Information</span>
+                            </div>
+                            <div class="progress-custom">
+                                <div class="progress-bar-custom" role="progressbar" style="width: 25%"></div>
+                            </div>
+                        </div>
+                        
+                        <form action="./save_step1.php" method="POST" id="surveyForm">
+                            <div class="form-card p-4 mb-4">
+                                <h4 class="section-title mb-4">Location Details</h4>
+                                
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <label for="purokGimong" class="form-label">BEC Purok-Gimong</label>
                                         <input class="form-control" type="text" name="purokGimong" id="purokGimong" placeholder="Enter your Purok/Gimong">
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="barangayName" class="form-label">Barangay Name:</label>
+                                    <div class="col-md-6">
+                                        <label for="barangayName" class="form-label">Barangay Name</label>
                                         <input class="form-control" type="text" name="barangayName" id="barangayName" placeholder="Enter your Barangay Name">
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="municipality-select" class="form-label">Municipality Name:</label>
+                                    <div class="col-md-6">
+                                        <label for="municipality-select" class="form-label">Municipality</label>
                                         <select class="form-select" name="municipality-select" id="municipality-select">
-                                            <option selected>Select a municipality</option>
+                                            <option value="">Select a municipality</option>
                                         </select>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="provinceName" class="form-label">Province Name:</label>
+                                    <div class="col-md-6">
+                                        <label for="provinceName" class="form-label">Province</label>
                                         <input class="form-control" type="text" name="provinceName" id="provinceName" placeholder="Enter your Province">
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="modeOfTransportation" class="form-label fw-semibold">Mode of Transportation</label>
-                                        <div class="d-flex flex-wrap gap-3">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="modeOfTransportation" value="walking" id="trans1">
-                                                <label for="trans1">Walking</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="modeOfTransportation" value="bicycle" id="trans2">
-                                                <label for="trans2">Bicycle</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="modeOfTransportation" value="motorcycle" id="trans3">
-                                                <label for="trans3">Motorcycle</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="modeOfTransportation" value="public_transport" id="trans4">
-                                                <label for="trans4">Public Transport</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="modeOfTransportation" value="private_vehicle" id="trans5">
-                                                <label for="trans5">Private Vehicle</label>
-                                            </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-card p-4 mb-4">
+                                <h4 class="section-title mb-4">Transportation & Infrastructure</h4>
+                                
+                                <div class="mb-4">
+                                    <label class="form-label mb-3">Mode of Transportation</label>
+                                    <div class="checkbox-group">
+                                        <div class="checkbox-card">
+                                            <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="walking" id="trans1">
+                                            <label for="trans1">🚶 Walking</label>
+                                        </div>
+                                        <div class="checkbox-card">
+                                            <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="bicycle" id="trans2">
+                                            <label for="trans2">🚲 Bicycle</label>
+                                        </div>
+                                        <div class="checkbox-card">
+                                            <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="motorcycle" id="trans3">
+                                            <label for="🏍️ Motorcycletrans3"></label>
+                                        </div>
+                                        <div class="checkbox-card">
+                                            <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="public_transport" id="trans4">
+                                            <label for="trans4">🚌 Public Transport</label>
+                                        </div>
+                                        <div class="checkbox-card">
+                                            <input class="form-check-input d-none" type="checkbox" name="modeOfTransportation" value="private_vehicle" id="trans5">
+                                            <label for="trans5">🚗 Private Vehicle</label>
                                         </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="road_Structure" class="form-label">Road Structure:</label>
-                                        <select class="form-select shadow-sm" id="road_Structure" name="road_Structure">
-                                            <option selected disabled>Choose Road Structure</option>
-                                            <option value="Asphalt">Asphalt</option>
-                                            <option value="roughroad">Rough Road</option>
-                                            <option value="cemented">Cemented</option>
+                                </div>
+                                
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <label for="road_Structure" class="form-label">Road Structure</label>
+                                        <select class="form-select" id="road_Structure" name="road_Structure">
+                                            <option value="">Choose Road Structure</option>
+                                            <option value="Asphalt">🛣️ Asphalt</option>
+                                            <option value="roughroad">🌿 Rough Road</option>
+                                            <option value="cemented">🏗️ Cemented</option>
                                         </select>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="urban_ruralClassification" class="form-label">Urban/Rural Classification:</label>
-                                        <select class="form-select shadow-sm" id="urban_ruralClassification" name="urban_ruralClassification">
-                                            <option selected disabled>Choose classification</option>
-                                            <option value="rural">Rural</option>
-                                            <option value="urban">Urban</option>
+                                    <div class="col-md-6">
+                                        <label for="urban_ruralClassification" class="form-label">Classification</label>
+                                        <select class="form-select" id="urban_ruralClassification" name="urban_ruralClassification">
+                                            <option value="">Choose classification</option>
+                                            <option value="rural">🌾 Rural</option>
+                                            <option value="urban">🏙️ Urban</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-6">
-                                    <div class="mb-3">
-                                        <label for="nameOfParish" class="form-label">Name Of Parish:</label>
+                            </div>
+                            
+                            <div class="form-card p-4 mb-4">
+                                <h4 class="section-title mb-4">Parish & Community</h4>
+                                
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <label for="nameOfParish" class="form-label">Name of Parish</label>
                                         <select class="form-select" id="nameOfParish" name="nameOfParish">
-                                            <option selected disabled>Select a parish</option>
+                                            <option value="">Select a parish</option>
                                         </select>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="diocesePrelatureName" class="form-label">Diocese/Prelature Name:</label>
-                                        <input class="form-control" id="diocesePrelatureName" name="diocesePrelatureName" type="text" placeholder="Enter your Diocese/Prelature Name">
+                                    <div class="col-md-6">
+                                        <label for="diocesePrelatureName" class="form-label">Diocese/Prelature</label>
+                                        <input class="form-control" id="diocesePrelatureName" name="diocesePrelatureName" type="text" placeholder="Enter your Diocese/Prelature">
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="yrOfResInTheCommunity" class="form-label fw-semibold">Year of Residency</label>
-                                        <select class="form-select shadow-sm" id="yrOfResInTheCommunity" name="yrOfResInTheCommunity">
-                                            <option selected disabled>Choose duration...</option>
+                                    <div class="col-md-6">
+                                        <label for="yrOfResInTheCommunity" class="form-label">Years of Residency</label>
+                                        <select class="form-select" id="yrOfResInTheCommunity" name="yrOfResInTheCommunity">
+                                            <option value="">Select duration</option>
                                             <option value="0">Less than 1 year</option>
                                             <option value="3">1-5 years</option>
                                             <option value="8">6-10 years</option>
@@ -99,60 +225,69 @@
                                             <option value="25">More than 20 years</option>
                                         </select>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="numOfFamMembers" class="form-label fw-semibold">Number of Family Members</label>
-                                        <select class="form-select shadow-sm" name="numOfFamMembers" id="numOfFamMembers">
-                                            <option selected disabled>Select number...</option>
+                                    <div class="col-md-6">
+                                        <label for="numOfFamMembers" class="form-label">Number of Family Members</label>
+                                        <select class="form-select" name="numOfFamMembers" id="numOfFamMembers">
+                                            <option value="">Select number</option>
                                             <option value="1">1 Member</option>
                                             <option value="2">2 Members</option>
                                             <option value="3">3 Members</option>
                                             <option value="4">4 Members</option>
-                                            <option value="5">5 or more Members</option>
+                                            <option value="5">5+ Members</option>
                                         </select>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="familyStructure" class="form-label fw-semibold">Family Structure</label>
-                                        <select class="form-select shadow-sm" id="familyStructure" name="familyStructure">
-                                            <option selected disabled>Select structure...</option>
-                                            <option value="Nuclear">Nuclear (Parents & Children)</option>
-                                            <option value="Extended">Extended (With Relatives)</option>
-                                            <option value="Single Parent">Single Parent</option>
-                                            <option value="Couple Only">Couple Only</option>
-                                            <option value="Grandparent-Led">Grandparent-Led</option>
-                                            <option value="Blended">Blended (Step-family)</option>
-                                            <option value="Single Person">Single Person (Solo)</option>
-                                            <option value="Other">Other</option>
+                                    <div class="col-md-6">
+                                        <label for="familyStructure" class="form-label">Family Structure</label>
+                                        <select class="form-select" id="familyStructure" name="familyStructure">
+                                            <option value="">Select structure</option>
+                                            <option value="Nuclear">👨‍👩‍👧 Nuclear (Parents & Children)</option>
+                                            <option value="Extended">👨‍👩‍👧‍👦 Extended (With Relatives)</option>
+                                            <option value="Single Parent">👤 Single Parent</option>
+                                            <option value="Couple Only">💑 Couple Only</option>
+                                            <option value="Grandparent-Led">👴 Grandparent-Led</option>
+                                            <option value="Blended">🏠 Blended (Step-family)</option>
+                                            <option value="Single Person">🧑 Single Person</option>
                                         </select>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="lclDialect" class="form-label">Local Dialect:</label>
-                                        <input class="form-control" id="lclDialect" name="lclDialect" type="text" placeholder="Enter your Local Dialect">
+                                    <div class="col-md-6">
+                                        <label for="lclDialect" class="form-label">Local Dialect</label>
+                                        <input class="form-control" id="lclDialect" name="lclDialect" type="text" placeholder="e.g., Ilocano, Tagalog, Cebuano">
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="ethnicity" class="form-label">Ethnicity:</label>
+                                    <div class="col-md-6">
+                                        <label for="ethnicity" class="form-label">Ethnicity</label>
                                         <input class="form-control" id="ethnicity" name="ethnicity" type="text" placeholder="Enter your Ethnicity">
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            
+                            <div class="d-flex justify-content-between mt-4">
+                                <a href="/" class="btn btn-outline-secondary btn-modern">
+                                    ← Back
+                                </a>
+                                <button type="button" onclick="goNext()" class="btn btn-church-modern btn-modern">
+                                    Continue →
+                                </button>
+                            </div>
+                            
+                            <input type="hidden" name="form_source" value="general_info">
+                        </form>
                     </div>
-                    
-                    <div class="row justify-content-end gap-2 mt-3 mb-4">
-                        <div class="col-auto">
-                            <a href="/" class="btn btn-secondary fs-5">Previous</a>
-                        </div>
-                        <div class="col-auto">
-                            <button type="button" onclick="goNext()" class="btn btn-church px-4">Next</button>
-                        </div>
-                    </div>
-                    
-                    <input type="hidden" name="form_source" value="general_info">
-                </form>
+                </div>
             </div>
         </main>
     `,
     extraScripts: `
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="/javascripts/survey.js"></script>
+        <script>
+            document.querySelectorAll(".checkbox-card").forEach(card => {
+                card.addEventListener("click", () => {
+                    const checkbox = card.querySelector("input");
+                    checkbox.checked = !checkbox.checked;
+                    card.style.borderColor = checkbox.checked ? "#457507" : "#e0e0e0";
+                    card.style.background = checkbox.checked ? "#f0f5e8" : "#f8faf5";
+                });
+            });
+        </script>
     `
 }) %>

@@ -1,5 +1,5 @@
 <header>
-    <nav class="navbar shadow-sm py-3 <%= navbarClass || 'bg-church' %>" style="background-color: #457507">
+    <nav class="navbar shadow-sm py-3 <%= typeof navbarClass !== 'undefined' ? navbarClass : 'bg-church' %>" style="background-color: #457507">
         <div class="container-fluid px-4 d-flex justify-content-between align-items-center">
             <% if (headerType === 'login') { %>
                 <a href="index.html" class="d-flex align-items-center text-white text-decoration-none">

@@ -30,7 +30,3 @@ async function apiCall(endpoint, method = 'GET', data = null) {
         throw error;
     }
 }
-
-const forms = document.querySelectorAll("form");
-
-let overallData = [];

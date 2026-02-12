@@ -58,10 +58,31 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label">Religion</label>
-                                                <select name="head_religion" class="form-select">
+                                                <select name="spouse_religion" class="form-select">
                                                     <option value="1">Roman Catholic</option>
                                                     <option value="2">Islam</option>
-                                                    <option value="99">Others</option>
+                                                    <option value="3">UCCP/Protestant</option>
+                                                    <option value="4">Jehova’s Witnesses</option>
+                                                    <option value="6">Iglesia ni Cristo</option>
+                                                    <option value="7">Four Square Church</option>
+                                                    <option value="8">Seventh Day Adventist</option>
+                                                    <option value="9">Mormons</option>
+                                                    <option value="10">Born Again</option>
+                                                    <option value="11">Bible Baptist</option>
+                                                    <option value="12">Church of Christ</option>
+                                                    <option value="13">Others Please Specify...</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Sacraments</label>
+                                                <select name="head_sacraments" class="form-select">
+                                                    <option value="">Select...</option>
+                                                    <option value="1">None</option>
+                                                    <option value="2">Baptism</option>
+                                                    <option value="3">Confirmation</option>
+                                                    <option value="4">First Communion</option>
+                                                    <option value="5">Marriage</option>
+                                                    <option value="6">Holy Orders</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
@@ -88,13 +109,15 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="form-label">Work Status</label>
+                                                <label class="form-label">Status of Work</label>
                                                 <select name="head_work_status" class="form-select">
                                                     <option value="">Select...</option>
-                                                    <option value="1">Regular</option>
+                                                    <option value="1">Regular/Permanent</option>
                                                     <option value="2">Contractual</option>
-                                                    <option value="3">Unemployed</option>
-                                                    <option value="4">Self-Employed</option>
+                                                    <option value="3">Seasonal/Short term</option>
+                                                    <option value="4">Worker for different employees</option>
+                                                    <option value="5">Others Please Specify...</option>
+                                                    <option value="6">Not Applicable</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-6">
@@ -110,7 +133,7 @@
                                                     <option value="OFW">OFW</option>
                                                     <option value="Domestic Worker">Domestic Worker</option>
                                                     <option value="Entertainment">Entertainment</option>
-                                                    <option value="Others">Others</option>
+                                                    <option value="Others">Others Please Specify...</option>
                                                 </select>
                                                 <input type="text" name="head_job_others" id="head_job_others" class="form-control mt-2 d-none" placeholder="Please specify occupation">
                                             </div>
@@ -137,8 +160,33 @@
                                                 <select name="spouse_religion" class="form-select">
                                                     <option value="1">Roman Catholic</option>
                                                     <option value="2">Islam</option>
+                                                    <option value="3">UCCP/Protestant</option>
+                                                    <option value="4">Jehova’s Witnesses</option>
+                                                    <option value="6">Iglesia ni Cristo</option>
+                                                    <option value="7">Four Square Church</option>
+                                                    <option value="8">Seventh Day Adventist</option>
+                                                    <option value="9">Mormons</option>
+                                                    <option value="10">Born Again</option>
+                                                    <option value="11">Bible Baptist</option>
+                                                    <option value="12">Church of Christ</option>
+                                                    <option value="99">Others Please Specify...</option>
                                                 </select>
                                             </div>
+                                            
+                                            <div class="col-md-3">
+                                                <label class="form-label">Sacraments</label>
+                                                <select name="spouse_sacraments" class="form-select">
+                                                    <option value="">Select...</option>
+                                                    <option value="1">Not yet Baptized</option>
+                                                    <option value="2">Baptism Only</option>
+                                                    <option value="3">Baptism & Confirmation</option>
+                                                    <option value="4">First Holy Communion</option>
+                                                    <option value="5">Holy Matrimony</option>
+                                                    <option value="6">Holy Orders</option>
+                                                    <option value="7">Not Applicable</option>
+                                                </select>
+                                            </div>
+                                            
                                             <div class="col-md-3">
                                                 <label class="form-label">Sex</label>
                                                 <select name="spouse_sex" class="form-select">
@@ -163,12 +211,15 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="form-label">Work Status</label>
+                                                <label class="form-label">Status of Work</label>
                                                 <select name="spouse_work_status" class="form-select">
                                                     <option value="">Select...</option>
-                                                    <option value="1">Regular</option>
+                                                    <option value="1">Regular/Permanent</option>
                                                     <option value="2">Contractual</option>
-                                                    <option value="4">Self-Employed</option>
+                                                    <option value="3">Seasonal/Short term</option>
+                                                    <option value="4">Worker for different employees</option>
+                                                    <option value="5">Others Please Specify...</option>
+                                                    <option value="6">Not Applicable</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-6">
@@ -196,8 +247,12 @@
                             <div class="form-card p-4 mb-4">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <div>
-                                        <h4 class="section-title mb-1">Household Members</h4>
-                                        <p class="text-muted mb-0" style="font-size: 0.9rem">Order: Never-Married Children, Ever-Married Children, Other Relatives, Nonrelatives</p>
+                                        <h4 class="section-title mb-1">Name of Household Members</h4>
+                                        <p class="text-muted mb-0" style="font-size: 0.9rem">Order of listing:</p>
+                                        <p class="text-muted mb-0" style="font-size: 0.9rem"> Never-Married Children of the Head/Spouse from the Oldest to the Youngest</p>
+                                        <p class="text-muted mb-0" style="font-size: 0.9rem">Ever-Married Children</p>
+                                        <p class="text-muted mb-0" style="font-size: 0.9rem">Other Relatives</p>
+                                        <p class="text-muted mb-0" style="font-size: 0.9rem">Nonrelatives</p>
                                     </div>
                                     <button type="button" class="btn btn-church-modern btn-modern" onclick="addRow()">Add Member</button>
                                 </div>
@@ -243,15 +298,57 @@
                     <div class="col-md-4"><label class="form-label">Full Name</label><input type="text" name="m_name[]" class="form-control" placeholder="Enter name" required></div>
                     <div class="col-md-4"><label class="form-label">Relation</label><select name="m_relation[]" class="form-select"><option value="">Select...</option><option value="1">Son</option><option value="2">Daughter</option><option value="3">Stepson</option><option value="7">Grandson</option><option value="13">Relative</option><option value="99">Others</option></select></div>
                     <input type="hidden" name="m_role[]" value="Member">
-                    <div class="col-md-3"><label class="form-label">Sex</label><select name="m_sex[]" class="form-select"><option value="1">Male</option><option value="2">Female</option></select></div>
+                    <div class="col-md-3">
+                        <label class="form-label">Sex</label>
+                        <select name="m_sex[]" class="form-select"><option value="1">Male</option><option value="2">Female</option></select></div>
                     <div class="col-md-2"><label class="form-label">Age</label><input type="number" name="m_age[]" class="form-control" placeholder="Age" min="0"></div>
-                    <div class="col-md-3"><label class="form-label">Civil Status</label><select name="m_civil[]" class="form-select"><option value="">Select...</option><option value="1">Single</option><option value="2">Married</option><option value="3">Common Law</option><option value="4">Widowed</option></select></div>
-                    <div class="col-md-3"><label class="form-label">Religion</label><select name="m_religion[]" class="form-select"><option value="">Select...</option><option value="1">Roman Catholic</option><option value="2">Islam</option><option value="99">Others</option></select></div>
-                    <div class="col-md-3"><label class="form-label">Sacraments</label><select name="m_sacraments[]" class="form-select"><option value="">Select...</option><option value="1">None</option><option value="2">Baptism</option><option value="3">Confirmation</option></select></div>
-                    <div class="col-md-3"><label class="form-label">Studying?</label><select name="m_studying[]" class="form-select"><option value="1">Yes</option><option value="2">No</option></select></div>
+                   <div class="col-md-3">
+                <label class="form-label">Civil Status</label>
+                <select name="m_civil[]" class="form-select">
+                    <option value="">Select...</option>
+                    <option value="1" ${(data.civil === '1') ? 'selected' : ''}>Single</option>
+                    <option value="2" ${(data.civil === '2') ? 'selected' : ''}>Married</option>
+                    <option value="3" ${(data.civil === '3') ? 'selected' : ''}>Common</option>
+                    <option value="3" ${(data.civil === '4') ? 'selected' : ''}>Law/Live In</option>
+                    <option value="4" ${(data.civil === '5') ? 'selected' : ''}>Widowed</option>
+                    <option value="3" ${(data.civil === '6') ? 'selected' : ''}>Divorsed</option>
+                    <option value="3" ${(data.civil === '7') ? 'selected' : ''}>Separated</option>
+                    <option value="3" ${(data.civil === '8') ? 'selected' : ''}>Annulled</option>
+                    <option value="3">Unknown</option>
+                </select>
+            </div>
+                                                <label class="form-label">Religion</label>
+                                                <select name="spouse_religion" class="form-select">
+                                                    <option value="1">Roman Catholic</option>
+                                                    <option value="2">Islam</option>
+                                                    <option value="3">UCCP/Protestant</option>
+                                                    <option value="4">Jehova’s Witnesses</option>
+                                                    <option value="6">Iglesia ni Cristo</option>
+                                                    <option value="7">Four Square Church</option>
+                                                    <option value="8">Seventh Day Adventist</option>
+                                                    <option value="9">Mormons</option>
+                                                    <option value="10">Born Again</option>
+                                                    <option value="11">Bible Baptist</option>
+                                                    <option value="12">Church of Christ</option>
+                                                    <option value="13">Others Please Specify...</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Sacraments</label>
+                                                <select name="spouse_sacraments" class="form-select">
+                                                    <option value="">Select...</option>
+                                                    <option value="1">None</option>
+                                                    <option value="2">Baptism</option>
+                                                    <option value="3">Confirmation</option>
+                                                    <option value="4">First Communion</option>
+                                                    <option value="5">Marriage</option>
+                                                    <option value="6">Holy Orders</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3"><label class="form-label">Studying?</label><select name="m_studying[]" class="form-select"><option value="1">Yes</option><option value="2">No</option></select></div>
                     <div class="col-md-4"><label class="form-label">Education</label><select name="m_educ[]" class="form-select"><option value="">Select...</option><option value="Pre-School">Pre-School</option><option value="Elementary">Elementary</option><option value="Junior High">Junior High</option><option value="Senior High">Senior High</option><option value="College">College</option><option value="Post-Graduate">Post-Graduate</option></select></div>
                     <div class="col-md-4"><label class="form-label">Occupation</label><select name="m_job[]" class="form-select" onchange="toggleOccupationInput(this, 'm_job_others_\${document.querySelectorAll('.member-card').length}')"><option value="">Select...</option><option value="Farming">Farming</option><option value="Tenant">Tenant</option><option value="Fishing">Fishing</option><option value="Vending">Vending</option><option value="Hired Labor">Hired Labor</option><option value="Employed">Employed</option><option value="OFW">OFW</option><option value="Domestic Worker">Domestic Worker</option><option value="Entertainment">Entertainment</option><option value="Others">Others</option></select><input type="text" name="m_job_others" class="form-control mt-2 d-none" placeholder="Please specify occupation"></div>
-                    <div class="col-md-4"><label class="form-label">Work Status</label><select name="m_work_status[]" class="form-select"><option value="">Select...</option><option value="1">Regular</option><option value="2">Contractual</option><option value="3">Unemployed</option><option value="4">Self-Employed</option></select></div>
+                    <div class="col-md-4"><label class="form-label">Status of Work</label><select name="m_work_status[]" class="form-select"><option value="">Select...</option><option value="1">Regular</option><option value="2">Contractual</option><option value="3">Unemployed</option><option value="4">Self-Employed</option></select></div>
                     <div class="col-md-4"><label class="form-label">Immunized? <small class="text-muted">(0-5 yrs)</small></label><select name="m_immunized[]" class="form-select"><option value="66">N/A</option><option value="1">Yes</option><option value="2">No</option></select></div>
                 </div>
             \`;
@@ -278,10 +375,10 @@
             const saved = JSON.parse(sessionStorage.getItem('survey_primary') || '{}');
             const fieldMappings = {
                 'head_name': 'head_name', 'head_marriage': 'head_marriage', 'head_religion': 'head_religion',
-                'head_sex': 'head_sex', 'head_age': 'head_age', 'head_educ': 'head_educ',
+                'head_sacraments': 'head_sacraments', 'head_sex': 'head_sex', 'head_age': 'head_age', 'head_educ': 'head_educ',
                 'head_work_status': 'head_work_status', 'head_job': 'head_job',
                 'spouse_name': 'spouse_name', 'spouse_marriage': 'spouse_marriage', 'spouse_religion': 'spouse_religion',
-                'spouse_sex': 'spouse_sex', 'spouse_age': 'spouse_age', 'spouse_educ': 'spouse_educ',
+                'spouse_sacraments': 'spouse_sacraments', 'spouse_sex': 'spouse_sex', 'spouse_age': 'spouse_age', 'spouse_educ': 'spouse_educ',
                 'spouse_work_status': 'spouse_work_status', 'spouse_job': 'spouse_job'
             };
             for (const [field, selector] of Object.entries(fieldMappings)) {

@@ -118,13 +118,20 @@ const civilMap = {
     '1': 'Single',
     '2': 'Married',
     '3': 'Common Law',
-    '4': 'Widowed'
+    '4': 'Widowed',
+    '5': 'Divorced',
+    '6': 'Separated',
+    '7': 'Annulled',
+    '8': 'Unknown'
 };
 
 const sacramentMap = {
     '1': 'None',
     '2': 'Baptism',
-    '3': 'Confirmation'
+    '3': 'Confirmation',
+    '4': 'First Communion',
+    '5': 'Marriage',
+    '6': 'Holy Orders'
 };
 
 const marriageMap = {
@@ -283,6 +290,19 @@ function loadSurveyData() {
         '3': '30-Minute Drive', '4': 'Over 45 Minutes - 1 Hour+'
     };
     
+    const orgMap = {
+        'Religious': 'Religious',
+        'Youth': 'Youth',
+        'Cultural': 'Cultural',
+        'Political': 'Political',
+        'Women\'s': "Women's",
+        'Agricultural': 'Agricultural',
+        'Labor': 'Labor',
+        'Civic': 'Civic',
+        'Cooperatives': 'Cooperatives',
+        'Others': 'Others'
+    };
+    
     setText('soc-income', incomeMap[socio.income_monthly] || '-');
     setText('soc-expenses', expensesMap[socio.expenses_weekly] || '-');
     setText('soc-savings', savingsMap[socio.has_savings] || '-');
@@ -297,4 +317,14 @@ function loadSurveyData() {
     setText('soc-market', distMap[socio.distance_market] || '-');
     setText('soc-companion', socio.missionary_companion || '-');
     setText('soc-date', socio.listening_date || '-');
+    
+    // Organizations display
+    const orgElement = document.getElementById('soc-organizations');
+    if (orgElement && socio.organizations && Array.isArray(socio.organizations) && socio.organizations.length > 0) {
+        const orgDisplay = socio.organizations.map(org => orgMap[org] || org).join(', ');
+        const othersText = socio.organizations_others_text ? ` (Others: ${socio.organizations_others_text})` : '';
+        orgElement.textContent = orgDisplay + othersText;
+    } else if (orgElement) {
+        orgElement.textContent = '-';
+    }
 }

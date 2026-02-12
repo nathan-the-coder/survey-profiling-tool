@@ -41,6 +41,10 @@ function createMemberCard(data = {}, index = null) {
                     <option value="2" ${(data.civil === '2') ? 'selected' : ''}>Married</option>
                     <option value="3" ${(data.civil === '3') ? 'selected' : ''}>Common Law</option>
                     <option value="4" ${(data.civil === '4') ? 'selected' : ''}>Widowed</option>
+                    <option value="5" ${(data.civil === '5') ? 'selected' : ''}>Divorced</option>
+                    <option value="6" ${(data.civil === '6') ? 'selected' : ''}>Separated</option>
+                    <option value="7" ${(data.civil === '7') ? 'selected' : ''}>Annulled</option>
+                    <option value="8" ${(data.civil === '8') ? 'selected' : ''}>Unknown</option>
                 </select>
             </div>
             <div class="col-md-3">

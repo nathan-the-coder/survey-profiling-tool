@@ -33,7 +33,7 @@
                         <h4 class="section-title">Health & Treatment</h4>
                         <div class="row g-4">
                             <div class="col-md-4">
-                                <label class="form-label">Common illnesses (last 3 months)</label>
+                                <label class="form-label">Common illnesses in the Household (last 3 months)</label>
                                 <select name="common_illness" id="illness" class="form-select">
                                     <option value="">Select Illness</option>
                                     <option value="00">None</option>
@@ -42,9 +42,18 @@
                                     <option value="03">Cough</option>
                                     <option value="04">Cold</option>
                                     <option value="05">Diarrhea</option>
+                                    <option value="06">Cholera</option>
                                     <option value="07">Asthma</option>
+                                    <option value="08">Typhoid Fever</option>
+                                    <option value="09">Dengue</option>
+                                    <option value="10">Pneumonia</option>
+                                    <option value="11">Chicken Pox</option>
+                                    <option value="12">Measles</option>
                                     <option value="13">Heart Disease</option>
+                                    <option value="14">Lung Disease</option>
                                     <option value="15">High Blood</option>
+                                    <option value="16">Anemia</option>
+                                    <option value="17">Malaria</option>
                                     <option value="99">Others</option>
                                 </select>
                                 <input type="text" name="common_illness_others" class="form-control mt-2" placeholder="If others, specify">
@@ -53,10 +62,16 @@
                                 <label class="form-label">Where do household go for treatment?</label>
                                 <select name="treatment_source" id="treatment" class="form-select">
                                     <option value="">Select Facility</option>
+                                    <option value="00">None</option>
                                     <option value="01">Traditional Healers</option>
                                     <option value="02">Private Doctors</option>
+                                    <option value="03">RHU Doctors</option>
+                                    <option value="04">Self-medication</option>
                                     <option value="05">Brgy. Health Station</option>
                                     <option value="06">Rural Health Unit</option>
+                                    <option value="07">Brgy. Health Worker</option>
+                                    <option value="08">Brgy. Nutrition Scholar</option>
+                                    <option value="09">CBHP/DHW</option>
                                     <option value="10">Private Clinic</option>
                                     <option value="99">Others</option>
                                 </select>
@@ -67,7 +82,15 @@
                                 <select name="water_source" id="water" class="form-select">
                                     <option value="">Select Water Source</option>
                                     <option value="1">Local Water System</option>
+                                    <option value="2">Spring Water</option>
+                                    <option value="3">River</option>
+                                    <option value="4">Open Well</option>
                                     <option value="5">Own Artesian Well</option>
+                                    <option value="6">Community Artesian Well</option>
+                                    <option value="7">Community Faucet</option>
+                                    <option value="8">Electric Deep Well</option>
+                                    <option value="9">Free Flowing Water Pipe</option>
+                                    <option value="10">Rain Water</option>
                                     <option value="11">Water Refilling Station</option>
                                     <option value="12">NAWASA</option>
                                     <option value="99">Others</option>
@@ -83,9 +106,14 @@
                             <div class="col-md-4">
                                 <label class="form-label">Household lighting energy source</label>
                                 <select name="lighting_source" id="lighting" class="form-select">
+                                    <option value="">Select Lighting Source</option>
                                     <option value="1">Electricity</option>
                                     <option value="2">Kerosene (Gaas)</option>
-                                    <option value="4">Solar Lamp</option>
+                                    <option value="3">Liquified Petroleum Gas (LPG)</option>
+                                    <option value="4">Solar Panel / Solar Lamp</option>
+                                    <option value="5">Battery</option>
+                                    <option value="6">Generator</option>
+                                    <option value="7">None</option>
                                     <option value="99">Others</option>
                                 </select>
                                 <input type="text" name="lighting_others" class="form-control mt-2" placeholder="If others, specify">
@@ -95,6 +123,7 @@
                                 <select name="cooking_source" id="cooking" class="form-select">
                                     <option value="1">Woods</option>
                                     <option value="2">Charcoal</option>
+                                    <option value="3">Kerosene (Gas)</option>
                                     <option value="4">Liquefied Petroleum Gas (LPG)</option>
                                     <option value="5">Electricity</option>
                                     <option value="99">Others</option>
@@ -102,11 +131,18 @@
                                 <input type="text" name="cooking_others" class="form-control mt-2" placeholder="If others, specify">
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Way of disposing garbage</label>
+                                <label class="form-label">Way of disposing Household Garbage</label>
                                 <select name="garbage_disposal" id="garbage" class="form-select">
-                                    <option value="1">Segregating waste</option>
-                                    <option value="2">Collected by garbage truck</option>
+                                    <option value="">Select Waste Disposal Method</option>
+                                    <option value="1">Segregating Waste</option>
+                                    <option value="2">Collected by Garbage Truck</option>
+                                    <option value="3">Recycling / Reusing at Home</option>
+                                    <option value="4">Selling / Giving Away Recyclables</option>
+                                    <option value="5">Composting</option>
                                     <option value="6">Burning</option>
+                                    <option value="7">Dumping in Pit with Cover</option>
+                                    <option value="8">Dumping in Pit without Cover</option>
+                                    <option value="9">Throwing in Uninhabited Locations</option>
                                     <option value="99">Others</option>
                                 </select>
                                 <input type="text" name="garbage_others" class="form-control mt-2" placeholder="If others, specify">
@@ -120,17 +156,22 @@
                             <div class="col-md-6">
                                 <label class="form-label">Toilet facility of the household</label>
                                 <select name="toilet_type" id="toilet" class="form-select">
-                                    <option value="1">Water-sealed flush (own)</option>
-                                    <option value="2">Water-sealed flush (shared)</option>
-                                    <option value="3">Closed pit</option>
-                                    <option value="5">No toilet</option>
+                                    <option value="">Select Toilet Type</option>
+                                    <option value="1">Water-Sealed Flush to Sewerage System / Septic Tank (Own Use)</option>
+                                    <option value="2">Water-Sealed Flush to Sewerage / Septic Tank (Shared with Other Households)</option>
+                                    <option value="3">Closed Pit</option>
+                                    <option value="4">Open Pit</option>
+                                    <option value="5">No Toilet</option>
+                                    <option value="99">Others</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Distance from water source to toilet</label>
+                                <label class="form-label">Distance of toilet from water source</label>
                                 <select name="toilet_distance" id="toilet_dist" class="form-select">
                                     <option value="1">Below 200 meters</option>
                                     <option value="2">201-500 meters</option>
+                                    <option value="3">502-700 meters</option>
+                                    <option value="4">701-1000 meters</option>
                                     <option value="5">More than 1000 meters</option>
                                 </select>
                             </div>

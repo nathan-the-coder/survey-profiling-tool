@@ -129,7 +129,7 @@ const sacramentMap = {
 
 const marriageMap = {
     '1': 'Civil',
-    '2': 'Religious'
+    '2': 'Church'
 };
 
 const studyingMap = {

@@ -2,176 +2,264 @@
     title: 'Survey Form - Step 4',
     bodyClass: 'd-flex flex-column min-vh-100 bg-light',
     headerType: 'survey',
+    extraStyles: `
+        <style>
+            .form-card { background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+            .section-title { color: #457507; font-weight: 600; position: relative; padding-bottom: 10px; margin-bottom: 20px; }
+            .section-title::after { content: ''; position: absolute; bottom: 0; left: 0; width: 60px; height: 3px; background: linear-gradient(90deg, #457507, #6ba32a); border-radius: 2px; }
+            .form-label { font-weight: 500; color: #444; margin-bottom: 6px; }
+            .form-control, .form-select { border-radius: 10px; border: 1.5px solid #e0e0e0; padding: 12px 16px; transition: all 0.2s ease; }
+            .form-control:focus, .form-select:focus { border-color: #457507; box-shadow: 0 0 0 4px rgba(69, 117, 7, 0.1); }
+            .btn-modern { padding: 12px 32px; border-radius: 25px; font-weight: 600; transition: all 0.3s ease; }
+            .btn-church-modern { background: linear-gradient(135deg, #457507 0%, #5a8f1a 100%); color: white; border: none; }
+            .btn-church-modern:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(69, 117, 7, 0.35); color: white; }
+            .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+            .checkbox-item { background: #f8faf5; border: 1.5px solid #e0e0e0; border-radius: 10px; padding: 12px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
+            .checkbox-item:hover { background: #f0f5e8; border-color: #457507; }
+            .checkbox-item input:checked + label { color: #457507; font-weight: 600; }
+            .checkbox-item input:checked { background-color: #457507; border-color: #457507; }
+            .checkbox-item input { display: none; }
+            .checkbox-item label { cursor: pointer; margin: 0; display: block; }
+        </style>
+    `,
     body: `
         <main class="flex-fill py-4">
             <div class="container">
-                <div class="progress mb-4" style="height: 25px;">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%;">Step 4 of 4</div>
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted fw-medium">Step 4 of 4</span>
+                        <span class="text-muted">Socio-Economic & Infrastructure</span>
+                    </div>
+                    <div class="progress-custom" style="height: 8px; border-radius: 4px; background: #e9ecef;">
+                        <div class="progress-bar" role="progressbar" style="width: 100%; background: linear-gradient(90deg, #457507, #6ba32a); border-radius: 4px;"></div>
+                    </div>
                 </div>
-                <h4 class="text-center fw-bold mb-4">SOCIO-ECONOMIC AND INFRASTRUCTURE</h4>
                 
                 <form action="submit_handler.php" method="POST">
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-body">
-                            <div class="row g-3">
-                                <div class="col-md-4">
-                                    <label for="income" class="form-label">Income per Month</label>
-                                    <select class="form-select" id="income" name="income_monthly">
-                                        <option value="">Select</option>
-                                        <option value="1">₱3,000 and below</option>
-                                        <option value="2">₱3,001 – ₱6,000</option>
-                                        <option value="3">₱6,001 – ₱9,000</option>
-                                        <option value="4">₱9,001 – ₱12,000</option>
-                                        <option value="5">₱12,001 – ₱15,000</option>
-                                        <option value="6">₱15,001 – ₱18,000</option>
-                                        <option value="7">₱18,001 – ₱21,000</option>
-                                        <option value="8">₱21,001 – ₱24,000</option>
-                                        <option value="9">₱24,001 – ₱27,000</option>
-                                        <option value="10">₱27,001 – ₱30,000</option>
-                                        <option value="11">₱30,001 and up</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="col-md-4">
-                                    <label for="expenses" class="form-label">Expenses per Week</label>
-                                    <select class="form-select" id="expenses" name="expenses_weekly">
-                                        <option value="1">₱300 and below</option>
-                                        <option value="2">₱301 – ₱600</option>
-                                        <option value="3">₱601 – ₱900</option>
-                                        <option value="4">₱901 – ₱1,200</option>
-                                        <option value="5">₱1,201 – ₱1,500</option>
-                                        <option value="6">₱1,501 – ₱1,800</option>
-                                        <option value="7">₱1,801 – ₱2,100</option>
-                                        <option value="8">₱2,101 – ₱2,400</option>
-                                        <option value="9">₱2,401 – ₱2,700</option>
-                                        <option value="10">₱2,701 – ₱3,000</option>
-                                        <option value="11">₱3,001 and up</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="col-md-4">
-                                    <label for="savings" class="form-label">Do you have savings?</label>
-                                    <select class="form-select" id="savings" name="has_savings">
-                                        <option value="1">Yes</option>
-                                        <option value="2">None</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="col-md-4">
-                                    <label for="savings_loc" class="form-label">Where do you put your savings?</label>
-                                    <select class="form-select" id="savings_loc" name="savings_location">
-                                        <option value="1">House</option>
-                                        <option value="2">Bank</option>
-                                        <option value="3">E-money (GCash, etc.)</option>
-                                        <option value="4">Microfinance / ASA</option>
-                                        <option value="99">Others</option>
-                                        <option value="66">Not Applicable</option>
-                                    </select>
-                                </div>
+                    <div class="form-card p-4 mb-4">
+                        <h4 class="section-title">Income & Savings</h4>
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <label class="form-label">Income per Month</label>
+                                <select class="form-select" id="income" name="income_monthly">
+                                    <option value="">Select</option>
+                                    <option value="1">₱3,000 and below</option>
+                                    <option value="2">₱3,001 – ₱6,000</option>
+                                    <option value="3">₱6,001 – ₱9,000</option>
+                                    <option value="4">₱9,001 – ₱12,000</option>
+                                    <option value="5">₱12,001 – ₱15,000</option>
+                                    <option value="6">₱15,001 – ₱18,000</option>
+                                    <option value="7">₱18,001 – ₱21,000</option>
+                                    <option value="8">₱21,001 – ₱24,000</option>
+                                    <option value="9">₱24,001 – ₱27,000</option>
+                                    <option value="10">₱27,001 – ₱30,000</option>
+                                    <option value="11">₱30,001 and up</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Expenses per Week</label>
+                                <select class="form-select" id="expenses" name="expenses_weekly">
+                                    <option value="1">₱300 and below</option>
+                                    <option value="2">₱301 – ₱600</option>
+                                    <option value="3">₱601 – ₱900</option>
+                                    <option value="4">₱901 – ₱1,200</option>
+                                    <option value="5">₱1,201 – ₱1,500</option>
+                                    <option value="6">₱1,501 – ₱1,800</option>
+                                    <option value="7">₱1,801 – ₱2,100</option>
+                                    <option value="8">₱2,101 – ₱2,400</option>
+                                    <option value="9">₱2,401 – ₱2,700</option>
+                                    <option value="10">₱2,701 – ₱3,000</option>
+                                    <option value="11">₱3,001 and up</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Have Savings?</label>
+                                <select class="form-select" id="savings" name="has_savings">
+                                    <option value="1">Yes</option>
+                                    <option value="2">None</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Where do you put your savings?</label>
+                                <select class="form-select" id="savings_loc" name="savings_location">
+                                    <option value="1">House</option>
+                                    <option value="2">Bank</option>
+                                    <option value="3">E-money (GCash, etc.)</option>
+                                    <option value="4">Microfinance / ASA</option>
+                                    <option value="99">Others</option>
+                                    <option value="66">Not Applicable</option>
+                                </select>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-body">
-                            <div class="row g-3">
-                                <div class="col-md-4">
-                                    <label for="ownership" class="form-label">Ownership of House/Lot</label>
-                                    <select class="form-select" id="ownership" name="house_ownership">
-                                        <option value="1">Owned</option>
-                                        <option value="2">Rented House</option>
-                                        <option value="3">Tenanted</option>
-                                        <option value="4">Rent Free</option>
-                                        <option value="5">Caretaker</option>
-                                        <option value="99">Others</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="col-md-4">
-                                    <label for="house_class" class="form-label">House Classification</label>
-                                    <select class="form-select" id="house_class" name="house_classification">
-                                        <option value="1">Concrete</option>
-                                        <option value="2">Semi-Concrete</option>
-                                        <option value="3">Indigenous Materials</option>
-                                        <option value="4">Galvanized Iron / Aluminum</option>
-                                        <option value="5">Barong-barong</option>
-                                        <option value="6">Makeshift</option>
-                                        <option value="99">Others</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="col-md-4">
-                                    <label for="land_area" class="form-label">Land Area (hectares)</label>
-                                    <input type="number" step="0.01" id="land_area" name="land_area" class="form-control">
-                                </div>
+                    <div class="form-card p-4 mb-4">
+                        <h4 class="section-title">House & Property</h4>
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <label class="form-label">Ownership of House/Lot</label>
+                                <select class="form-select" id="ownership" name="house_ownership">
+                                    <option value="1">Owned</option>
+                                    <option value="2">Rented House</option>
+                                    <option value="3">Tenanted</option>
+                                    <option value="4">Rent Free</option>
+                                    <option value="5">Caretaker</option>
+                                    <option value="99">Others</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">House Classification</label>
+                                <select class="form-select" id="house_class" name="house_classification">
+                                    <option value="1">Concrete</option>
+                                    <option value="2">Semi-Concrete</option>
+                                    <option value="3">Indigenous Materials</option>
+                                    <option value="4">Galvanized Iron / Aluminum</option>
+                                    <option value="5">Barong-barong</option>
+                                    <option value="6">Makeshift</option>
+                                    <option value="99">Others</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Land Area (hectares)</label>
+                                <input type="number" step="0.01" id="land_area" name="land_area" class="form-control" placeholder="0.00">
                             </div>
                         </div>
                     </div>
                     
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-body">
-                            <label class="form-label fw-bold">Appliances / Vehicle Owned</label>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="assets[]" value="refrigerator" id="asset1">
-                                        <label for="asset1">Refrigerator</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="assets[]" value="stove" id="asset2">
-                                        <label for="asset2">Stove</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="assets[]" value="rice_cooker" id="asset3">
-                                        <label for="asset3">Rice Cooker</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="assets[]" value="electric_fan" id="asset4">
-                                        <label for="asset4">Electric Fan</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="assets[]" value="washing_machine" id="asset5">
-                                        <label for="asset5">Washing Machine</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="assets[]" value="aircon" id="asset6">
-                                        <label for="asset6">Aircon</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="assets[]" value="tv" id="asset7">
-                                        <label for="asset7">Television</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="assets[]" value="phone" id="asset8">
-                                        <label for="asset8">Mobile Phone</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="assets[]" value="computer" id="asset9">
-                                        <label for="asset9">Computer/Laptop</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="assets[]" value="vehicle" id="asset10">
-                                        <label for="asset10">Car/Vehicle</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="assets[]" value="others" id="asset11">
-                                        <label for="asset11">Others</label>
-                                    </div>
-                                    <div class="mt-2">
-                                        <input type="text" class="form-control form-control-sm" name="assets_others" placeholder="Please specify other assets">
-                                    </div>
-                                </div>
+                    <div class="form-card p-4 mb-4">
+                        <h4 class="section-title">Appliances & Vehicles</h4>
+                        <div class="checkbox-grid mb-3">
+                            <div class="checkbox-item"><input type="checkbox" name="assets[]" value="refrigerator" id="asset1"><label for="asset1">🧊 Refrigerator</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="assets[]" value="stove" id="asset2"><label for="asset2">🍳 Stove</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="assets[]" value="rice_cooker" id="asset3"><label for="asset3">🍚 Rice Cooker</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="assets[]" value="electric_fan" id="asset4"><label for="asset4">🌀 Electric Fan</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="assets[]" value="washing_machine" id="asset5"><label for="asset5">🧺 Washing Machine</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="assets[]" value="aircon" id="asset6"><label for="asset6">❄️ Aircon</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="assets[]" value="tv" id="asset7"><label for="asset7">📺 Television</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="assets[]" value="phone" id="asset8"><label for="asset8">📱 Mobile Phone</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="assets[]" value="computer" id="asset9"><label for="asset9">💻 Computer/Laptop</label></div>
+                            <div class="checkbox-item"><input type="checkbox" name="assets[]" value="vehicle" id="asset10"><label for="asset10">🚗 Car/Vehicle</label></div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="checkbox-item" style="text-align: left; padding: 12px 16px;"><input type="checkbox" name="assets[]" value="others" id="asset11" onchange="toggleOthersText(this, 'assets_others_container')"><label for="asset11">📦 Others</label></div>
+                                <div id="assets_others_container" class="d-none mt-2"><input type="text" class="form-control" name="assets_others" placeholder="Please specify other assets"></div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="text-center mb-5">
-                        <button type="button" onclick="goPrev()" class="btn btn-secondary me-2">Previous</button>
-                        <button type="button" onclick="submitSurvey()" class="btn btn-success px-5 fw-semibold shadow-sm">Review & Submit</button>
+                    <div class="form-card p-4 mb-4">
+                        <h4 class="section-title">Livestock Owned</h4>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label class="form-label mb-3">Owned (Check all that apply)</label>
+                                <div class="checkbox-grid">
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="carabao" id="livestock_carabao"><label for="livestock_carabao">🐃 Carabao</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="cow" id="livestock_cow"><label for="livestock_cow">🐄 Cow</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="goat" id="livestock_goat"><label for="livestock_goat">🐐 Goat</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="chicken" id="livestock_chicken"><label for="livestock_chicken">🐔 Chicken</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="pig" id="livestock_pig"><label for="livestock_pig">🐖 Pig</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="duck" id="livestock_duck"><label for="livestock_duck">🦆 Duck</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="sheep" id="livestock_sheep"><label for="livestock_sheep">🐑 Sheep</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="rabbit" id="livestock_rabbit"><label for="livestock_rabbit">🐰 Rabbit</label></div>
+                                    <div class="checkbox-item" style="text-align: left; padding: 12px 16px;"><input type="checkbox" name="livestock_owned[]" value="others" id="livestock_others_owned" onchange="toggleOthersText(this, 'livestock_owned_others_text')"><label for="livestock_others_owned">📦 Others</label></div>
+                                </div>
+                                <div id="livestock_owned_others_text" class="d-none mt-2"><input type="text" class="form-control" name="livestock_owned_others_text" placeholder="Please specify other livestock..."></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label mb-3">Raised for Others (Check all that apply)</label>
+                                <div class="checkbox-grid">
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="carabao" id="livestock_o_carabao"><label for="livestock_o_carabao">🐃 Carabao</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="cow" id="livestock_o_cow"><label for="livestock_o_cow">🐄 Cow</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="goat" id="livestock_o_goat"><label for="livestock_o_goat">🐐 Goat</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="chicken" id="livestock_o_chicken"><label for="livestock_o_chicken">🐔 Chicken</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="pig" id="livestock_o_pig"><label for="livestock_o_pig">🐖 Pig</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="duck" id="livestock_o_duck"><label for="livestock_o_duck">🦆 Duck</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="sheep" id="livestock_o_sheep"><label for="livestock_o_sheep">🐑 Sheep</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="rabbit" id="livestock_o_rabbit"><label for="livestock_o_rabbit">🐰 Rabbit</label></div>
+                                    <div class="checkbox-item" style="text-align: left; padding: 12px 16px;"><input type="checkbox" name="livestock_for_others[]" value="others" id="livestock_o_others" onchange="toggleOthersText(this, 'livestock_for_others_text')"><label for="livestock_o_others">📦 Others</label></div>
+                                </div>
+                                <div id="livestock_for_others_text" class="d-none mt-2"><input type="text" class="form-control" name="livestock_for_others_text" placeholder="Please specify other livestock..."></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-card p-4 mb-4">
+                        <h4 class="section-title">Farm/Fishing Equipment Owned</h4>
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="checkbox-grid" style="grid-template-columns: 1fr 1fr;">
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="1" id="equip_1"><label for="equip_1">1. Hand tractor</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="2" id="equip_2"><label for="equip_2">2. Big tractor</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="3" id="equip_3"><label for="equip_3">3. Turtle/Mudboat</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="4" id="equip_4"><label for="equip_4">4. Tiller/Araro</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="5" id="equip_5"><label for="equip_5">5. Suyod</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="6" id="equip_6"><label for="equip_6">6. Harrow/Kalmot</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="7" id="equip_7"><label for="equip_7">7. Rice Mill</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="8" id="equip_8"><label for="equip_8">8. Harvester</label></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="checkbox-grid" style="grid-template-columns: 1fr 1fr;">
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="9" id="equip_9"><label for="equip_9">9. Irrigation Pump</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="10" id="equip_10"><label for="equip_10">10. Bagnets</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="11" id="equip_11"><label for="equip_11">11. Sift net</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="12" id="equip_12"><label for="equip_12">12. Balimbing/pison</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="13" id="equip_13"><label for="equip_13">13. Sprayer</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="14" id="equip_14"><label for="equip_14">14. Thresher</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="15" id="equip_15"><label for="equip_15">15. Motorized banca</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="16" id="equip_16"><label for="equip_16">16. Banca</label></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="checkbox-grid" style="grid-template-columns: 1fr 1fr;">
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="17" id="equip_17"><label for="equip_17">17. Fishnet</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="18" id="equip_18"><label for="equip_18">18. Hook & Lines</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="19" id="equip_19"><label for="equip_19">19. Fish Cages</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="20" id="equip_20"><label for="equip_20">20. Salambao/Traps</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="21" id="equip_21"><label for="equip_21">21. Gill nets</label></div>
+                                    <div class="checkbox-item" style="text-align: left;"><input type="checkbox" name="farm_equipments[]" value="99" id="equip_99" onchange="toggleOthersText(this, 'farm_equipments_others_text')"><label for="equip_99">99. Others</label></div>
+                                </div>
+                                <div id="farm_equipments_others_text" class="d-none mt-2"><input type="text" class="form-control" name="farm_equipments_others_text" placeholder="Please specify other equipment..."></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-card p-4 mb-4">
+                        <h4 class="section-title">Location & Contact</h4>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Distance from Church</label>
+                                <select class="form-select" id="dist_church" name="distance_church">
+                                    <option value="1">Walking Distance (Ideal)</option>
+                                    <option value="2">5–15 Minute Drive</option>
+                                    <option value="3">30-Minute Drive</option>
+                                    <option value="4">Over 45 Minutes – 1 Hour+</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Distance from Market</label>
+                                <select class="form-select" id="dist_market" name="distance_market">
+                                    <option value="1">Walking Distance (Ideal)</option>
+                                    <option value="2">5–15 Minute Drive</option>
+                                    <option value="3">30-Minute Drive</option>
+                                    <option value="4">Over 45 Minutes – 1 Hour+</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Name of Missionary Companion</label>
+                                <input type="text" id="companion" name="missionary_companion" class="form-control" placeholder="Enter companion name">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Date of Listing</label>
+                                <input type="date" id="date" name="listing_date" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" onclick="goPrev()" class="btn btn-outline-secondary btn-modern">← Back</button>
+                        <button type="button" onclick="submitSurvey()" class="btn btn-church-modern btn-modern">Review & Submit →</button>
                     </div>
                     
                     <input type="hidden" name="form_source" value="socio_economic_and_infrastructure">
@@ -179,5 +267,51 @@
             </div>
         </main>
     `,
-    extraScripts: `<script src="/javascripts/survey5.js"></script>`
+    extraScripts: `
+        <script>
+        function toggleOthersText(checkbox, inputId) {
+            const inputField = document.getElementById(inputId);
+            if (checkbox.checked) {
+                inputField.classList.remove('d-none');
+                inputField.querySelector('input').required = true;
+            } else {
+                inputField.classList.add('d-none');
+                inputField.querySelector('input').required = false;
+                inputField.querySelector('input').value = '';
+            }
+        }
+        function saveFormData() {
+            const form = document.querySelector('form');
+            const formData = new FormData(form);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                if (key.endsWith('[]')) {
+                    const arrKey = key.slice(0, -2);
+                    if (!data[arrKey]) data[arrKey] = [];
+                    data[arrKey].push(value);
+                } else {
+                    data[key] = value;
+                }
+            }
+            sessionStorage.setItem('survey_socio', JSON.stringify(data));
+        }
+        function goPrev() { saveFormData(); window.location.href = '/survey4'; }
+        function submitSurvey() { saveFormData(); window.location.href = '/final'; }
+        document.addEventListener('DOMContentLoaded', () => {
+            const saved = JSON.parse(sessionStorage.getItem('survey_socio') || '{}');
+            for (let key in saved) {
+                if (Array.isArray(saved[key])) {
+                    saved[key].forEach(val => {
+                        const el = document.querySelector('[name="' + key + '[]"][value="' + val + '"]');
+                        if (el) { el.checked = true; if (el.onchange) el.onchange(); }
+                    });
+                } else {
+                    const el = document.querySelector('[name="' + key + '"]');
+                    if (el) el.value = saved[key];
+                }
+            }
+        });
+        </script>
+        <script src="/javascripts/survey5.js"></script>
+    `
 }) %>

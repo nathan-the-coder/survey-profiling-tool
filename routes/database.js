@@ -187,42 +187,15 @@ class DatabaseAdapter {
         try {
             console.log(`Fetching participant details for ID: ${participantId}, userRole: ${userRole}, userParish: ${userParish}`);
             
-            // First get the household_id for this participant
-            let householdId;
+            // The participantId is actually the household_id
+            // Query household directly using the ID
+            const householdId = parseInt(participantId);
             
-            if (this.useSupabase) {
-                const { data, error } = await this.supabaseClient
-                    .from('family_members')
-                    .select('household_id')
-                    .eq('id', participantId);
-                
-                if (error) {
-                    console.error('Supabase error fetching household_id:', error);
-                    throw error;
-                }
-                
-                console.log(`Supabase query result for participant ${participantId}:`, data);
-                
-                if (!data || data.length === 0) {
-                    console.error(`No family_member found with ID: ${participantId}`);
-                    throw new Error(`Participant with ID ${participantId} not found in family_members table`);
-                }
-                
-                householdId = data[0]?.household_id;
-                console.log(`Found household_id: ${householdId}`);
-            } else {
-                const [rows] = await this.mysqlPool.execute(
-                    'SELECT household_id FROM family_members WHERE id = ?', 
-                    [participantId]
-                );
-                console.log(`MySQL query result for participant ${participantId}:`, rows);
-                householdId = rows[0]?.household_id;
+            if (isNaN(householdId)) {
+                throw new Error(`Invalid household ID: ${participantId}`);
             }
             
-            if (!householdId) {
-                console.error(`No household_id found for participant ID: ${participantId}`);
-                throw new Error(`Participant with ID ${participantId} not found`);
-            }
+            console.log(`Using household_id: ${householdId}`);
             
             if (this.useSupabase) {
                 // Supabase implementation
@@ -299,28 +272,11 @@ class DatabaseAdapter {
         try {
             const { household, family_members, health_conditions, socio_economic } = updateData;
             
-            // Get household_id for this participant
-            let householdId;
+            // The participantId is the household_id
+            const householdId = parseInt(participantId);
             
-            if (this.useSupabase) {
-                const { data, error } = await this.supabaseClient
-                    .from('family_members')
-                    .select('household_id')
-                    .eq('id', participantId)
-                    .single();
-                
-                if (error) throw error;
-                householdId = data?.household_id;
-            } else {
-                const [rows] = await this.mysqlPool.execute(
-                    'SELECT household_id FROM family_members WHERE id = ?', 
-                    [participantId]
-                );
-                householdId = rows[0]?.household_id;
-            }
-            
-            if (!householdId) {
-                throw new Error('Participant not found');
+            if (isNaN(householdId)) {
+                throw new Error(`Invalid household ID: ${participantId}`);
             }
             
             if (this.useSupabase) {
@@ -393,28 +349,11 @@ class DatabaseAdapter {
     // Delete participant (and associated household data)
     async deleteParticipant(participantId) {
         try {
-            // Get household_id for this participant
-            let householdId;
+            // The participantId is the household_id
+            const householdId = parseInt(participantId);
             
-            if (this.useSupabase) {
-                const { data, error } = await this.supabaseClient
-                    .from('family_members')
-                    .select('household_id')
-                    .eq('id', participantId)
-                    .single();
-                
-                if (error) throw error;
-                householdId = data?.household_id;
-            } else {
-                const [rows] = await this.mysqlPool.execute(
-                    'SELECT household_id FROM family_members WHERE id = ?', 
-                    [participantId]
-                );
-                householdId = rows[0]?.household_id;
-            }
-            
-            if (!householdId) {
-                throw new Error('Participant not found');
+            if (isNaN(householdId)) {
+                throw new Error(`Invalid household ID: ${participantId}`);
             }
             
             if (this.useSupabase) {

@@ -310,53 +310,196 @@
             <div class="card-body">
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label for="livestock_own" class="form-label"
-                    >Livestock Owned</label
-                  >
-                  <select
-                    class="form-select"
-                    id="livestock_own"
-                    name="livestock_owned"
-                  >
-                    <option value="0">None</option>
-                    <option value="carabao">Carabao</option>
-                    <option value="cow">Cow</option>
-                    <option value="goat">Goat</option>
-                    <option value="chicken">Chicken</option>
-                    <option value="pig">Pig</option>
-                    <option value="duck">Duck</option>
-                    <option value="sheep">Sheep</option>
-                    <option value="rabbit">Rabbit</option>
-                    <option value="others">Others</option>
-                </select>
-                <div class="mt-2">
-                     <input type="text" class="form-control form-control-sm" name="assets_others" placeholder="Please specify other assets" />
-                   </div>
+                  <label class="form-label">Livestock Owned (Check all that apply)</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_owned[]" value="carabao" id="livestock_carabao">
+                    <label class="form-check-label" for="livestock_carabao">Carabao</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_owned[]" value="cow" id="livestock_cow">
+                    <label class="form-check-label" for="livestock_cow">Cow</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_owned[]" value="goat" id="livestock_goat">
+                    <label class="form-check-label" for="livestock_goat">Goat</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_owned[]" value="chicken" id="livestock_chicken">
+                    <label class="form-check-label" for="livestock_chicken">Chicken</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_owned[]" value="pig" id="livestock_pig">
+                    <label class="form-check-label" for="livestock_pig">Pig</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_owned[]" value="duck" id="livestock_duck">
+                    <label class="form-check-label" for="livestock_duck">Duck</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_owned[]" value="sheep" id="livestock_sheep">
+                    <label class="form-check-label" for="livestock_sheep">Sheep</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_owned[]" value="rabbit" id="livestock_rabbit">
+                    <label class="form-check-label" for="livestock_rabbit">Rabbit</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_owned[]" value="others" id="livestock_others_owned" onchange="toggleOthersText(this, 'livestock_owned_others_text')">
+                    <label class="form-check-label" for="livestock_others_owned">Others</label>
+                  </div>
+                  <div class="mt-2 d-none" id="livestock_owned_others_text">
+                    <input type="text" class="form-control form-control-sm" name="livestock_owned_others_text" placeholder="Please specify other livestock...">
+                  </div>
                 </div>
 
                 <div class="col-md-6">
-                  <label for="livestock_others" class="form-label"
-                    >Livestock Raised for Others</label
-                  >
-                  <select
-                    class="form-select"
-                    id="livestock_others"
-                    name="livestock_for_others"
-                  >
-                    <option value="0">None</option>
-                    <option value="carabao">Carabao</option>
-                    <option value="cow">Cow</option>
-                    <option value="goat">Goat</option>
-                    <option value="chicken">Chicken</option>
-                    <option value="pig">Pig</option>
-                    <option value="duck">Duck</option>
-                    <option value="sheep">Sheep</option>
-                    <option value="rabbit">Rabbit</option>
-                    <option value="others">Others</option>
-                  </select>
-                  <div class="mt-2">
-                     <input type="text" class="form-control form-control-sm" name="assets_others" placeholder="Please specify other assets" />
-                   </div>
+                  <label class="form-label">Livestock Raised for Others (Check all that apply)</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_for_others[]" value="carabao" id="livestock_others_carabao">
+                    <label class="form-check-label" for="livestock_others_carabao">Carabao</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_for_others[]" value="cow" id="livestock_others_cow">
+                    <label class="form-check-label" for="livestock_others_cow">Cow</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_for_others[]" value="goat" id="livestock_others_goat">
+                    <label class="form-check-label" for="livestock_others_goat">Goat</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_for_others[]" value="chicken" id="livestock_others_chicken">
+                    <label class="form-check-label" for="livestock_others_chicken">Chicken</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_for_others[]" value="pig" id="livestock_others_pig">
+                    <label class="form-check-label" for="livestock_others_pig">Pig</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_for_others[]" value="duck" id="livestock_others_duck">
+                    <label class="form-check-label" for="livestock_others_duck">Duck</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_for_others[]" value="sheep" id="livestock_others_sheep">
+                    <label class="form-check-label" for="livestock_others_sheep">Sheep</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_for_others[]" value="rabbit" id="livestock_others_rabbit">
+                    <label class="form-check-label" for="livestock_others_rabbit">Rabbit</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="livestock_for_others[]" value="others" id="livestock_others_checkbox" onchange="toggleOthersText(this, 'livestock_others_text')">
+                    <label class="form-check-label" for="livestock_others_checkbox">Others</label>
+                  </div>
+                  <div class="mt-2 d-none" id="livestock_others_text">
+                    <input type="text" class="form-control form-control-sm" name="livestock_for_others_text" placeholder="Please specify other livestock...">
+                  </div>
+                </div>
+              </div>
+
+              <hr class="my-4">
+
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label fw-bold">Farm/Fishing Equipments Owned (Check all that apply)</label>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="1" id="equip_1">
+                        <label class="form-check-label" for="equip_1">1- Hand tractor</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="2" id="equip_2">
+                        <label class="form-check-label" for="equip_2">2- Big tractor</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="3" id="equip_3">
+                        <label class="form-check-label" for="equip_3">3- Turtle/Mudboat</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="4" id="equip_4">
+                        <label class="form-check-label" for="equip_4">4- Tiller/Araro</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="5" id="equip_5">
+                        <label class="form-check-label" for="equip_5">5- Suyod</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="6" id="equip_6">
+                        <label class="form-check-label" for="equip_6">6- Harrow/Kalmot</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="7" id="equip_7">
+                        <label class="form-check-label" for="equip_7">7- Rice Mill</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="8" id="equip_8">
+                        <label class="form-check-label" for="equip_8">8- Harvester</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="9" id="equip_9">
+                        <label class="form-check-label" for="equip_9">9- Irrigation Pump</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="10" id="equip_10">
+                        <label class="form-check-label" for="equip_10">10- Bagnets</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="11" id="equip_11">
+                        <label class="form-check-label" for="equip_11">11- Sift net</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="12" id="equip_12">
+                        <label class="form-check-label" for="equip_12">12- Balimbing/pison</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="13" id="equip_13">
+                        <label class="form-check-label" for="equip_13">13- Sprayer</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="14" id="equip_14">
+                        <label class="form-check-label" for="equip_14">14- Thresher</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="15" id="equip_15">
+                        <label class="form-check-label" for="equip_15">15- Motorized banca</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="16" id="equip_16">
+                        <label class="form-check-label" for="equip_16">16- Banca</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="17" id="equip_17">
+                        <label class="form-check-label" for="equip_17">17- Fishnet</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="18" id="equip_18">
+                        <label class="form-check-label" for="equip_18">18- Hook & Lines</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="19" id="equip_19">
+                        <label class="form-check-label" for="equip_19">19- Fish Cages</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="20" id="equip_20">
+                        <label class="form-check-label" for="equip_20">20- Salambao/Fish Traps</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="21" id="equip_21">
+                        <label class="form-check-label" for="equip_21">21- Gill nets</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="farm_equipments[]" value="99" id="equip_99" onchange="toggleOthersText(this, 'farm_equipments_others_text')">
+                        <label class="form-check-label" for="equip_99">99- Others</label>
+                      </div>
+                      <div class="mt-2 d-none" id="farm_equipments_others_text">
+                        <input type="text" class="form-control form-control-sm" name="farm_equipments_others_text" placeholder="Please specify other equipment...">
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

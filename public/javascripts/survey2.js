@@ -1,4 +1,4 @@
-functionMemberCard(data create = {}, index = null) {
+function createMemberCard(data = {}, index = null) {
     const card = document.createElement('div');
     card.className = 'member-card';
     card.innerHTML = `

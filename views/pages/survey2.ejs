@@ -293,5 +293,54 @@
             </div>
         </main>
     `,
-    extraScripts: `<script src="/javascripts/survey2.js"></script>`
+    extraScripts: `
+        <script>
+        function addRow() {
+            const container = document.getElementById('membersContainer');
+            const emptyMsg = container.querySelector('p');
+            if (emptyMsg) emptyMsg.remove();
+            
+            const card = document.createElement('div');
+            card.className = 'member-card';
+            card.innerHTML = \`
+                <button type="button" class="remove-btn" onclick="this.closest('.member-card').remove()">✕</button>
+                <h6>Member #\${document.querySelectorAll('.member-card').length + 1}</h6>
+                <div class="row g-3">
+                    <div class="col-md-4"><label class="form-label">Full Name</label><input type="text" name="m_name[]" class="form-control" placeholder="Enter name" required></div>
+                    <div class="col-md-4"><label class="form-label">Relation</label><select name="m_relation[]" class="form-select"><option value="">Select...</option><option value="1">Son</option><option value="2">Daughter</option><option value="3">Stepson</option><option value="7">Grandson</option><option value="13">Relative</option><option value="99">Others</option></select></div>
+                    <input type="hidden" name="m_role[]" value="Member">
+                    <div class="col-md-3"><label class="form-label">Sex</label><select name="m_sex[]" class="form-select"><option value="1">Male</option><option value="2">Female</option></select></div>
+                    <div class="col-md-2"><label class="form-label">Age</label><input type="number" name="m_age[]" class="form-control" placeholder="Age" min="0"></div>
+                    <div class="col-md-3"><label class="form-label">Civil Status</label><select name="m_civil[]" class="form-select"><option value="">Select...</option><option value="1">Single</option><option value="2">Married</option><option value="3">Common Law</option><option value="4">Widowed</option></select></div>
+                    <div class="col-md-3"><label class="form-label">Religion</label><select name="m_religion[]" class="form-select"><option value="">Select...</option><option value="1">Roman Catholic</option><option value="2">Islam</option><option value="99">Others</option></select></div>
+                    <div class="col-md-3"><label class="form-label">Sacraments</label><select name="m_sacraments[]" class="form-select"><option value="">Select...</option><option value="1">None</option><option value="2">Baptism</option><option value="3">Confirmation</option></select></div>
+                    <div class="col-md-3"><label class="form-label">Studying?</label><select name="m_studying[]" class="form-select"><option value="1">Yes</option><option value="2">No</option></select></div>
+                    <div class="col-md-4"><label class="form-label">Education</label><select name="m_educ[]" class="form-select"><option value="">Select...</option><option value="Pre-School">Pre-School</option><option value="Elementary">Elementary</option><option value="Junior High">Junior High</option><option value="Senior High">Senior High</option><option value="College">College</option><option value="Post-Graduate">Post-Graduate</option></select></div>
+                    <div class="col-md-4"><label class="form-label">Occupation</label><input type="text" name="m_job[]" class="form-control" placeholder="e.g., Student, Farmer"></div>
+                    <div class="col-md-4"><label class="form-label">Work Status</label><select name="m_work_status[]" class="form-select"><option value="">Select...</option><option value="1">Regular</option><option value="2">Contractual</option><option value="3">Unemployed</option><option value="4">Self-Employed</option></select></div>
+                    <div class="col-md-4"><label class="form-label">Immunized? <small class="text-muted">(0-5 yrs)</small></label><select name="m_immunized[]" class="form-select"><option value="66">N/A</option><option value="1">Yes</option><option value="2">No</option></select></div>
+                </div>
+            \`;
+            container.appendChild(card);
+        }
+        function saveFormData() {
+            const form = document.querySelector('form');
+            const formData = new FormData(form);
+            const data = {};
+            for (const [key, value] of formData.entries()) {
+                if (key.endsWith('[]')) {
+                    const arrKey = key.slice(0, -2);
+                    if (!data[arrKey]) data[arrKey] = [];
+                    data[arrKey].push(value);
+                } else {
+                    data[key] = value;
+                }
+            }
+            sessionStorage.setItem('survey_primary', JSON.stringify(data));
+        }
+        function goNext() { saveFormData(); window.location.href = '/survey4'; }
+        function goPrev() { saveFormData(); window.location.href = '/survey'; }
+        </script>
+        <script src="/javascripts/survey2.js"></script>
+    `
 }) %>

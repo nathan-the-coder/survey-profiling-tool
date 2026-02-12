@@ -31,47 +31,6 @@ async function apiCall(endpoint, method = 'GET', data = null) {
     }
 }
 
-// Test backend connection
-async function testConnection() {
-    try {
-        const result = await apiCall('/api/test-connection');
-        return result;
-    } catch (_error) {
-    }
-}
+const forms = document.querySelectorAll("form");
 
-// Search participants
-async function searchParticipants(query) {
-    try {
-        const results = await apiCall(`/api/search?q=${encodeURIComponent(query)}`);
-        return results;
-    } catch (error) {
-        return [];
-    }
-}
-
-forms.forEach(form => {
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        try {
-            const formData = new FormData(form);
-            
-            let data = {};
-            formData.forEach((value, key) => {
-                data[key] = value;
-            })
-
-            overallData.push(data);
-            
-            // Send data to backend if needed
-            if (form.dataset.apiEndpoint) {
-                await apiCall(form.dataset.apiEndpoint, 'POST', data);
-            }
-        } catch (_error) {
-        }
-    });
-});
-
-// Test connection on page load
-document.addEventListener('DOMContentLoaded', testConnection);
+let overallData = [];

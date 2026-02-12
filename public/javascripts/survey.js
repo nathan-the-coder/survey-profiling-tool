@@ -32,10 +32,22 @@ function goNext() {
 }
 
 function loadParishes() {
+    const parishSelect = document.getElementById('nameOfParish');
+    // Add default parishes in case API fails
+    const defaultParishes = [
+        'St. Louis Cathedral',
+        'Our Lady of Perpetual Help',
+        'St. Joseph Parish',
+        'Holy Family Parish',
+        'St. Mary Parish'
+    ];
+    
     fetch('https://survey-profiling-tool-backend.vercel.app/parishes')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error('API not available');
+            return response.json();
+        })
         .then(parishes => {
-            const parishSelect = document.getElementById('nameOfParish');
             parishes.forEach(parish => {
                 const option = document.createElement('option');
                 option.value = parish;
@@ -43,7 +55,15 @@ function loadParishes() {
                 parishSelect.appendChild(option);
             });
         })
-        .catch(err => console.error('Failed to load parishes:', err));
+        .catch(err => {
+            // Use default parishes if API fails
+            defaultParishes.forEach(parish => {
+                const option = document.createElement('option');
+                option.value = parish;
+                option.textContent = parish;
+                parishSelect.appendChild(option);
+            });
+        });
 }
 
 document.addEventListener('DOMContentLoaded', () => {

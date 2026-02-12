@@ -14,7 +14,7 @@ function normalizeData(data) {
     for (const key in data) {
         let value = data[key];
         const mappedKey = keyMappings[key] || key;
-        if (value === '' || value === 'Select a municipality' || value === 'Select number...' ||
+        if (value === '' || value === 'Select...' || value === 'Select a municipality' || value === 'Select number...' ||
             value === 'Select structure...' || value === 'Choose classification' || value === 'Choose duration...' ||
             value === 'Select type...' || value === 'Choose mode of transportation...' || value === 'Choose Road Structure' ||
             value === null || value === undefined) {

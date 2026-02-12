@@ -47,7 +47,7 @@ class DatabaseAdapter {
                 let supabaseQuery = this.supabaseClient
                     .from('family_members')
                     .select(`
-                        id,
+                        member_id,
                         full_name,
                         relation_to_head_code,
                         age,
@@ -69,7 +69,7 @@ class DatabaseAdapter {
                 
                 // Flatten the data structure
                 return data.map(item => ({
-                    id: item.id,
+                    id: item.member_id,
                     full_name: item.full_name,
                     relation_to_head_code: item.relation_to_head_code,
                     age: item.age,
@@ -81,7 +81,7 @@ class DatabaseAdapter {
                 // MySQL implementation
                 let sql = `
                     SELECT 
-                        fm.id,
+                        fm.member_id as id,
                         fm.full_name,
                         fm.relation_to_head_code,
                         fm.age,
@@ -89,7 +89,7 @@ class DatabaseAdapter {
                         fm.barangay_name,
                         h.parish_name
                     FROM family_members fm
-                    INNER JOIN households h ON fm.household_id = h.id
+                    INNER JOIN households h ON fm.household_id = h.household_id
                 `;
                 
                 const params = [];
@@ -118,7 +118,7 @@ class DatabaseAdapter {
                 let supabaseQuery = this.supabaseClient
                     .from('family_members')
                     .select(`
-                        id,
+                        member_id,
                         full_name,
                         relation_to_head_code,
                         purok_gimong,
@@ -140,7 +140,7 @@ class DatabaseAdapter {
                 
                 // Flatten the data structure
                 return data.map(item => ({
-                    id: item.id,
+                    id: item.member_id,
                     full_name: item.full_name,
                     relation_to_head_code: item.relation_to_head_code,
                     purok_gimong: item.purok_gimong,
@@ -151,14 +151,14 @@ class DatabaseAdapter {
                 // MySQL implementation
                 let sql = `
                     SELECT 
-                        fm.id,
+                        fm.member_id as id,
                         fm.full_name,
                         fm.relation_to_head_code,
                         fm.purok_gimong,
                         fm.barangay_name,
                         h.parish_name
                     FROM family_members fm
-                    INNER JOIN households h ON fm.household_id = h.id
+                    INNER JOIN households h ON fm.household_id = h.household_id
                     WHERE fm.full_name LIKE ? 
                        OR fm.purok_gimong LIKE ?
                        OR fm.barangay_name LIKE ?
@@ -187,15 +187,43 @@ class DatabaseAdapter {
         try {
             console.log(`Fetching participant details for ID: ${participantId}, userRole: ${userRole}, userParish: ${userParish}`);
             
-            // The participantId is actually the household_id
-            // Query household directly using the ID
-            const householdId = parseInt(participantId);
+            // First get the household_id from family_members table using member_id
+            let householdId;
             
-            if (isNaN(householdId)) {
-                throw new Error(`Invalid household ID: ${participantId}`);
+            if (this.useSupabase) {
+                const { data, error } = await this.supabaseClient
+                    .from('family_members')
+                    .select('household_id')
+                    .eq('member_id', participantId);
+                
+                if (error) {
+                    console.error('Supabase error fetching household_id:', error);
+                    throw error;
+                }
+                
+                if (!data || data.length === 0) {
+                    throw new Error(`Family member with ID ${participantId} not found`);
+                }
+                
+                householdId = data[0]?.household_id;
+                console.log(`Found household_id ${householdId} for member_id ${participantId}`);
+            } else {
+                const [rows] = await this.mysqlPool.execute(
+                    'SELECT household_id FROM family_members WHERE member_id = ?', 
+                    [participantId]
+                );
+                
+                if (!rows || rows.length === 0) {
+                    throw new Error(`Family member with ID ${participantId} not found`);
+                }
+                
+                householdId = rows[0]?.household_id;
+                console.log(`Found household_id ${householdId} for member_id ${participantId}`);
             }
             
-            console.log(`Using household_id: ${householdId}`);
+            if (!householdId) {
+                throw new Error(`No household found for family member ID ${participantId}`);
+            }
             
             if (this.useSupabase) {
                 // Supabase implementation

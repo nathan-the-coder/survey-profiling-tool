@@ -384,11 +384,25 @@
             data[key] = value;
           }
         }
+        console.log('Saving form data:', data);
         sessionStorage.setItem('survey_primary', JSON.stringify(data));
       }
 
       function loadSavedData() {
         const saved = JSON.parse(sessionStorage.getItem('survey_primary') || '{}');
+        console.log('Loading saved data:', saved);
+        
+        // Clear any cached data that might be old
+        if (saved.m_relation && Array.isArray(saved.m_relation) && saved.m_relation.length > 0) {
+          // Check if data is in old format (numeric) vs new format (text)
+          const firstRel = saved.m_relation[0];
+          if (firstRel && !isNaN(firstRel)) {
+            console.log('Old numeric format detected, clearing cached data');
+            sessionStorage.removeItem('survey_primary');
+            saved = {};
+          }
+        }
+        
         if (saved.head_name) document.querySelector('[name="head_name"]').value = saved.head_name;
         if (saved.head_marriage) document.querySelector('[name="head_marriage"]').value = saved.head_marriage;
         if (saved.head_religion) document.querySelector('[name="head_religion"]').value = saved.head_religion;
@@ -407,6 +421,7 @@
         if (saved.spouse_work_status) document.querySelector('[name="spouse_work_status"]').value = saved.spouse_work_status;
 
         if (saved.m_name && Array.isArray(saved.m_name)) {
+          console.log('Restoring family members, count:', saved.m_name.length);
           const tbody = document.querySelector('#membersTable tbody');
           tbody.innerHTML = '';
           saved.m_name.forEach((name, idx) => {
@@ -417,74 +432,74 @@
             <td>
               <select name="m_relation[]" class="form-select form-select-sm">
                 <option value="">Select...</option>
-                <option value="Son" ${saved.m_relation?.[idx] === 'Son' ? 'selected' : ''}>Son</option>
-                <option value="Daughter" ${saved.m_relation?.[idx] === 'Daughter' ? 'selected' : ''}>Daughter</option>
-                <option value="Stepson" ${saved.m_relation?.[idx] === 'Stepson' ? 'selected' : ''}>Stepson</option>
-                <option value="Grandson" ${saved.m_relation?.[idx] === 'Grandson' ? 'selected' : ''}>Grandson</option>
-                <option value="Relative" ${saved.m_relation?.[idx] === 'Relative' ? 'selected' : ''}>Relative</option>
-                <option value="Others" ${saved.m_relation?.[idx] === 'Others' ? 'selected' : ''}>Others</option>
+                <option value="Son" ${(saved.m_relation?.[idx] || '') === 'Son' ? 'selected' : ''}>Son</option>
+                <option value="Daughter" ${(saved.m_relation?.[idx] || '') === 'Daughter' ? 'selected' : ''}>Daughter</option>
+                <option value="Stepson" ${(saved.m_relation?.[idx] || '') === 'Stepson' ? 'selected' : ''}>Stepson</option>
+                <option value="Grandson" ${(saved.m_relation?.[idx] || '') === 'Grandson' ? 'selected' : ''}>Grandson</option>
+                <option value="Relative" ${(saved.m_relation?.[idx] || '') === 'Relative' ? 'selected' : ''}>Relative</option>
+                <option value="Others" ${(saved.m_relation?.[idx] || '') === 'Others' ? 'selected' : ''}>Others</option>
               </select>
             </td>
             <input type="hidden" name="m_role[]" value="${saved.m_role?.[idx] || 'Member'}">
             <td><select name="m_sex[]" class="form-select form-select-sm">
-              <option value="1" ${saved.m_sex?.[idx] === '1' ? 'selected' : ''}>Male</option>
-              <option value="2" ${saved.m_sex?.[idx] === '2' ? 'selected' : ''}>Female</option>
+              <option value="1" ${(saved.m_sex?.[idx] || '') === '1' ? 'selected' : ''}>Male</option>
+              <option value="2" ${(saved.m_sex?.[idx] || '') === '2' ? 'selected' : ''}>Female</option>
             </select></td>
             <td><input name="m_age[]" type="number" class="form-control form-control-sm" value="${saved.m_age?.[idx] || ''}"></td>
             <td>
               <select name="m_civil[]" class="form-select form-select-sm">
                 <option value="">Select...</option>
-                <option value="1" ${saved.m_civil?.[idx] === '1' ? 'selected' : ''}>Single</option>
-                <option value="2" ${saved.m_civil?.[idx] === '2' ? 'selected' : ''}>Married</option>
-                <option value="3" ${saved.m_civil?.[idx] === '3' ? 'selected' : ''}>Common Law</option>
-                <option value="4" ${saved.m_civil?.[idx] === '4' ? 'selected' : ''}>Widowed</option>
+                <option value="1" ${(saved.m_civil?.[idx] || '') === '1' ? 'selected' : ''}>Single</option>
+                <option value="2" ${(saved.m_civil?.[idx] || '') === '2' ? 'selected' : ''}>Married</option>
+                <option value="3" ${(saved.m_civil?.[idx] || '') === '3' ? 'selected' : ''}>Common Law</option>
+                <option value="4" ${(saved.m_civil?.[idx] || '') === '4' ? 'selected' : ''}>Widowed</option>
               </select>
             </td>
             <td>
               <select name="m_religion[]" class="form-select form-select-sm">
                 <option value="">Select...</option>
-                <option value="1" ${saved.m_religion?.[idx] === '1' ? 'selected' : ''}>Roman Catholic</option>
-                <option value="2" ${saved.m_religion?.[idx] === '2' ? 'selected' : ''}>Islam</option>
-                <option value="99" ${saved.m_religion?.[idx] === '99' ? 'selected' : ''}>Others</option>
+                <option value="1" ${(saved.m_religion?.[idx] || '') === '1' ? 'selected' : ''}>Roman Catholic</option>
+                <option value="2" ${(saved.m_religion?.[idx] || '') === '2' ? 'selected' : ''}>Islam</option>
+                <option value="99" ${(saved.m_religion?.[idx] || '') === '99' ? 'selected' : ''}>Others</option>
               </select>
             </td>
             <td>
               <select name="m_sacraments[]" class="form-select form-select-sm">
                 <option value="">Select...</option>
-                <option value="1" ${saved.m_sacraments?.[idx] === '1' ? 'selected' : ''}>None</option>
-                <option value="2" ${saved.m_sacraments?.[idx] === '2' ? 'selected' : ''}>Baptism</option>
-                <option value="3" ${saved.m_sacraments?.[idx] === '3' ? 'selected' : ''}>Confirmation</option>
+                <option value="1" ${(saved.m_sacraments?.[idx] || '') === '1' ? 'selected' : ''}>None</option>
+                <option value="2" ${(saved.m_sacraments?.[idx] || '') === '2' ? 'selected' : ''}>Baptism</option>
+                <option value="3" ${(saved.m_sacraments?.[idx] || '') === '3' ? 'selected' : ''}>Confirmation</option>
               </select>
             </td>
             <td><select name="m_studying[]" class="form-select form-select-sm">
-              <option value="1" ${saved.m_studying?.[idx] === '1' ? 'selected' : ''}>Yes</option>
-              <option value="2" ${saved.m_studying?.[idx] === '2' ? 'selected' : ''}>No</option>
+              <option value="1" ${(saved.m_studying?.[idx] || '') === '1' ? 'selected' : ''}>Yes</option>
+              <option value="2" ${(saved.m_studying?.[idx] || '') === '2' ? 'selected' : ''}>No</option>
             </select></td>
             <td>
               <select name="m_educ[]" class="form-select form-select-sm">
                 <option value="">Select...</option>
-                <option value="Pre-School" ${saved.m_educ?.[idx] === 'Pre-School' ? 'selected' : ''}>Pre-School</option>
-                <option value="Elementary" ${saved.m_educ?.[idx] === 'Elementary' ? 'selected' : ''}>Elementary</option>
-                <option value="Junior High" ${saved.m_educ?.[idx] === 'Junior High' ? 'selected' : ''}>Junior High</option>
-                <option value="Senior High" ${saved.m_educ?.[idx] === 'Senior High' ? 'selected' : ''}>Senior High</option>
-                <option value="College" ${saved.m_educ?.[idx] === 'College' ? 'selected' : ''}>College</option>
-                <option value="Post-Graduate" ${saved.m_educ?.[idx] === 'Post-Graduate' ? 'selected' : ''}>Post-Graduate</option>
+                <option value="Pre-School" ${(saved.m_educ?.[idx] || '') === 'Pre-School' ? 'selected' : ''}>Pre-School</option>
+                <option value="Elementary" ${(saved.m_educ?.[idx] || '') === 'Elementary' ? 'selected' : ''}>Elementary</option>
+                <option value="Junior High" ${(saved.m_educ?.[idx] || '') === 'Junior High' ? 'selected' : ''}>Junior High</option>
+                <option value="Senior High" ${(saved.m_educ?.[idx] || '') === 'Senior High' ? 'selected' : ''}>Senior High</option>
+                <option value="College" ${(saved.m_educ?.[idx] || '') === 'College' ? 'selected' : ''}>College</option>
+                <option value="Post-Graduate" ${(saved.m_educ?.[idx] || '') === 'Post-Graduate' ? 'selected' : ''}>Post-Graduate</option>
               </select>
             </td>
             <td><input name="m_job[]" class="form-control form-control-sm" value="${saved.m_job?.[idx] || ''}"></td>
             <td>
               <select name="m_work_status[]" class="form-select form-select-sm">
                 <option value="">Select...</option>
-                <option value="1" ${saved.m_work_status?.[idx] === '1' ? 'selected' : ''}>Regular</option>
-                <option value="2" ${saved.m_work_status?.[idx] === '2' ? 'selected' : ''}>Contractual</option>
-                <option value="3" ${saved.m_work_status?.[idx] === '3' ? 'selected' : ''}>Unemployed</option>
-                <option value="4" ${saved.m_work_status?.[idx] === '4' ? 'selected' : ''}>Self-Employed</option>
+                <option value="1" ${(saved.m_work_status?.[idx] || '') === '1' ? 'selected' : ''}>Regular</option>
+                <option value="2" ${(saved.m_work_status?.[idx] || '') === '2' ? 'selected' : ''}>Contractual</option>
+                <option value="3" ${(saved.m_work_status?.[idx] || '') === '3' ? 'selected' : ''}>Unemployed</option>
+                <option value="4" ${(saved.m_work_status?.[idx] || '') === '4' ? 'selected' : ''}>Self-Employed</option>
               </select>
             </td>
             <td><select name="m_immunized[]" class="form-select form-select-sm">
-              <option value="66" ${saved.m_immunized?.[idx] === '66' ? 'selected' : ''}>N/A</option>
-              <option value="1" ${saved.m_immunized?.[idx] === '1' ? 'selected' : ''}>Yes</option>
-              <option value="2" ${saved.m_immunized?.[idx] === '2' ? 'selected' : ''}>No</option>
+              <option value="66" ${(saved.m_immunized?.[idx] || '') === '66' ? 'selected' : ''}>N/A</option>
+              <option value="1" ${(saved.m_immunized?.[idx] || '') === '1' ? 'selected' : ''}>Yes</option>
+              <option value="2" ${(saved.m_immunized?.[idx] || '') === '2' ? 'selected' : ''}>No</option>
             </select></td>
             <td><button type="button" class="btn btn-sm btn-danger" onclick="this.closest('tr').remove()"><i class="bi bi-trash"></i></button></td>
           `;

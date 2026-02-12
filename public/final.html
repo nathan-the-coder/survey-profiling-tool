@@ -437,6 +437,7 @@
             const health = JSON.parse(sessionStorage.getItem('survey_health') || '{}');
             const socio = JSON.parse(sessionStorage.getItem('survey_socio') || '{}');
             console.log(general);
+            console.log(primary);
             setText('gen-purokGimong', general.purokGimong);
             setText('gen-barangayName', general.barangayName);
             setText('gen-municipalityselect', general['municipality-select'] || general.municipalityselect);

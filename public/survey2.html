@@ -95,6 +95,7 @@
                     <th style="width: 10%">Role</th>
                     <th>Full Name</th>
                     <th>Type of Marriage</th>
+                    <th>Civil Status</th>
                     <th>Religion</th>
                     <th style="width: 80px">Sex</th>
                     <th style="width: 80px">Age</th>
@@ -122,11 +123,12 @@
                         </select>
                       </td>
                       <td>
-                        <select name="head_religion" class="form-select form-select-sm">
+                        <select name="head_religion" class="form-select form-select-sm" onchange="toggleOthersInput(this, 'head_religion_others')">
                           <option value="1">Roman Catholic</option>
                           <option value="2">Islam</option>
                           <option value="99">Others</option>
                         </select>
+                        <input type="text" name="head_religion_others" id="head_religion_others" class="form-control form-control-sm mt-1 d-none" placeholder="Specify religion...">
                       </td>
                       <td>
                         <select name="head_sex" class="form-select form-select-sm">
@@ -159,6 +161,9 @@
                           <option value="3">Unemployed</option>
                           <option value="4">Self-Employed</option>
                         </select>
+                      </td>
+                      <td>
+                        <input type="number" name="head_civil_status" class="form-control form-control-sm" />
                       </td>
                     </tr>
                     <tr>
@@ -209,6 +214,9 @@
                           <option value="2">Contractual</option>
                           <option value="4">Self-Employed</option>
                         </select>
+                      </td>
+                      <td>
+                        <input type="number" name="spouse_civil_status" class="form-control form-control-sm" />
                       </td>
                     </tr>
                 </tbody>
@@ -329,12 +337,13 @@
           </select>
         </td>
         <td>
-          <select name="m_religion[]" class="form-select form-select-sm">
+          <select name="m_religion[]" class="form-select form-select-sm" onchange="toggleOthersInput(this, this.parentElement.querySelector('.m-religion-others'))">
             <option value="">Select...</option>
             <option value="1">Roman Catholic</option>
             <option value="2">Islam</option>
             <option value="99">Others</option>
           </select>
+          <input type="text" name="m_religion_others[]" class="form-control form-control-sm mt-1 m-religion-others d-none" placeholder="Specify religion...">
         </td>
         <td>
           <select name="m_sacraments[]" class="form-select form-select-sm">
@@ -456,12 +465,13 @@
               </select>
             </td>
             <td>
-              <select name="m_religion[]" class="form-select form-select-sm">
+              <select name="m_religion[]" class="form-select form-select-sm" onchange="toggleOthersInput(this, this.parentElement.querySelector('.m-religion-others'))">
                 <option value="">Select...</option>
                 <option value="1" ${(saved.m_religion?.[idx] || '') === '1' ? 'selected' : ''}>Roman Catholic</option>
                 <option value="2" ${(saved.m_religion?.[idx] || '') === '2' ? 'selected' : ''}>Islam</option>
                 <option value="99" ${(saved.m_religion?.[idx] || '') === '99' ? 'selected' : ''}>Others</option>
               </select>
+              <input type="text" name="m_religion_others[]" class="form-control form-control-sm mt-1 m-religion-others ${(saved.m_religion?.[idx] || '') === '99' ? '' : 'd-none'}" placeholder="Specify religion..." value="${saved.m_religion_others?.[idx] || ''}">
             </td>
             <td>
               <select name="m_sacraments[]" class="form-select form-select-sm">
@@ -517,6 +527,18 @@
       function goPrev() {
         saveFormData();
         window.location.href = 'survey.html';
+      }
+
+      function toggleOthersInput(selectElement, inputId) {
+        const inputField = document.getElementById(inputId);
+        if (selectElement.value === '99') {
+          inputField.classList.remove('d-none');
+          inputField.required = true;
+        } else {
+          inputField.classList.add('d-none');
+          inputField.required = false;
+          inputField.value = '';
+        }
       }
 
       window.onload = function() {

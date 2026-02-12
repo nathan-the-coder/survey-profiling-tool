@@ -2,7 +2,18 @@
     title: 'Survey Preview',
     bodyClass: 'd-flex flex-column min-vh-100 bg-light',
     headerType: 'default',
-    extraStyles: `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">`,
+    extraStyles: `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <style>
+            .preview-section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+            .preview-section h5 { color: #457507; border-bottom: 2px solid #457507; padding-bottom: 10px; margin-bottom: 15px; }
+            .data-row { display: flex; border-bottom: 1px solid #eee; padding: 8px 0; }
+            .data-row:last-child { border-bottom: none; }
+            .data-label { font-weight: 600; width: 40%; color: #555; }
+            .data-value { width: 60%; color: #333; }
+            .member-table { width: 100%; font-size: 0.85rem; }
+            .member-table th { background-color: #457507; color: white; padding: 8px; text-align: center; }
+            .member-table td { padding: 6px; border: 1px solid #ddd; text-align: center; }
+        </style>`,
     body: `
         <main class="flex-grow-1 d-flex p-0">
             <div class="container-fluid bg-light p-4">
@@ -13,6 +24,236 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-header text-center fw-bold bg-light">SURVEY PREVIEW - REVIEW YOUR INFORMATION</div>
                     <div class="card-body">
+                        <div id="previewContent">
+                            <div class="preview-section">
+                                <h5>I. GENERAL INFORMATION</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="data-row">
+                                            <span class="data-label">BEC Purok-Gimong:</span>
+                                            <span class="data-value" id="gen-purokGimong">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Barangay Name:</span>
+                                            <span class="data-value" id="gen-barangayName">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Municipality Name:</span>
+                                            <span class="data-value" id="gen-municipalityselect">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Province Name:</span>
+                                            <span class="data-value" id="gen-provinceName">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Mode of Transportation:</span>
+                                            <span class="data-value" id="gen-modeOfTransportation">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Road Structure:</span>
+                                            <span class="data-value" id="gen-roadStructure">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Urban/Rural Classification:</span>
+                                            <span class="data-value" id="gen-urbanRural">-</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="data-row">
+                                            <span class="data-label">Name of Parish:</span>
+                                            <span class="data-value" id="gen-parish">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Diocese/Prelature Name:</span>
+                                            <span class="data-value" id="gen-diocese">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Year of Residency:</span>
+                                            <span class="data-value" id="gen-residency">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Number of Family Members:</span>
+                                            <span class="data-value" id="gen-familyMembers">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Family Structure:</span>
+                                            <span class="data-value" id="gen-familyStructure">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Local Dialect:</span>
+                                            <span class="data-value" id="gen-dialect">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Ethnicity:</span>
+                                            <span class="data-value" id="gen-ethnicity">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="preview-section">
+                                <h5>II. PRIMARY INFORMATION</h5>
+                                <h6 class="fw-bold mt-3 mb-2">Parents Profile</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-sm">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Role</th><th>Full Name</th><th>Type of Marriage</th><th>Religion</th>
+                                                <th>Sex</th><th>Age</th><th>Highest Educ.</th><th>Occupation</th><th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="fw-bold">HH Head</td>
+                                                <td id="head-name">-</td>
+                                                <td id="head-marriage">-</td>
+                                                <td id="head-religion">-</td>
+                                                <td id="head-sex">-</td>
+                                                <td id="head-age">-</td>
+                                                <td id="head-educ">-</td>
+                                                <td id="head-job">-</td>
+                                                <td id="head-work">-</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold">Spouse</td>
+                                                <td id="spouse-name">-</td>
+                                                <td id="spouse-marriage">-</td>
+                                                <td id="spouse-religion">-</td>
+                                                <td id="spouse-sex">-</td>
+                                                <td id="spouse-age">-</td>
+                                                <td id="spouse-educ">-</td>
+                                                <td id="spouse-job">-</td>
+                                                <td id="spouse-work">-</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <h6 class="fw-bold mt-4 mb-2">Household Members</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-sm member-table">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Name</th><th>Relation</th><th>Sex</th><th>Age</th>
+                                                <th>Civil Status</th><th>Religion</th><th>Sacraments</th>
+                                                <th>Studying</th><th>Educ.</th><th>Occupation</th>
+                                                <th>Status</th><th>Immunized</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="membersTable"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div class="preview-section">
+                                <h5>III. HEALTH AND LIVING CONDITIONS</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="data-row">
+                                            <span class="data-label">Common Illnesses:</span>
+                                            <span class="data-value" id="health-illness">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Treatment Source:</span>
+                                            <span class="data-value" id="health-treatment">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Source of Potable Water:</span>
+                                            <span class="data-value" id="health-water">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Lighting Energy Source:</span>
+                                            <span class="data-value" id="health-lighting">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Cooking Energy Source:</span>
+                                            <span class="data-value" id="health-cooking">-</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="data-row">
+                                            <span class="data-label">Garbage Disposal:</span>
+                                            <span class="data-value" id="health-garbage">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Toilet Facility:</span>
+                                            <span class="data-value" id="health-toilet">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Distance from Water Source to Toilet:</span>
+                                            <span class="data-value" id="health-toiletDist">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="preview-section">
+                                <h5>IV. SOCIO-ECONOMIC AND INFRASTRUCTURE</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="data-row">
+                                            <span class="data-label">Income per Month:</span>
+                                            <span class="data-value" id="soc-income">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Expenses per Week:</span>
+                                            <span class="data-value" id="soc-expenses">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Have Savings:</span>
+                                            <span class="data-value" id="soc-savings">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Savings Location:</span>
+                                            <span class="data-value" id="soc-savingsLoc">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">House/Lot Ownership:</span>
+                                            <span class="data-value" id="soc-ownership">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">House Classification:</span>
+                                            <span class="data-value" id="soc-houseClass">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Land Area (hectares):</span>
+                                            <span class="data-value" id="soc-landArea">-</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="data-row">
+                                            <span class="data-label">Appliances/Vehicle Owned:</span>
+                                            <span class="data-value" id="soc-assets">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Livestock Owned:</span>
+                                            <span class="data-value" id="soc-livestock">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Livestock for Others:</span>
+                                            <span class="data-value" id="soc-livestockOther">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Distance from Church:</span>
+                                            <span class="data-value" id="soc-church">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Distance from Market:</span>
+                                            <span class="data-value" id="soc-market">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Missionary Companion:</span>
+                                            <span class="data-value" id="soc-companion">-</span>
+                                        </div>
+                                        <div class="data-row">
+                                            <span class="data-label">Date of Listing:</span>
+                                            <span class="data-value" id="soc-date">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="text-center mt-4 mb-4">
                             <button class="btn btn-secondary me-2" onclick="editSurvey()"><i class="bi bi-pencil"></i> Edit Information</button>
                             <button class="btn btn-success px-5 fw-semibold" onclick="submitSurvey()"><i class="bi bi-check-circle"></i> Confirm & Submit</button>

@@ -355,10 +355,13 @@ document.addEventListener('click', (e) => {
     if (!e.target.closest('.position-relative')) autocompleteList.classList.add('d-none');
 });
 
-document.getElementById('signoutBtn').addEventListener('click', (e) => {
-    e.preventDefault();
-    sessionStorage.clear();
-    window.location.href = '/login';
-});
+const signoutBtn = document.getElementById('signoutBtn');
+if (signoutBtn) {
+    signoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        sessionStorage.clear();
+        window.location.href = '/login';
+    });
+}
 
 loadAllParticipants();

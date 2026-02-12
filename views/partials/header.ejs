@@ -11,7 +11,7 @@
                 </div>
             </a>
 
-            <% if (headerType === 'user' || headerType === 'archdiocese') { %>
+            <% if (headerType === 'user' || headerType === 'archdiocese' || headerType === 'dashboard' || headerType === 'admin') { %>
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <span id="name" class="d-none d-sm-inline"><%= username || 'Username' %></span>

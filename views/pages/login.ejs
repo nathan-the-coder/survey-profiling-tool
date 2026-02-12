@@ -1,0 +1,33 @@
+<%- include('../layouts/layout', {
+    title: 'Login',
+    bodyClass: 'd-flex flex-column min-vh-100',
+    headerType: 'login',
+    footerClass: 'bg-church',
+    extraStyles: `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />`,
+    body: `
+        <main class="d-flex align-items-center justify-content-center">
+            <div class="p-4 bg-light text-dark rounded-1" style="width: 100%; max-width: 400px">
+                <a href="/" class="btn btn-outline-secondary">Back</a>
+                <h2 class="text-center text-church mb-4 fw-bold">LOGIN</h2>
+                <form id="loginForm" method="POST">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Parish / Archdiocese</label>
+                        <input type="text" class="form-control rounded-0" id="username" name="username" placeholder="Enter your Parish / Archdiocese Name" required>
+                        <div class="invalid-feedback">Please Enter a correct username</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control rounded-0" id="password" name="password" placeholder="Enter your Password" required>
+                        <div class="invalid-feedback">Please Enter a correct password</div>
+                    </div>
+                    <button type="submit" id="loginBtn" class="btn btn-church w-100 rounded-2 fw-bold">Login</button>
+                </form>
+            </div>
+        </main>
+    `,
+    extraScripts: `
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios@1.13.5/dist/axios.min.js"></script>
+        <script src="/javascripts/login.js"></script>
+    `
+}) %>

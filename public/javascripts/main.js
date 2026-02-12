@@ -36,7 +36,7 @@ async function testConnection() {
     try {
         const result = await apiCall('/api/test-connection');
         return result;
-    } catch (error) {
+    } catch (_error) {
     }
 }
 
@@ -68,7 +68,7 @@ forms.forEach(form => {
             if (form.dataset.apiEndpoint) {
                 await apiCall(form.dataset.apiEndpoint, 'POST', data);
             }
-        } catch (error) {
+        } catch (_error) {
         }
     });
 });

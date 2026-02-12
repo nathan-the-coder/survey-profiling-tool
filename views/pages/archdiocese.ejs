@@ -1,0 +1,49 @@
+<%- include('../layouts/layout', {
+    title: 'Archdiocese Dashboard',
+    bodyClass: 'd-flex flex-column min-vh-100',
+    headerType: 'archdiocese',
+    body: `
+        <main class="flex-grow-1 p-4 bg-light">
+            <div class="container d-flex flex-column align-items-center">
+                <h3 class="mb-4">Search Participants</h3>
+                
+                <div class="mb-5 position-relative" style="width: 100%; max-width: 500px">
+                    <input class="form-control form-control-lg" type="text" id="searchInput" placeholder="Search by name..." autocomplete="off">
+                    <div id="autocompleteList" class="position-absolute w-100 shadow rounded bg-white d-none" style="z-index: 1050; max-height: 300px; overflow-y: auto"></div>
+                </div>
+                
+                <div class="card w-100 shadow-sm">
+                    <div class="card-header bg-white fw-bold">Recent Participants</div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Name</th><th>Relation</th><th>Address</th><th>Parish</th><th>Age</th><th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="participantsTableBody">
+                                <tr><td colspan="6" class="text-center py-4">Loading participants...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal fade" id="participantModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Participant Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="detailsContent"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    `,
+    extraScripts: `<script src="/javascripts/archdiocese.js"></script>`
+}) %>

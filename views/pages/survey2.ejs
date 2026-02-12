@@ -1,0 +1,168 @@
+<%- include('../layouts/layout', {
+    title: 'Survey Form - Step 2',
+    bodyClass: 'd-flex flex-column min-vh-100',
+    headerType: 'survey',
+    body: `
+        <main class="container-fluid px-4 my-4">
+            <div class="progress mb-4" style="height: 25px">
+                <div class="progress-bar bg-church" role="progressbar" style="width: 50%">Step 2 of 4</div>
+            </div>
+            
+            <form action="" method="POST">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header fw-bold text-center bg-light">PRIMARY INFORMATION</div>
+                    <div class="card-body">
+                        <h6 class="fw-bold border-bottom pb-2">Parents Profile</h6>
+                        <div class="table-responsive mb-4">
+                            <table class="table table-bordered table-sm align-middle">
+                                <thead class="table-light text-center">
+                                    <tr>
+                                        <th style="width: 10%">Role</th>
+                                        <th>Full Name</th>
+                                        <th>Type of Marriage</th>
+                                        <th>Civil Status</th>
+                                        <th>Religion</th>
+                                        <th style="width: 80px">Sex</th>
+                                        <th style="width: 80px">Age</th>
+                                        <th>Highest Educ. Attainment</th>
+                                        <th>Occupation</th>
+                                        <th>Status of Work</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-bold">HH Head:</td>
+                                        <td><input type="text" name="head_name" class="form-control form-control-sm" required></td>
+                                        <td>
+                                            <select name="head_marriage" class="form-select form-select-sm">
+                                                <option value="">Select...</option>
+                                                <option value="1">Civil</option>
+                                                <option value="2">Religious</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select name="head_religion" class="form-select form-select-sm">
+                                                <option value="1">Roman Catholic</option>
+                                                <option value="2">Islam</option>
+                                                <option value="99">Others</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select name="head_sex" class="form-select form-select-sm">
+                                                <option value="1">Male</option>
+                                                <option value="2">Female</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="number" name="head_age" class="form-control form-control-sm"></td>
+                                        <td>
+                                            <select name="head_educ" class="form-select form-select-sm">
+                                                <option value="">Select...</option>
+                                                <option value="Pre-School">Pre-School</option>
+                                                <option value="Elementary">Elementary</option>
+                                                <option value="Junior High">Junior High</option>
+                                                <option value="Senior High">Senior High</option>
+                                                <option value="College">College</option>
+                                                <option value="Post-Graduate">Post-Graduate</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" name="head_job" class="form-control form-control-sm"></td>
+                                        <td>
+                                            <select name="head_work_status" class="form-select form-select-sm">
+                                                <option value="">Select...</option>
+                                                <option value="1">Regular</option>
+                                                <option value="2">Contractual</option>
+                                                <option value="3">Unemployed</option>
+                                                <option value="4">Self-Employed</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="number" name="head_civil_status" class="form-control form-control-sm"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Spouse:</td>
+                                        <td><input type="text" name="spouse_name" class="form-control form-control-sm"></td>
+                                        <td>
+                                            <select name="spouse_marriage" class="form-select form-select-sm">
+                                                <option value="">Select...</option>
+                                                <option value="1">Civil</option>
+                                                <option value="2">Religious</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select name="spouse_religion" class="form-select form-select-sm">
+                                                <option value="1">Roman Catholic</option>
+                                                <option value="2">Islam</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select name="spouse_sex" class="form-select form-select-sm">
+                                                <option value="2">Female</option>
+                                                <option value="1">Male</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="number" name="spouse_age" class="form-control form-control-sm"></td>
+                                        <td>
+                                            <select name="spouse_educ" class="form-select form-select-sm">
+                                                <option value="">Select...</option>
+                                                <option value="Pre-School">Pre-School</option>
+                                                <option value="Elementary">Elementary</option>
+                                                <option value="Junior High">Junior High</option>
+                                                <option value="Senior High">Senior High</option>
+                                                <option value="College">College</option>
+                                                <option value="Post-Graduate">Post-Graduate</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" name="spouse_job" class="form-control form-control-sm"></td>
+                                        <td>
+                                            <select name="spouse_work_status" class="form-select form-select-sm">
+                                                <option value="">Select...</option>
+                                                <option value="1">Regular</option>
+                                                <option value="2">Contractual</option>
+                                                <option value="4">Self-Employed</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="number" name="spouse_civil_status" class="form-control form-control-sm"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-end mb-2">
+                            <div>
+                                <h6 class="fw-bold mb-0">Name of Household Members</h6>
+                                <p class="instruction-text mb-0">Order of listing: Never-Married Children, Ever-Married Children, Other Relatives, Nonrelatives</p>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-church" onclick="addRow()"><i class="bi bi-plus-circle"></i> Add Member</button>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm text-center align-middle" id="membersTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Name</th><th>Relation</th><th>Sex</th><th>Age</th><th>Civil Status</th>
+                                        <th>Religion</th><th>Sacraments</th><th>Studying</th><th>Highest Educ.</th>
+                                        <th>Occupation</th><th>Status</th><th title="Only for children 0-5 years old">Immunized?</th><th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row justify-content-end gap-2 mb-5">
+                    <div class="col-auto">
+                        <button type="button" onclick="goPrev()" class="btn btn-secondary px-4">Previous</button>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" onclick="goNext()" class="btn btn-church px-4">Next</button>
+                    </div>
+                </div>
+                
+                <input type="hidden" name="form_source" value="primary_info">
+            </form>
+        </main>
+    `,
+    extraScripts: `
+        <script src="/javascripts/survey2.js"></script>
+    `
+}) %>

@@ -1,0 +1,183 @@
+<%- include('../layouts/layout', {
+    title: 'Survey Form - Step 4',
+    bodyClass: 'd-flex flex-column min-vh-100 bg-light',
+    headerType: 'survey',
+    body: `
+        <main class="flex-fill py-4">
+            <div class="container">
+                <div class="progress mb-4" style="height: 25px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%;">Step 4 of 4</div>
+                </div>
+                <h4 class="text-center fw-bold mb-4">SOCIO-ECONOMIC AND INFRASTRUCTURE</h4>
+                
+                <form action="submit_handler.php" method="POST">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="income" class="form-label">Income per Month</label>
+                                    <select class="form-select" id="income" name="income_monthly">
+                                        <option value="">Select</option>
+                                        <option value="1">₱3,000 and below</option>
+                                        <option value="2">₱3,001 – ₱6,000</option>
+                                        <option value="3">₱6,001 – ₱9,000</option>
+                                        <option value="4">₱9,001 – ₱12,000</option>
+                                        <option value="5">₱12,001 – ₱15,000</option>
+                                        <option value="6">₱15,001 – ₱18,000</option>
+                                        <option value="7">₱18,001 – ₱21,000</option>
+                                        <option value="8">₱21,001 – ₱24,000</option>
+                                        <option value="9">₱24,001 – ₱27,000</option>
+                                        <option value="10">₱27,001 – ₱30,000</option>
+                                        <option value="11">₱30,001 and up</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="expenses" class="form-label">Expenses per Week</label>
+                                    <select class="form-select" id="expenses" name="expenses_weekly">
+                                        <option value="1">₱300 and below</option>
+                                        <option value="2">₱301 – ₱600</option>
+                                        <option value="3">₱601 – ₱900</option>
+                                        <option value="4">₱901 – ₱1,200</option>
+                                        <option value="5">₱1,201 – ₱1,500</option>
+                                        <option value="6">₱1,501 – ₱1,800</option>
+                                        <option value="7">₱1,801 – ₱2,100</option>
+                                        <option value="8">₱2,101 – ₱2,400</option>
+                                        <option value="9">₱2,401 – ₱2,700</option>
+                                        <option value="10">₱2,701 – ₱3,000</option>
+                                        <option value="11">₱3,001 and up</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="savings" class="form-label">Do you have savings?</label>
+                                    <select class="form-select" id="savings" name="has_savings">
+                                        <option value="1">Yes</option>
+                                        <option value="2">None</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="savings_loc" class="form-label">Where do you put your savings?</label>
+                                    <select class="form-select" id="savings_loc" name="savings_location">
+                                        <option value="1">House</option>
+                                        <option value="2">Bank</option>
+                                        <option value="3">E-money (GCash, etc.)</option>
+                                        <option value="4">Microfinance / ASA</option>
+                                        <option value="99">Others</option>
+                                        <option value="66">Not Applicable</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="ownership" class="form-label">Ownership of House/Lot</label>
+                                    <select class="form-select" id="ownership" name="house_ownership">
+                                        <option value="1">Owned</option>
+                                        <option value="2">Rented House</option>
+                                        <option value="3">Tenanted</option>
+                                        <option value="4">Rent Free</option>
+                                        <option value="5">Caretaker</option>
+                                        <option value="99">Others</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="house_class" class="form-label">House Classification</label>
+                                    <select class="form-select" id="house_class" name="house_classification">
+                                        <option value="1">Concrete</option>
+                                        <option value="2">Semi-Concrete</option>
+                                        <option value="3">Indigenous Materials</option>
+                                        <option value="4">Galvanized Iron / Aluminum</option>
+                                        <option value="5">Barong-barong</option>
+                                        <option value="6">Makeshift</option>
+                                        <option value="99">Others</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="land_area" class="form-label">Land Area (hectares)</label>
+                                    <input type="number" step="0.01" id="land_area" name="land_area" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <label class="form-label fw-bold">Appliances / Vehicle Owned</label>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="assets[]" value="refrigerator" id="asset1">
+                                        <label for="asset1">Refrigerator</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="assets[]" value="stove" id="asset2">
+                                        <label for="asset2">Stove</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="assets[]" value="rice_cooker" id="asset3">
+                                        <label for="asset3">Rice Cooker</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="assets[]" value="electric_fan" id="asset4">
+                                        <label for="asset4">Electric Fan</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="assets[]" value="washing_machine" id="asset5">
+                                        <label for="asset5">Washing Machine</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="assets[]" value="aircon" id="asset6">
+                                        <label for="asset6">Aircon</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="assets[]" value="tv" id="asset7">
+                                        <label for="asset7">Television</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="assets[]" value="phone" id="asset8">
+                                        <label for="asset8">Mobile Phone</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="assets[]" value="computer" id="asset9">
+                                        <label for="asset9">Computer/Laptop</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="assets[]" value="vehicle" id="asset10">
+                                        <label for="asset10">Car/Vehicle</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="assets[]" value="others" id="asset11">
+                                        <label for="asset11">Others</label>
+                                    </div>
+                                    <div class="mt-2">
+                                        <input type="text" class="form-control form-control-sm" name="assets_others" placeholder="Please specify other assets">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mb-5">
+                        <button type="button" onclick="goPrev()" class="btn btn-secondary me-2">Previous</button>
+                        <button type="button" onclick="submitSurvey()" class="btn btn-success px-5 fw-semibold shadow-sm">Review & Submit</button>
+                    </div>
+                    
+                    <input type="hidden" name="form_source" value="socio_economic_and_infrastructure">
+                </form>
+            </div>
+        </main>
+    `,
+    extraScripts: `<script src="/javascripts/survey5.js"></script>`
+}) %>

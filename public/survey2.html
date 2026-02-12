@@ -316,6 +316,7 @@
             <option value="Others">Others</option>
           </select>
         </td>
+        <input type="hidden" name="m_role[]" value="Member">
         <td><select name="m_sex[]" class="form-select form-select-sm"><option value="1">Male</option><option value="2">Female</option></select></td>
         <td><input name="m_age[]" type="number" class="form-control form-control-sm" min="0"></td>
         <td>
@@ -424,6 +425,7 @@
                 <option value="Others" ${saved.m_relation?.[idx] === 'Others' ? 'selected' : ''}>Others</option>
               </select>
             </td>
+            <input type="hidden" name="m_role[]" value="${saved.m_role?.[idx] || 'Member'}">
             <td><select name="m_sex[]" class="form-select form-select-sm">
               <option value="1" ${saved.m_sex?.[idx] === '1' ? 'selected' : ''}>Male</option>
               <option value="2" ${saved.m_sex?.[idx] === '2' ? 'selected' : ''}>Female</option>

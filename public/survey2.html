@@ -117,8 +117,8 @@
                       <td>
                         <select name="head_marriage" class="form-select form-select-sm">
                           <option value="">Select...</option>
-                          <option value="Civil">Civil</option>
-                          <option value="Religious">Religious</option>
+                          <option value="1">Civil</option>
+                          <option value="2">Religious</option>
                         </select>
                       </td>
                       <td>
@@ -169,8 +169,8 @@
                       <td>
                         <select name="spouse_marriage" class="form-select form-select-sm">
                           <option value="">Select...</option>
-                          <option value="Civil">Civil</option>
-                          <option value="Religious">Religious</option>
+                          <option value="1">Civil</option>
+                          <option value="2">Religious</option>
                         </select>
                       </td>
                       <td>
@@ -389,7 +389,7 @@
       }
 
       function loadSavedData() {
-        const saved = JSON.parse(sessionStorage.getItem('survey_primary') || '{}');
+        let saved = JSON.parse(sessionStorage.getItem('survey_primary') || '{}');
         console.log('Loading saved data:', saved);
         
         // Clear any cached data that might be old

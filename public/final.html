@@ -385,7 +385,8 @@
         const workStatusMap = {
             '1': 'Regular',
             '2': 'Contractual',
-            '3': 'Unemployed'
+            '3': 'Unemployed',
+            '4': 'Self-Employed'
         };
 
         const relationMap = {
@@ -408,6 +409,11 @@
             '1': 'None',
             '2': 'Baptism',
             '3': 'Confirmation'
+        };
+
+        const marriageMap = {
+            '1': 'Civil',
+            '2': 'Religious'
         };
 
         const studyingMap = {
@@ -454,7 +460,7 @@
             setText('gen-ethnicity', general.ethnicity);
 
             setText('head-name', primary.head_name);
-            setText('head-marriage', primary.head_marriage);
+            setText('head-marriage', marriageMap[primary.head_marriage]);
             setText('head-religion', religionMap[primary.head_religion]);
             setText('head-sex', sexMap[primary.head_sex]);
             setText('head-age', primary.head_age);
@@ -463,7 +469,7 @@
             setText('head-work', workStatusMap[primary.head_work_status]);
 
             setText('spouse-name', primary.spouse_name);
-            setText('spouse-marriage', primary.spouse_marriage);
+            setText('spouse-marriage', marriageMap[primary.spouse_marriage]);
             setText('spouse-religion', religionMap[primary.spouse_religion]);
             setText('spouse-sex', sexMap[primary.spouse_sex]);
             setText('spouse-age', primary.spouse_age);

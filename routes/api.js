@@ -5,15 +5,94 @@ const DatabaseAdapter = require('./database');
 // Initialize database adapter
 const db = new DatabaseAdapter();
 
+// Authentication middleware to extract user info
+const authMiddleware = (req, res, next) => {
+  const username = req.headers['x-username'] || 'Guest';
+  
+  // Determine user role
+  let userRole = 'parish';
+  if (username === 'Archdiocese of Tuguegarao') {
+    userRole = 'archdiocese';
+  } else if (username === 'admin' || username.toLowerCase().includes('admin')) {
+    userRole = 'admin';
+  }
+  
+  req.userRole = userRole;
+  req.userParish = username;
+  req.username = username;
+  
+  next();
+};
+
+// Login endpoint (no auth required)
+router.post('/login', async function(req, res, next) {
+  try {
+    const { username, password } = req.body;
+    
+    if (!username || !password) {
+      return res.status(400).json({ 
+        error: 'Username and password are required' 
+      });
+    }
+    
+    // Authenticate user
+    const user = await db.authenticateUser(username, password);
+    
+    if (!user) {
+      return res.status(401).json({ 
+        error: 'Invalid username or password' 
+      });
+    }
+    
+    // Determine role
+    let role = 'parish';
+    if (user.username === 'Archdiocese of Tuguegarao') {
+      role = 'archdiocese';
+    } else if (user.username.toLowerCase().includes('admin') || user.role === 'admin') {
+      role = 'admin';
+    }
+    
+    res.json({
+      success: true,
+      message: 'Login successful',
+      user: {
+        id: user.id,
+        username: user.username,
+        role: role,
+        parish: user.parish
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      error: 'Login failed', 
+      message: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error' 
+    });
+  }
+});
+
+// Apply auth middleware to all routes after login
+router.use(authMiddleware);
+
+// Get all participants with role-based filtering
+router.get('/all-participants', async function(req, res, next) {
+  try {
+    const { userRole, userParish } = req;
+    
+    const results = await db.getAllParticipants(userRole, userParish);
+    res.json(results);
+  } catch (error) {
+    res.status(500).json({ 
+      error: 'Failed to fetch participants', 
+      message: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error' 
+    });
+  }
+});
+
 // Search participants endpoint
 router.get('/search-participants', async function(req, res, next) {
   try {
     const query = req.query.q;
-    const username = req.headers['x-username'] || 'Guest';
-    const userRole = req.userRole || (username === 'Archdiocese of Tuguegarao' ? 'archdiocese' : 'parish');
-    const userParish = req.userParish || username;
-    
-    
+    const { userRole, userParish } = req;
     
     if (!query || query.length < 2) {
       return res.json([]);
@@ -33,17 +112,197 @@ router.get('/search-participants', async function(req, res, next) {
 router.get('/participant/:id', async function(req, res, next) {
   try {
     const participantId = req.params.id;
-    const username = req.headers['x-username'] || 'Guest';
-    const userRole = req.userRole || (username === 'Archdiocese of Tuguegarao' ? 'archdiocese' : 'parish');
-    const userParish = req.userParish || username;
-    
-    
+    const { userRole, userParish } = req;
     
     const data = await db.getParticipantDetails(participantId, userRole, userParish);
+    
+    // Check access for parish users
+    if (userRole === 'parish' && data.household?.parish_name !== userParish) {
+      return res.status(403).json({ 
+        error: 'Access denied. You can only view participants from your parish.' 
+      });
+    }
+    
     res.json(data);
   } catch (error) {
     res.status(500).json({ 
       error: 'Failed to get participant details', 
+      message: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error' 
+    });
+  }
+});
+
+// Update participant endpoint (Archdiocese and Admin only)
+router.put('/participant/:id', async function(req, res, next) {
+  try {
+    const participantId = req.params.id;
+    const { userRole } = req;
+    
+    // Only archdiocese and admin can edit
+    if (userRole !== 'archdiocese' && userRole !== 'admin') {
+      return res.status(403).json({ 
+        error: 'Access denied. Only Archdiocese and Admin users can edit participants.' 
+      });
+    }
+    
+    const updateData = req.body;
+    const result = await db.updateParticipant(participantId, updateData);
+    
+    res.json({ 
+      success: true, 
+      message: 'Participant updated successfully',
+      data: result 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      error: 'Failed to update participant', 
+      message: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error' 
+    });
+  }
+});
+
+// Delete participant endpoint (Admin only)
+router.delete('/participant/:id', async function(req, res, next) {
+  try {
+    const participantId = req.params.id;
+    const { userRole } = req;
+    
+    // Only admin can delete
+    if (userRole !== 'admin') {
+      return res.status(403).json({ 
+        error: 'Access denied. Only Admin users can delete participants.' 
+      });
+    }
+    
+    await db.deleteParticipant(participantId);
+    
+    res.json({ 
+      success: true, 
+      message: 'Participant deleted successfully' 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      error: 'Failed to delete participant', 
+      message: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error' 
+    });
+  }
+});
+
+// User management endpoints (Admin only)
+router.get('/users', async function(req, res, next) {
+  try {
+    const { userRole } = req;
+    
+    if (userRole !== 'admin') {
+      return res.status(403).json({ 
+        error: 'Access denied. Only Admin users can view user list.' 
+      });
+    }
+    
+    const users = await db.getAllUsers();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ 
+      error: 'Failed to fetch users', 
+      message: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error' 
+    });
+  }
+});
+
+// Create new user (Admin only)
+router.post('/users', async function(req, res, next) {
+  try {
+    const { userRole } = req;
+    
+    if (userRole !== 'admin') {
+      return res.status(403).json({ 
+        error: 'Access denied. Only Admin users can create new users.' 
+      });
+    }
+    
+    const userData = req.body;
+    const result = await db.createUser(userData);
+    
+    res.status(201).json({ 
+      success: true, 
+      message: 'User created successfully',
+      data: result 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      error: 'Failed to create user', 
+      message: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error' 
+    });
+  }
+});
+
+// Update user (Admin only)
+router.put('/users/:id', async function(req, res, next) {
+  try {
+    const userId = req.params.id;
+    const { userRole } = req;
+    
+    if (userRole !== 'admin') {
+      return res.status(403).json({ 
+        error: 'Access denied. Only Admin users can update users.' 
+      });
+    }
+    
+    const userData = req.body;
+    const result = await db.updateUser(userId, userData);
+    
+    res.json({ 
+      success: true, 
+      message: 'User updated successfully',
+      data: result 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      error: 'Failed to update user', 
+      message: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error' 
+    });
+  }
+});
+
+// Delete user (Admin only)
+router.delete('/users/:id', async function(req, res, next) {
+  try {
+    const userId = req.params.id;
+    const { userRole } = req;
+    
+    if (userRole !== 'admin') {
+      return res.status(403).json({ 
+        error: 'Access denied. Only Admin users can delete users.' 
+      });
+    }
+    
+    await db.deleteUser(userId);
+    
+    res.json({ 
+      success: true, 
+      message: 'User deleted successfully' 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      error: 'Failed to delete user', 
+      message: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error' 
+    });
+  }
+});
+
+// Get current user info
+router.get('/me', async function(req, res, next) {
+  try {
+    const { username, userRole, userParish } = req;
+    
+    res.json({
+      username,
+      role: userRole,
+      parish: userParish
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      error: 'Failed to get user info', 
       message: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error' 
     });
   }
@@ -85,9 +344,7 @@ router.get('/test-connection', async function(req, res, next) {
 router.get('/search', async function(req, res, next) {
   try {
     const query = req.query.q;
-    const username = req.headers['x-username'] || 'Guest';
-    const userRole = req.userRole || (username === 'Archdiocese of Tuguegarao' ? 'archdiocese' : 'parish');
-    const userParish = req.userParish || username;
+    const { userRole, userParish } = req;
     
     if (!query || query.length < 2) {
       return res.json([]);

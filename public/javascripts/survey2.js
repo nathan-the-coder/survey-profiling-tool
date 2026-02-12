@@ -217,7 +217,7 @@ function saveFormData() {
         }
     }
     
-    sessionStorage.setItem('survey_primary', JSON.stringify(data));
+    sessionStorage.setItem('profiling_primary', JSON.stringify(data));
 }
 
 // Navigate to next page
@@ -234,7 +234,7 @@ function goPrev() {
 
 // Load saved data from sessionStorage
 function loadSavedData() {
-    const saved = JSON.parse(sessionStorage.getItem('survey_primary') || '{}');
+    const saved = JSON.parse(sessionStorage.getItem('profiling_primary') || '{}');
     const container = document.getElementById('membersContainer');
     
     // Load head fields

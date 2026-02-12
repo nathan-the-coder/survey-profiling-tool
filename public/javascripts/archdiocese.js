@@ -3,6 +3,7 @@ const searchInput = document.getElementById('searchInput');
 const autocompleteList = document.getElementById('autocompleteList');
 const participantModal = new bootstrap.Modal(document.getElementById('participantModal'));
 let debounceTimer;
+let allParticipants = []; // Store all participants for filtering
 
 const username = sessionStorage.getItem('username') || 'Guest';
 document.getElementById('nameDisplay').textContent = username;
@@ -13,6 +14,15 @@ if (username === 'Archdiocese of Tuguegarao') {
 } else if (username.includes('Parish')) {
     userRole = 'Parish';
 }
+
+// Filter elements
+const filterName = document.getElementById('filterName');
+const filterAddress = document.getElementById('filterAddress');
+const filterParish = document.getElementById('filterParish');
+const filterRelation = document.getElementById('filterRelation');
+const filterMinAge = document.getElementById('filterMinAge');
+const filterMaxAge = document.getElementById('filterMaxAge');
+const clearFiltersBtn = document.getElementById('clearFilters');
 
 searchInput.addEventListener('input', () => {
     clearTimeout(debounceTimer);
@@ -63,24 +73,103 @@ async function loadAllParticipants() {
             headers: { 'X-Username': username }
         });
         const data = await response.json();
-        if (!data || data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="text-center">No participants found</td></tr>';
-            return;
-        }
-        tbody.innerHTML = data.map(p => `
-            <tr>
-                <td>${p.full_name || 'N/A'}</td>
-                <td>${p.relation_to_head_code || 'N/A'}</td>
-                <td>${p.purok_gimong || ''}, ${p.barangay_name || ''}</td>
-                <td>${p.parish_name || 'N/A'}</td>
-                <td>${p.age || 'N/A'}</td>
-                <td><button class="btn btn-sm btn-primary" onclick="fetchParticipantDetails(${p.id})"><i class="bi bi-eye"></i> View</button></td>
-            </tr>
-        `).join('');
+        allParticipants = data || []; // Store for filtering
+        applyFilters(); // Apply any active filters
     } catch (_err) {
         tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error loading data.</td></tr>';
     }
 }
+
+function displayParticipantsTable(participants) {
+    const tbody = document.getElementById('participantsTableBody');
+    if (!participants || participants.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">No participants found matching your filters</td></tr>';
+        updateShowingInfo(0, 0);
+        return;
+    }
+    
+    tbody.innerHTML = participants.map(p => `
+        <tr>
+            <td>${p.full_name || 'N/A'}</td>
+            <td>${p.relation_to_head_code || 'N/A'}</td>
+            <td>${p.purok_gimong || ''}, ${p.barangay_name || ''}</td>
+            <td>${p.parish_name || 'N/A'}</td>
+            <td>${p.age || 'N/A'}</td>
+            <td><button class="btn btn-sm btn-primary" onclick="fetchParticipantDetails(${p.id})"><i class="bi bi-eye"></i> View</button></td>
+        </tr>
+    `).join('');
+    
+    updateShowingInfo(participants.length, allParticipants.length);
+}
+
+function applyFilters() {
+    let filtered = [...allParticipants];
+    
+    // Name filter
+    const nameFilter = filterName?.value?.toLowerCase() || '';
+    if (nameFilter) {
+        filtered = filtered.filter(p => p.full_name?.toLowerCase().includes(nameFilter));
+    }
+    
+    // Address filter
+    const addressFilter = filterAddress?.value?.toLowerCase() || '';
+    if (addressFilter) {
+        filtered = filtered.filter(p => 
+            (p.purok_gimong?.toLowerCase().includes(addressFilter) || 
+             p.barangay_name?.toLowerCase().includes(addressFilter))
+        );
+    }
+    
+    // Parish filter
+    const parishFilter = filterParish?.value?.toLowerCase() || '';
+    if (parishFilter) {
+        filtered = filtered.filter(p => p.parish_name?.toLowerCase().includes(parishFilter));
+    }
+    
+    // Relation filter
+    const relationFilter = filterRelation?.value || '';
+    if (relationFilter) {
+        filtered = filtered.filter(p => p.relation_to_head_code === relationFilter);
+    }
+    
+    // Age range filter
+    const minAge = parseInt(filterMinAge?.value) || 0;
+    const maxAge = parseInt(filterMaxAge?.value) || 999;
+    if (minAge > 0 || maxAge < 999) {
+        filtered = filtered.filter(p => {
+            const age = parseInt(p.age) || 0;
+            return age >= minAge && age <= maxAge;
+        });
+    }
+    
+    displayParticipantsTable(filtered);
+}
+
+function updateShowingInfo(filteredCount, totalCount) {
+    const showingInfo = document.getElementById('showingInfo');
+    if (showingInfo) {
+        showingInfo.textContent = `Showing ${filteredCount} of ${totalCount} entries`;
+    }
+}
+
+function clearFilters() {
+    if (filterName) filterName.value = '';
+    if (filterAddress) filterAddress.value = '';
+    if (filterParish) filterParish.value = '';
+    if (filterRelation) filterRelation.value = '';
+    if (filterMinAge) filterMinAge.value = '';
+    if (filterMaxAge) filterMaxAge.value = '';
+    applyFilters();
+}
+
+// Add event listeners to filters
+if (filterName) filterName.addEventListener('input', applyFilters);
+if (filterAddress) filterAddress.addEventListener('input', applyFilters);
+if (filterParish) filterParish.addEventListener('input', applyFilters);
+if (filterRelation) filterRelation.addEventListener('change', applyFilters);
+if (filterMinAge) filterMinAge.addEventListener('input', applyFilters);
+if (filterMaxAge) filterMaxAge.addEventListener('input', applyFilters);
+if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearFilters);
 
 async function fetchParticipantDetails(id) {
     try {

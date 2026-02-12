@@ -39,6 +39,77 @@ class DatabaseAdapter {
         }
     }
 
+    // Get all participants with role-based filtering
+    async getAllParticipants(userRole, userParish) {
+        try {
+            if (this.useSupabase) {
+                // Supabase implementation
+                let supabaseQuery = this.supabaseClient
+                    .from('family_members')
+                    .select(`
+                        id,
+                        full_name,
+                        relation_to_head_code,
+                        age,
+                        purok_gimong,
+                        barangay_name,
+                        households!inner(
+                            parish_name
+                        )
+                    `);
+
+                // Apply role-based filtering
+                if (userRole === 'parish' && userParish) {
+                    supabaseQuery = supabaseQuery.eq('households.parish_name', userParish);
+                }
+
+                const { data, error } = await supabaseQuery.order('full_name');
+                
+                if (error) throw error;
+                
+                // Flatten the data structure
+                return data.map(item => ({
+                    id: item.id,
+                    full_name: item.full_name,
+                    relation_to_head_code: item.relation_to_head_code,
+                    age: item.age,
+                    purok_gimong: item.purok_gimong,
+                    barangay_name: item.barangay_name,
+                    parish_name: item.households?.parish_name
+                }));
+            } else {
+                // MySQL implementation
+                let sql = `
+                    SELECT 
+                        fm.id,
+                        fm.full_name,
+                        fm.relation_to_head_code,
+                        fm.age,
+                        fm.purok_gimong,
+                        fm.barangay_name,
+                        h.parish_name
+                    FROM family_members fm
+                    INNER JOIN households h ON fm.household_id = h.id
+                `;
+                
+                const params = [];
+                
+                // Apply role-based filtering
+                if (userRole === 'parish' && userParish) {
+                    sql += ' WHERE h.parish_name = ?';
+                    params.push(userParish);
+                }
+                
+                sql += ' ORDER BY fm.full_name';
+                
+                const [rows] = await this.mysqlPool.execute(sql, params);
+                return rows;
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     // Search participants method
     async searchParticipants(query, userRole, userParish) {
         try {
@@ -66,7 +137,16 @@ class DatabaseAdapter {
                 const { data, error } = await supabaseQuery.limit(20);
                 
                 if (error) throw error;
-                return data;
+                
+                // Flatten the data structure
+                return data.map(item => ({
+                    id: item.id,
+                    full_name: item.full_name,
+                    relation_to_head_code: item.relation_to_head_code,
+                    purok_gimong: item.purok_gimong,
+                    barangay_name: item.barangay_name,
+                    parish_name: item.households?.parish_name
+                }));
             } else {
                 // MySQL implementation
                 let sql = `
@@ -75,7 +155,8 @@ class DatabaseAdapter {
                         fm.full_name,
                         fm.relation_to_head_code,
                         fm.purok_gimong,
-                        fm.barangay_name
+                        fm.barangay_name,
+                        h.parish_name
                     FROM family_members fm
                     INNER JOIN households h ON fm.household_id = h.id
                     WHERE fm.full_name LIKE ? 
@@ -104,60 +185,84 @@ class DatabaseAdapter {
     // Get participant details
     async getParticipantDetails(participantId, userRole, userParish) {
         try {
+            // First get the household_id for this participant
+            let householdId;
+            
+            if (this.useSupabase) {
+                const { data, error } = await this.supabaseClient
+                    .from('family_members')
+                    .select('household_id')
+                    .eq('id', participantId)
+                    .single();
+                
+                if (error) throw error;
+                householdId = data?.household_id;
+            } else {
+                const [rows] = await this.mysqlPool.execute(
+                    'SELECT household_id FROM family_members WHERE id = ?', 
+                    [participantId]
+                );
+                householdId = rows[0]?.household_id;
+            }
+            
+            if (!householdId) {
+                throw new Error('Participant not found');
+            }
+            
             if (this.useSupabase) {
                 // Supabase implementation
                 // Get household info
                 const { data: household, error: householdError } = await this.supabaseClient
                     .from('households')
                     .select('*')
-                    .eq('id', participantId)
+                    .eq('id', householdId)
                     .single();
 
                 // Get family members
                 const { data: familyMembers, error: familyError } = await this.supabaseClient
                     .from('family_members')
                     .select('*')
-                    .eq('household_id', participantId);
+                    .eq('household_id', householdId);
 
                 // Get health conditions
                 const { data: healthConditions, error: healthError } = await this.supabaseClient
                     .from('health_conditions')
                     .select('*')
-                    .eq('household_id', participantId)
+                    .eq('household_id', householdId)
                     .single();
 
                 // Get socio-economic data
                 const { data: socioEconomic, error: socioError } = await this.supabaseClient
                     .from('socio_economic')
                     .select('*')
-                    .eq('household_id', participantId)
+                    .eq('household_id', householdId)
                     .single();
 
-                if (householdError || familyError || healthError || socioError) {
+                if (householdError || familyError) {
                     throw new Error('Error fetching participant details');
                 }
 
                 return {
                     household,
                     family_members: familyMembers,
-                    health_conditions: healthConditions,
-                    socio_economic: socioEconomic,
+                    health_conditions: healthConditions || {},
+                    socio_economic: socioEconomic || {},
                     userRole,
                     userParish
                 };
             } else {
                 // MySQL implementation
                 const [householdRows] = await this.mysqlPool.execute(
-                    'SELECT * FROM households WHERE id = ?', [participantId]
+                    'SELECT * FROM households WHERE id = ?', [householdId]
                 );
                 const [familyRows] = await this.mysqlPool.execute(
-                    'SELECT * FROM family_members WHERE household_id = ?', [participantId]
+                    'SELECT * FROM family_members WHERE household_id = ?', [householdId]
                 );
                 const [healthRows] = await this.mysqlPool.execute(
-                    'SELECT * FROM health_conditions WHERE household_id = ?', [participantId]
+                    'SELECT * FROM health_conditions WHERE household_id = ?', [householdId]
                 );
                 const [socioRows] = await this.mysqlPool.execute(
-                    'SELECT * FROM socio_economic WHERE household_id = ?', [participantId]
+                    'SELECT * FROM socio_economic WHERE household_id = ?', [householdId]
                 );
 
                 return {
@@ -169,6 +274,252 @@ class DatabaseAdapter {
                     userParish
                 };
             }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // Update participant
+    async updateParticipant(participantId, updateData) {
+        try {
+            const { household, family_members, health_conditions, socio_economic } = updateData;
+            
+            // Get household_id for this participant
+            let householdId;
+            
+            if (this.useSupabase) {
+                const { data, error } = await this.supabaseClient
+                    .from('family_members')
+                    .select('household_id')
+                    .eq('id', participantId)
+                    .single();
+                
+                if (error) throw error;
+                householdId = data?.household_id;
+            } else {
+                const [rows] = await this.mysqlPool.execute(
+                    'SELECT household_id FROM family_members WHERE id = ?', 
+                    [participantId]
+                );
+                householdId = rows[0]?.household_id;
+            }
+            
+            if (!householdId) {
+                throw new Error('Participant not found');
+            }
+            
+            if (this.useSupabase) {
+                // Update household
+                if (household) {
+                    await this.supabaseClient
+                        .from('households')
+                        .update(household)
+                        .eq('id', householdId);
+                }
+                
+                // Update family members
+                if (family_members && Array.isArray(family_members)) {
+                    for (const member of family_members) {
+                        if (member.id) {
+                            await this.supabaseClient
+                                .from('family_members')
+                                .update(member)
+                                .eq('id', member.id);
+                        }
+                    }
+                }
+                
+                // Update health conditions
+                if (health_conditions) {
+                    await this.supabaseClient
+                        .from('health_conditions')
+                        .upsert({ ...health_conditions, household_id: householdId });
+                }
+                
+                // Update socio-economic
+                if (socio_economic) {
+                    await this.supabaseClient
+                        .from('socio_economic')
+                        .upsert({ ...socio_economic, household_id: householdId });
+                }
+            } else {
+                // MySQL implementation
+                if (household) {
+                    const fields = Object.keys(household);
+                    const values = Object.values(household);
+                    const setClause = fields.map(f => `${f} = ?`).join(', ');
+                    await this.mysqlPool.execute(
+                        `UPDATE households SET ${setClause} WHERE id = ?`,
+                        [...values, householdId]
+                    );
+                }
+                
+                if (family_members && Array.isArray(family_members)) {
+                    for (const member of family_members) {
+                        if (member.id) {
+                            const fields = Object.keys(member).filter(k => k !== 'id');
+                            const values = fields.map(f => member[f]);
+                            const setClause = fields.map(f => `${f} = ?`).join(', ');
+                            await this.mysqlPool.execute(
+                                `UPDATE family_members SET ${setClause} WHERE id = ?`,
+                                [...values, member.id]
+                            );
+                        }
+                    }
+                }
+            }
+            
+            return { success: true, householdId };
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // Delete participant (and associated household data)
+    async deleteParticipant(participantId) {
+        try {
+            // Get household_id for this participant
+            let householdId;
+            
+            if (this.useSupabase) {
+                const { data, error } = await this.supabaseClient
+                    .from('family_members')
+                    .select('household_id')
+                    .eq('id', participantId)
+                    .single();
+                
+                if (error) throw error;
+                householdId = data?.household_id;
+            } else {
+                const [rows] = await this.mysqlPool.execute(
+                    'SELECT household_id FROM family_members WHERE id = ?', 
+                    [participantId]
+                );
+                householdId = rows[0]?.household_id;
+            }
+            
+            if (!householdId) {
+                throw new Error('Participant not found');
+            }
+            
+            if (this.useSupabase) {
+                // Delete in correct order to maintain referential integrity
+                await this.supabaseClient.from('family_members').delete().eq('household_id', householdId);
+                await this.supabaseClient.from('health_conditions').delete().eq('household_id', householdId);
+                await this.supabaseClient.from('socio_economic').delete().eq('household_id', householdId);
+                await this.supabaseClient.from('households').delete().eq('id', householdId);
+            } else {
+                await this.mysqlPool.execute('DELETE FROM family_members WHERE household_id = ?', [householdId]);
+                await this.mysqlPool.execute('DELETE FROM health_conditions WHERE household_id = ?', [householdId]);
+                await this.mysqlPool.execute('DELETE FROM socio_economic WHERE household_id = ?', [householdId]);
+                await this.mysqlPool.execute('DELETE FROM households WHERE id = ?', [householdId]);
+            }
+            
+            return { success: true };
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // User Management Methods
+    
+    // Get all users
+    async getAllUsers() {
+        try {
+            if (this.useSupabase) {
+                const { data, error } = await this.supabaseClient
+                    .from('users')
+                    .select('*')
+                    .order('username');
+                
+                if (error) throw error;
+                return data;
+            } else {
+                const [rows] = await this.mysqlPool.execute('SELECT * FROM users ORDER BY username');
+                return rows;
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // Create new user
+    async createUser(userData) {
+        try {
+            const { username, password, role, parish } = userData;
+            
+            if (this.useSupabase) {
+                const { data, error } = await this.supabaseClient
+                    .from('users')
+                    .insert([{ username, password, role, parish }])
+                    .select();
+                
+                if (error) throw error;
+                return data[0];
+            } else {
+                const [result] = await this.mysqlPool.execute(
+                    'INSERT INTO users (username, password, role, parish) VALUES (?, ?, ?, ?)',
+                    [username, password, role, parish]
+                );
+                return { id: result.insertId, username, role, parish };
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // Update user
+    async updateUser(userId, userData) {
+        try {
+            const { username, password, role, parish } = userData;
+            
+            if (this.useSupabase) {
+                const updateObj = { username, role, parish };
+                if (password) updateObj.password = password;
+                
+                const { data, error } = await this.supabaseClient
+                    .from('users')
+                    .update(updateObj)
+                    .eq('id', userId)
+                    .select();
+                
+                if (error) throw error;
+                return data[0];
+            } else {
+                let sql = 'UPDATE users SET username = ?, role = ?, parish = ?';
+                let params = [username, role, parish];
+                
+                if (password) {
+                    sql += ', password = ?';
+                    params.push(password);
+                }
+                
+                sql += ' WHERE id = ?';
+                params.push(userId);
+                
+                await this.mysqlPool.execute(sql, params);
+                return { id: userId, username, role, parish };
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // Delete user
+    async deleteUser(userId) {
+        try {
+            if (this.useSupabase) {
+                const { error } = await this.supabaseClient
+                    .from('users')
+                    .delete()
+                    .eq('id', userId);
+                
+                if (error) throw error;
+            } else {
+                await this.mysqlPool.execute('DELETE FROM users WHERE id = ?', [userId]);
+            }
+            
+            return { success: true };
         } catch (error) {
             throw error;
         }
@@ -208,6 +559,31 @@ class DatabaseAdapter {
             } else {
                 const [rows] = await this.mysqlPool.execute('SELECT username FROM users ORDER BY username');
                 return rows.map(item => item.username);
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // Authenticate user
+    async authenticateUser(username, password) {
+        try {
+            if (this.useSupabase) {
+                const { data, error } = await this.supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('username', username)
+                    .eq('password', password)
+                    .single();
+                
+                if (error) return null;
+                return data;
+            } else {
+                const [rows] = await this.mysqlPool.execute(
+                    'SELECT * FROM users WHERE username = ? AND password = ?',
+                    [username, password]
+                );
+                return rows[0] || null;
             }
         } catch (error) {
             throw error;

@@ -1,5 +1,5 @@
 /** biome-ignore-all lint/correctness/noUnusedVariables: unused variables are used outside of js */
-function editSurvey() {
+function editEntry() {
     window.location.href = '/survey';
 }
 
@@ -39,11 +39,11 @@ function normalizeArrayFields(data) {
     return normalized;
 }
 
-function submitSurvey() {
-    let general = JSON.parse(sessionStorage.getItem('survey_general') || '{}');
-    let primary = JSON.parse(sessionStorage.getItem('survey_primary') || '{}');
-    let health = JSON.parse(sessionStorage.getItem('survey_health') || '{}');
-    let socio = JSON.parse(sessionStorage.getItem('survey_socio') || '{}');
+function submitEntry() {
+    let general = JSON.parse(sessionStorage.getItem('profiling_general') || '{}');
+    let primary = JSON.parse(sessionStorage.getItem('profiling_primary') || '{}');
+    let health = JSON.parse(sessionStorage.getItem('profiling_health') || '{}');
+    let socio = JSON.parse(sessionStorage.getItem('profiling_socio') || '{}');
     
     general = normalizeData(general);
     primary = normalizeData(primary);
@@ -54,7 +54,7 @@ function submitSurvey() {
     const allData = { general, primary, health, socio };
     
     Swal.fire({
-        title: 'Submitting Survey...',
+        title: 'Submitting Entry...',
         text: 'Please wait while your data is being saved.',
         allowOutsideClick: false,
         didOpen: () => {
@@ -77,7 +77,7 @@ function submitSurvey() {
             });
         })
         .catch(error => {
-            let errorMessage = 'An error occurred while submitting your survey.';
+            let errorMessage = 'An error occurred while submitting your entry.';
             if (error.response) {
                 errorMessage = error.response.data?.error || error.response.statusText || errorMessage;
             } else if (error.request) {
@@ -93,7 +93,7 @@ function submitSurvey() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadSurveyData();
+    loadProfilingData();
 });
 
 const religionMap = {
@@ -155,11 +155,11 @@ function setText(id, value) {
     if (el) el.textContent = value || '-';
 }
 
-function loadSurveyData() {
-    const general = JSON.parse(sessionStorage.getItem('survey_general') || '{}');
-    const primary = JSON.parse(sessionStorage.getItem('survey_primary') || '{}');
-    const health = JSON.parse(sessionStorage.getItem('survey_health') || '{}');
-    const socio = JSON.parse(sessionStorage.getItem('survey_socio') || '{}');
+function loadProfilingData() {
+    const general = JSON.parse(sessionStorage.getItem('profiling_general') || '{}');
+    const primary = JSON.parse(sessionStorage.getItem('profiling_primary') || '{}');
+    const health = JSON.parse(sessionStorage.getItem('profiling_health') || '{}');
+    const socio = JSON.parse(sessionStorage.getItem('profiling_socio') || '{}');
     
     setText('gen-purokGimong', general.purokGimong);
     setText('gen-barangayName', general.barangayName);

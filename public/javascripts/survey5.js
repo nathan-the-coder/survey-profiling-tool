@@ -12,11 +12,11 @@ function saveFormData() {
             data[key] = value;
         }
     }
-    sessionStorage.setItem('survey_socio', JSON.stringify(data));
+    sessionStorage.setItem('profiling_socio', JSON.stringify(data));
 }
 
 function loadSavedData() {
-    const saved = JSON.parse(sessionStorage.getItem('survey_socio') || '{}');
+    const saved = JSON.parse(sessionStorage.getItem('profiling_socio') || '{}');
     for (const key in saved) {
         if (Array.isArray(saved[key])) {
             saved[key].forEach(val => {
@@ -35,7 +35,7 @@ function goPrev() {
     window.location.href = '/survey4';
 }
 
-function submitSurvey() {
+function submitEntry() {
     saveFormData();
     window.location.href = '/final';
 }

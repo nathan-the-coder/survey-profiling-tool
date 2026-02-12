@@ -77,7 +77,7 @@ a {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-#surveyContainer {
+#profilingContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -85,7 +85,7 @@ a {
 }
 
 
-#startSurveyBtn {
+#startProfilingBtn {
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.5px;

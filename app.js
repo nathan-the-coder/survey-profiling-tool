@@ -45,8 +45,18 @@ app.set('views', path.join(__dirname, 'views'));
 // Authentication middleware
 app.use((req, res, next) => {
   const username = req.headers['x-username'] || req.session?.username;
-  req.userRole = username === 'Archdiocese of Tuguegarao' ? 'archdiocese' : 'parish';
+  
+  // Determine user role
+  let userRole = 'parish';
+  if (username === 'Archdiocese of Tuguegarao') {
+    userRole = 'archdiocese';
+  } else if (username === 'SJCB_Admin' || (username && username.toLowerCase().includes('admin'))) {
+    userRole = 'admin';
+  }
+  
+  req.userRole = userRole;
   req.userParish = username;
+  req.username = username;
   next();
 });
 

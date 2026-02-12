@@ -39,7 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }).then(() => {
                 sessionStorage.setItem('username', response.data.user.username);
                 
-                if (username === 'Archdiocese of Tuguegarao') {
+                // Determine user role and redirect accordingly
+                const userRole = response.data.user.role || 
+                    (username === 'Archdiocese of Tuguegarao' ? 'archdiocese' : 
+                     username.toLowerCase().includes('admin') ? 'admin' : 'parish');
+                
+                if (userRole === 'admin' || username.toLowerCase().includes('admin')) {
+                    window.location.href = '/admin/users';
+                } else if (username === 'Archdiocese of Tuguegarao' || userRole === 'archdiocese') {
                     window.location.href = '/archdiocese';
                 } else {
                     window.location.href = '/user';

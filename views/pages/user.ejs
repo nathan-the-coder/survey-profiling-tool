@@ -12,7 +12,51 @@
                 </div>
                 
                 <div class="w-100 mt-4">
-                    <h4 class="mb-3">All Participants</h4>
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                        <h4 class="mb-0">All Participants</h4>
+                        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#filterSection" aria-expanded="false" aria-controls="filterSection">
+                            <i class="bi bi-funnel me-1"></i>Filters
+                        </button>
+                    </div>
+                    
+                    <!-- Filter Section -->
+                    <div class="collapse mb-3" id="filterSection">
+                        <div class="card card-body bg-white">
+                            <div class="row g-2">
+                                <div class="col-md-4 col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" id="filterName" placeholder="Filter by Name...">
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" id="filterAddress" placeholder="Filter by Address...">
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" id="filterParish" placeholder="Filter by Parish...">
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <select class="form-select form-select-sm" id="filterRelation">
+                                        <option value="">All Relations</option>
+                                        <option value="Head">Head</option>
+                                        <option value="Spouse">Spouse</option>
+                                        <option value="Child">Child</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text">Age</span>
+                                        <input type="number" class="form-control" id="filterMinAge" placeholder="Min">
+                                        <input type="number" class="form-control" id="filterMaxAge" placeholder="Max">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary w-100" id="clearFilters">
+                                        <i class="bi bi-x-circle me-1"></i>Clear Filters
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
                         <table class="table table-striped table-hover" id="participantsTable">
                             <thead class="table-dark sticky-top">
@@ -24,6 +68,15 @@
                                 <tr><td colspan="6" class="text-center">Loading participants...</td></tr>
                             </tbody>
                         </table>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <small class="text-muted" id="showingInfo">Showing 0 entries</small>
+                        <nav aria-label="Table pagination">
+                            <ul class="pagination pagination-sm mb-0" id="pagination">
+                                <!-- Pagination will be inserted here -->
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>

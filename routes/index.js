@@ -42,4 +42,9 @@ router.get('/archdiocese', function(req, res, next) {
   res.render('pages/archdiocese');
 });
 
+/* GET admin page. */
+router.get('/admin/users', function(req, res, next) {
+  res.render('pages/admin');
+});
+
 module.exports = router;

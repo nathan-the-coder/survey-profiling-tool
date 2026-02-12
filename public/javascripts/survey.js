@@ -15,11 +15,11 @@ function saveFormData() {
     for (const [key, value] of formData.entries()) {
         data[key] = value;
     }
-    sessionStorage.setItem('survey_general', JSON.stringify(data));
+    sessionStorage.setItem('profiling_general', JSON.stringify(data));
 }
 
 function loadSavedData() {
-    const saved = JSON.parse(sessionStorage.getItem('survey_general') || '{}');
+    const saved = JSON.parse(sessionStorage.getItem('profiling_general') || '{}');
     for (const key in saved) {
         const el = document.querySelector(`[name="${key}"]`);
         if (el) el.value = saved[key];

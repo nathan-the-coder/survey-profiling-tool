@@ -308,12 +308,12 @@
         <td>
           <select name="m_relation[]" class="form-select form-select-sm">
             <option value="">Select...</option>
-            <option value="1">Son</option>
-            <option value="2">Daughter</option>
-            <option value="3">Stepson</option>
-            <option value="7">Grandson</option>
-            <option value="13">Relative</option>
-            <option value="99">Others</option>
+            <option value="Son">Son</option>
+            <option value="Daughter">Daughter</option>
+            <option value="Stepson">Stepson</option>
+            <option value="Grandson">Grandson</option>
+            <option value="Relative">Relative</option>
+            <option value="Others">Others</option>
           </select>
         </td>
         <input type="hidden" name="m_role[]" value="Member">
@@ -432,12 +432,12 @@
             <td>
               <select name="m_relation[]" class="form-select form-select-sm">
                 <option value="">Select...</option>
-                <option value="1" ${(saved.m_relation?.[idx] || '') === '1' ? 'selected' : ''}>Son</option>
-                <option value="2" ${(saved.m_relation?.[idx] || '') === '2' ? 'selected' : ''}>Daughter</option>
-                <option value="3" ${(saved.m_relation?.[idx] || '') === '3' ? 'selected' : ''}>Stepson</option>
-                <option value="7" ${(saved.m_relation?.[idx] || '') === '7' ? 'selected' : ''}>Grandson</option>
-                <option value="13" ${(saved.m_relation?.[idx] || '') === '13' ? 'selected' : ''}>Relative</option>
-                <option value="99" ${(saved.m_relation?.[idx] || '') === '99' ? 'selected' : ''}>Others</option>
+                <option value="Son" ${(saved.m_relation?.[idx] || '') === 'Son' ? 'selected' : ''}>Son</option>
+                <option value="Daughter" ${(saved.m_relation?.[idx] || '') === 'Daughter' ? 'selected' : ''}>Daughter</option>
+                <option value="Stepson" ${(saved.m_relation?.[idx] || '') === 'Stepson' ? 'selected' : ''}>Stepson</option>
+                <option value="Grandson" ${(saved.m_relation?.[idx] || '') === 'Grandson' ? 'selected' : ''}>Grandson</option>
+                <option value="Relative" ${(saved.m_relation?.[idx] || '') === 'Relative' ? 'selected' : ''}>Relative</option>
+                <option value="Others" ${(saved.m_relation?.[idx] || '') === 'Others' ? 'selected' : ''}>Others</option>
               </select>
             </td>
             <input type="hidden" name="m_role[]" value="${saved.m_role?.[idx] || 'Member'}">

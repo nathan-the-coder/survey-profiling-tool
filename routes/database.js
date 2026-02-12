@@ -185,6 +185,8 @@ class DatabaseAdapter {
     // Get participant details
     async getParticipantDetails(participantId, userRole, userParish) {
         try {
+            console.log(`Fetching participant details for ID: ${participantId}, userRole: ${userRole}, userParish: ${userParish}`);
+            
             // First get the household_id for this participant
             let householdId;
             
@@ -192,21 +194,34 @@ class DatabaseAdapter {
                 const { data, error } = await this.supabaseClient
                     .from('family_members')
                     .select('household_id')
-                    .eq('id', participantId)
-                    .single();
+                    .eq('id', participantId);
                 
-                if (error) throw error;
-                householdId = data?.household_id;
+                if (error) {
+                    console.error('Supabase error fetching household_id:', error);
+                    throw error;
+                }
+                
+                console.log(`Supabase query result for participant ${participantId}:`, data);
+                
+                if (!data || data.length === 0) {
+                    console.error(`No family_member found with ID: ${participantId}`);
+                    throw new Error(`Participant with ID ${participantId} not found in family_members table`);
+                }
+                
+                householdId = data[0]?.household_id;
+                console.log(`Found household_id: ${householdId}`);
             } else {
                 const [rows] = await this.mysqlPool.execute(
                     'SELECT household_id FROM family_members WHERE id = ?', 
                     [participantId]
                 );
+                console.log(`MySQL query result for participant ${participantId}:`, rows);
                 householdId = rows[0]?.household_id;
             }
             
             if (!householdId) {
-                throw new Error('Participant not found');
+                console.error(`No household_id found for participant ID: ${participantId}`);
+                throw new Error(`Participant with ID ${participantId} not found`);
             }
             
             if (this.useSupabase) {

@@ -2,7 +2,7 @@
 // API base URL - change to your Vercel URL in production
 const API_BASE_URL = window.location.hostname === 'localhost' 
     ? 'http://localhost:5500' 
-    : 'survey-profiling-tool-backend.vercel.app';
+    : 'https://survey-profiling-tool-backend.vercel.app';
 
 const forms = document.querySelectorAll("form");
 

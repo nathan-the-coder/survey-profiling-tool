@@ -2,21 +2,40 @@
     title: 'Survey Form - Step 3',
     bodyClass: 'd-flex flex-column min-vh-100 bg-light',
     headerType: 'survey',
+    extraStyles: `
+        <style>
+            .form-card { background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+            .section-title { color: #457507; font-weight: 600; position: relative; padding-bottom: 10px; margin-bottom: 20px; }
+            .section-title::after { content: ''; position: absolute; bottom: 0; left: 0; width: 60px; height: 3px; background: linear-gradient(90deg, #457507, #6ba32a); border-radius: 2px; }
+            .form-label { font-weight: 500; color: #444; margin-bottom: 6px; }
+            .form-control, .form-select { border-radius: 10px; border: 1.5px solid #e0e0e0; padding: 12px 16px; transition: all 0.2s ease; }
+            .form-control:focus, .form-select:focus { border-color: #457507; box-shadow: 0 0 0 4px rgba(69, 117, 7, 0.1); }
+            .btn-modern { padding: 12px 32px; border-radius: 25px; font-weight: 600; transition: all 0.3s ease; }
+            .btn-church-modern { background: linear-gradient(135deg, #457507 0%, #5a8f1a 100%); color: white; border: none; }
+            .btn-church-modern:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(69, 117, 7, 0.35); color: white; }
+        </style>
+    `,
     body: `
-        <main class="container-fluid px-4 my-4 flex-fill">
-            <div class="progress mb-4" style="height: 25px;">
-                <div class="progress-bar bg-success" role="progressbar" style="width: 75%;">Step 3 of 4</div>
-            </div>
-            
-            <form action="" method="POST">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header text-center fw-bold bg-white">III. HEALTH AND LIVING CONDITIONS</div>
-                    <div class="card-body">
+        <main class="flex-fill py-4">
+            <div class="container">
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted fw-medium">Step 3 of 4</span>
+                        <span class="text-muted">Health & Living Conditions</span>
+                    </div>
+                    <div class="progress-custom" style="height: 8px; border-radius: 4px; background: #e9ecef;">
+                        <div class="progress-bar" role="progressbar" style="width: 75%; background: linear-gradient(90deg, #457507, #6ba32a); border-radius: 4px;"></div>
+                    </div>
+                </div>
+                
+                <form action="" method="POST">
+                    <div class="form-card p-4 mb-4">
+                        <h4 class="section-title">Health & Treatment</h4>
                         <div class="row g-4">
                             <div class="col-md-4">
-                                <label for="illness" class="fw-bold">Common illnesses (last 3 months)</label>
-                                <select name="common_illness" id="illness" class="form-select mt-1">
-                                    <option value="" selected disabled>Select Illness</option>
+                                <label class="form-label">Common illnesses (last 3 months)</label>
+                                <select name="common_illness" id="illness" class="form-select">
+                                    <option value="">Select Illness</option>
                                     <option value="00">None</option>
                                     <option value="01">Fever</option>
                                     <option value="02">Flu</option>
@@ -28,13 +47,12 @@
                                     <option value="15">High Blood</option>
                                     <option value="99">Others</option>
                                 </select>
-                                <input type="text" name="common_illness_others" class="form-control form-control-sm mt-1" placeholder="If others, specify">
+                                <input type="text" name="common_illness_others" class="form-control mt-2" placeholder="If others, specify">
                             </div>
-                            
                             <div class="col-md-4">
-                                <label for="treatment" class="fw-bold">Where do household go for treatment?</label>
-                                <select name="treatment_source" id="treatment" class="form-select mt-1">
-                                    <option value="" selected disabled>Select Facility</option>
+                                <label class="form-label">Where do household go for treatment?</label>
+                                <select name="treatment_source" id="treatment" class="form-select">
+                                    <option value="">Select Facility</option>
                                     <option value="01">Traditional Healers</option>
                                     <option value="02">Private Doctors</option>
                                     <option value="05">Brgy. Health Station</option>
@@ -42,94 +60,114 @@
                                     <option value="10">Private Clinic</option>
                                     <option value="99">Others</option>
                                 </select>
-                                <input type="text" name="treatment_source_others" class="form-control form-control-sm mt-1" placeholder="If others, specify">
+                                <input type="text" name="treatment_source_others" class="form-control mt-2" placeholder="If others, specify">
                             </div>
-                            
                             <div class="col-md-4">
-                                <label for="water" class="fw-bold">Source of potable water</label>
-                                <select name="water_source" id="water" class="form-select mt-1">
-                                    <option value="" selected disabled>Select Water Source</option>
+                                <label class="form-label">Source of potable water</label>
+                                <select name="water_source" id="water" class="form-select">
+                                    <option value="">Select Water Source</option>
                                     <option value="1">Local Water System</option>
                                     <option value="5">Own Artesian Well</option>
                                     <option value="11">Water Refilling Station</option>
                                     <option value="12">NAWASA</option>
                                     <option value="99">Others</option>
                                 </select>
-                                <input type="text" name="water_source_others" class="form-control form-control-sm mt-1" placeholder="If others, specify">
+                                <input type="text" name="water_source_others" class="form-control mt-2" placeholder="If others, specify">
                             </div>
                         </div>
-                        
-                        <hr class="my-4">
-                        
+                    </div>
+                    
+                    <div class="form-card p-4 mb-4">
+                        <h4 class="section-title">Energy & Utilities</h4>
                         <div class="row g-4">
                             <div class="col-md-4">
-                                <label for="lighting" class="fw-bold">Household lighting energy source</label>
-                                <select name="lighting_source" id="lighting" class="form-select mt-1">
+                                <label class="form-label">Household lighting energy source</label>
+                                <select name="lighting_source" id="lighting" class="form-select">
                                     <option value="1">Electricity</option>
                                     <option value="2">Kerosene (Gaas)</option>
                                     <option value="4">Solar Lamp</option>
                                     <option value="99">Others</option>
                                 </select>
-                                <input type="text" name="lighting_others" class="form-control form-control-sm mt-1" placeholder="If others, specify">
+                                <input type="text" name="lighting_others" class="form-control mt-2" placeholder="If others, specify">
                             </div>
-                            
                             <div class="col-md-4">
-                                <label for="cooking" class="fw-bold">Household cooking energy source</label>
-                                <select name="cooking_source" id="cooking" class="form-select mt-1">
+                                <label class="form-label">Household cooking energy source</label>
+                                <select name="cooking_source" id="cooking" class="form-select">
                                     <option value="1">Woods</option>
                                     <option value="2">Charcoal</option>
                                     <option value="4">Liquefied Petroleum Gas (LPG)</option>
                                     <option value="5">Electricity</option>
                                     <option value="99">Others</option>
                                 </select>
-                                <input type="text" name="cooking_others" class="form-control form-control-sm mt-1" placeholder="If others, specify">
+                                <input type="text" name="cooking_others" class="form-control mt-2" placeholder="If others, specify">
                             </div>
-                            
                             <div class="col-md-4">
-                                <label for="garbage" class="fw-bold">Way of disposing garbage</label>
-                                <select name="garbage_disposal" id="garbage" class="form-select mt-1">
+                                <label class="form-label">Way of disposing garbage</label>
+                                <select name="garbage_disposal" id="garbage" class="form-select">
                                     <option value="1">Segregating waste</option>
                                     <option value="2">Collected by garbage truck</option>
                                     <option value="6">Burning</option>
                                     <option value="99">Others</option>
                                 </select>
-                                <input type="text" name="garbage_others" class="form-control form-control-sm mt-1" placeholder="If others, specify">
+                                <input type="text" name="garbage_others" class="form-control mt-2" placeholder="If others, specify">
                             </div>
                         </div>
-                        
-                        <hr class="my-4">
-                        
+                    </div>
+                    
+                    <div class="form-card p-4 mb-4">
+                        <h4 class="section-title">Sanitation</h4>
                         <div class="row g-4">
                             <div class="col-md-6">
-                                <label for="toilet" class="fw-bold">Toilet facility of the household</label>
-                                <select name="toilet_type" id="toilet" class="form-select mt-1">
+                                <label class="form-label">Toilet facility of the household</label>
+                                <select name="toilet_type" id="toilet" class="form-select">
                                     <option value="1">Water-sealed flush (own)</option>
                                     <option value="2">Water-sealed flush (shared)</option>
                                     <option value="3">Closed pit</option>
                                     <option value="5">No toilet</option>
                                 </select>
                             </div>
-                            
                             <div class="col-md-6">
-                                <label for="toilet_dist" class="fw-bold">Distance from water source to toilet</label>
-                                <select name="toilet_distance" id="toilet_dist" class="form-select mt-1">
+                                <label class="form-label">Distance from water source to toilet</label>
+                                <select name="toilet_distance" id="toilet_dist" class="form-select">
                                     <option value="1">Below 200 meters</option>
-                                    <option value="2">201–500 meters</option>
+                                    <option value="2">201-500 meters</option>
                                     <option value="5">More than 1000 meters</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="d-flex justify-content-between mb-5">
-                    <button type="button" onclick="goPrev()" class="btn btn-secondary px-4">Previous</button>
-                    <button type="button" onclick="goNext()" class="btn btn-success px-5 fw-bold">Next <i class="bi bi-arrow-right"></i></button>
-                </div>
-                
-                <input type="hidden" name="form_source" value="health_and_living_conditions">
-            </form>
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" onclick="goPrev()" class="btn btn-outline-secondary btn-modern">Back</button>
+                        <button type="button" onclick="goNext()" class="btn btn-church-modern btn-modern">Continue</button>
+                    </div>
+                    
+                    <input type="hidden" name="form_source" value="health_and_living_conditions">
+                </form>
+            </div>
         </main>
     `,
-    extraScripts: `<script src="/javascripts/survey4.js"></script>`
+    extraScripts: `
+        <script>
+        function saveFormData() {
+            const form = document.querySelector('form');
+            const formData = new FormData(form);
+            const data = {};
+            for (const [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            sessionStorage.setItem('survey_health', JSON.stringify(data));
+        }
+        function goNext() { saveFormData(); window.location.href = '/survey5'; }
+        function goPrev() { saveFormData(); window.location.href = '/survey2'; }
+        document.addEventListener('DOMContentLoaded', () => {
+            const saved = JSON.parse(sessionStorage.getItem('survey_health') || '{}');
+            for (const key in saved) {
+                const el = document.querySelector('[name="' + key + '"]');
+                if (el) el.value = saved[key];
+            }
+        });
+        </script>
+        <script src="/javascripts/survey4.js"></script>
+    `
 }) %>

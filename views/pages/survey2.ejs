@@ -291,9 +291,9 @@
             
             const card = document.createElement('div');
             card.className = 'member-card';
-            card.innerHTML = \`
+            card.innerHTML = `
                 <button type="button" class="remove-btn" onclick="this.closest('.member-card').remove()">X</button>
-                <h6>Member #\${document.querySelectorAll('.member-card').length + 1}</h6>
+                <h6>Member #${document.querySelectorAll('.member-card').length + 1}</h6>
                 <div class="row g-3">
                     <div class="col-md-4"><label class="form-label">Full Name</label><input type="text" name="m_name[]" class="form-control" placeholder="Enter name" required></div>
                     <div class="col-md-4"><label class="form-label">Relation</label><select name="m_relation[]" class="form-select"><option value="">Select...</option><option value="1">Son</option><option value="2">Daughter</option><option value="3">Stepson</option><option value="7">Grandson</option><option value="13">Relative</option><option value="99">Others</option></select></div>
@@ -302,27 +302,28 @@
                         <label class="form-label">Sex</label>
                         <select name="m_sex[]" class="form-select"><option value="1">Male</option><option value="2">Female</option></select></div>
                     <div class="col-md-2"><label class="form-label">Age</label><input type="number" name="m_age[]" class="form-control" placeholder="Age" min="0"></div>
-                   <div class="col-md-3">
+                    <div class="col-md-3">
                 <label class="form-label">Civil Status</label>
                 <select name="m_civil[]" class="form-select">
                     <option value="">Select...</option>
-                    <option value="1" ${(data.civil === '1') ? 'selected' : ''}>Single</option>
-                    <option value="2" ${(data.civil === '2') ? 'selected' : ''}>Married</option>
-                    <option value="3" ${(data.civil === '3') ? 'selected' : ''}>Common</option>
-                    <option value="3" ${(data.civil === '4') ? 'selected' : ''}>Law/Live In</option>
-                    <option value="4" ${(data.civil === '5') ? 'selected' : ''}>Widowed</option>
-                    <option value="3" ${(data.civil === '6') ? 'selected' : ''}>Divorsed</option>
-                    <option value="3" ${(data.civil === '7') ? 'selected' : ''}>Separated</option>
-                    <option value="3" ${(data.civil === '8') ? 'selected' : ''}>Annulled</option>
-                    <option value="3">Unknown</option>
+                    <option value="1">Single</option>
+                    <option value="2">Married</option>
+                    <option value="3">Common Law</option>
+                    <option value="4">Widowed</option>
+                    <option value="5">Divorced</option>
+                    <option value="6">Separated</option>
+                    <option value="7">Annulled</option>
+                    <option value="8">Unknown</option>
                 </select>
             </div>
+                                            <div class="col-md-3">
                                                 <label class="form-label">Religion</label>
-                                                <select name="spouse_religion" class="form-select">
+                                                <select name="m_religion[]" class="form-select">
+                                                    <option value="">Select...</option>
                                                     <option value="1">Roman Catholic</option>
                                                     <option value="2">Islam</option>
                                                     <option value="3">UCCP/Protestant</option>
-                                                    <option value="4">Jehova’s Witnesses</option>
+                                                    <option value="4">Jehova's Witnesses</option>
                                                     <option value="6">Iglesia ni Cristo</option>
                                                     <option value="7">Four Square Church</option>
                                                     <option value="8">Seventh Day Adventist</option>
@@ -335,7 +336,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Sacraments</label>
-                                                <select name="spouse_sacraments" class="form-select">
+                                                <select name="m_sacraments[]" class="form-select">
                                                     <option value="">Select...</option>
                                                     <option value="1">None</option>
                                                     <option value="2">Baptism</option>
@@ -347,11 +348,11 @@
                                             </div>
                                             <div class="col-md-3"><label class="form-label">Studying?</label><select name="m_studying[]" class="form-select"><option value="1">Yes</option><option value="2">No</option></select></div>
                     <div class="col-md-4"><label class="form-label">Education</label><select name="m_educ[]" class="form-select"><option value="">Select...</option><option value="Pre-School">Pre-School</option><option value="Elementary">Elementary</option><option value="Junior High">Junior High</option><option value="Senior High">Senior High</option><option value="College">College</option><option value="Post-Graduate">Post-Graduate</option></select></div>
-                    <div class="col-md-4"><label class="form-label">Occupation</label><select name="m_job[]" class="form-select" onchange="toggleOccupationInput(this, 'm_job_others_\${document.querySelectorAll('.member-card').length}')"><option value="">Select...</option><option value="Farming">Farming</option><option value="Tenant">Tenant</option><option value="Fishing">Fishing</option><option value="Vending">Vending</option><option value="Hired Labor">Hired Labor</option><option value="Employed">Employed</option><option value="OFW">OFW</option><option value="Domestic Worker">Domestic Worker</option><option value="Entertainment">Entertainment</option><option value="Others">Others</option></select><input type="text" name="m_job_others" class="form-control mt-2 d-none" placeholder="Please specify occupation"></div>
+                    <div class="col-md-4"><label class="form-label">Occupation</label><select name="m_job[]" class="form-select"><option value="">Select...</option><option value="Farming">Farming</option><option value="Tenant">Tenant</option><option value="Fishing">Fishing</option><option value="Vending">Vending</option><option value="Hired Labor">Hired Labor</option><option value="Employed">Employed</option><option value="OFW">OFW</option><option value="Domestic Worker">Domestic Worker</option><option value="Entertainment">Entertainment</option><option value="Others">Others</option></select><input type="text" name="m_job_others" class="form-control mt-2 d-none" placeholder="Please specify occupation"></div>
                     <div class="col-md-4"><label class="form-label">Status of Work</label><select name="m_work_status[]" class="form-select"><option value="">Select...</option><option value="1">Regular</option><option value="2">Contractual</option><option value="3">Unemployed</option><option value="4">Self-Employed</option></select></div>
                     <div class="col-md-4"><label class="form-label">Immunized? <small class="text-muted">(0-5 yrs)</small></label><select name="m_immunized[]" class="form-select"><option value="66">N/A</option><option value="1">Yes</option><option value="2">No</option></select></div>
                 </div>
-            \`;
+            `;
             container.appendChild(card);
         }
         function saveFormData() {
@@ -403,7 +404,7 @@
                             <input type="hidden" name="m_role[]" value="Member">
                             <div class="col-md-3"><label class="form-label">Sex</label><select name="m_sex[]" class="form-select"><option value="1" \${(saved.m_sex?.[idx] === '1') ? 'selected' : ''}>Male</option><option value="2" \${(saved.m_sex?.[idx] === '2') ? 'selected' : ''}>Female</option></select></div>
                             <div class="col-md-2"><label class="form-label">Age</label><input type="number" name="m_age[]" class="form-control" value="\${saved.m_age?.[idx] || ''}" placeholder="Age"></div>
-                            <div class="col-md-3"><label class="form-label">Civil Status</label><select name="m_civil[]" class="form-select"><option value="">Select...</option><option value="1" \${(saved.m_civil?.[idx] === '1') ? 'selected' : ''}>Single</option><option value="2" \${(saved.m_civil?.[idx] === '2') ? 'selected' : ''}>Married</option><option value="3" \${(saved.m_civil?.[idx] === '3') ? 'selected' : ''}>Common Law</option><option value="4" \${(saved.m_civil?.[idx] === '4') ? 'selected' : ''}>Widowed</option></select></div>
+                            <div class="col-md-3"><label class="form-label">Civil Status</label><select name="m_civil[]" class="form-select"><option value="">Select...</option><option value="1" ${(saved.m_civil?.[idx] === '1') ? 'selected' : ''}>Single</option><option value="2" ${(saved.m_civil?.[idx] === '2') ? 'selected' : ''}>Married</option><option value="3" ${(saved.m_civil?.[idx] === '3') ? 'selected' : ''}>Common Law</option><option value="4" ${(saved.m_civil?.[idx] === '4') ? 'selected' : ''}>Widowed</option><option value="5" ${(saved.m_civil?.[idx] === '5') ? 'selected' : ''}>Divorced</option><option value="6" ${(saved.m_civil?.[idx] === '6') ? 'selected' : ''}>Separated</option><option value="7" ${(saved.m_civil?.[idx] === '7') ? 'selected' : ''}>Annulled</option><option value="8" ${(saved.m_civil?.[idx] === '8') ? 'selected' : ''}>Unknown</option></select></div>
                             <div class="col-md-3"><label class="form-label">Religion</label><select name="m_religion[]" class="form-select"><option value="">Select...</option><option value="1" \${(saved.m_religion?.[idx] === '1') ? 'selected' : ''}>Roman Catholic</option><option value="2" \${(saved.m_religion?.[idx] === '2') ? 'selected' : ''}>Islam</option><option value="99" \${(saved.m_religion?.[idx] === '99') ? 'selected' : ''}>Others</option></select></div>
                             <div class="col-md-3"><label class="form-label">Sacraments</label><select name="m_sacraments[]" class="form-select"><option value="">Select...</option><option value="1" \${(saved.m_sacraments?.[idx] === '1') ? 'selected' : ''}>None</option><option value="2" \${(saved.m_sacraments?.[idx] === '2') ? 'selected' : ''}>Baptism</option><option value="3" \${(saved.m_sacraments?.[idx] === '3') ? 'selected' : ''}>Confirmation</option></select></div>
                             <div class="col-md-3"><label class="form-label">Studying?</label><select name="m_studying[]" class="form-select"><option value="1" \${(saved.m_studying?.[idx] === '1') ? 'selected' : ''}>Yes</option><option value="2" \${(saved.m_studying?.[idx] === '2') ? 'selected' : ''}>No</option></select></div>

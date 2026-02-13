@@ -367,4 +367,27 @@ router.get('/parishes', async function(req, res, next) {
   }
 });
 
+// Submit survey data
+router.post('/submit-survey', async function(req, res, next) {
+  try {
+    if (!req.body || !req.body.data) {
+      return res.status(400).json({ error: 'Invalid request data' });
+    }
+
+    const result = await db.createSurveyParticipant(req.body.data);
+    
+    res.status(200).json({ 
+      success: true, 
+      message: 'Survey data saved successfully', 
+      id: result.id 
+    });
+  } catch (error) {
+    console.error('Survey submission error:', error);
+    res.status(500).json({ 
+      error: 'Failed to submit survey', 
+      message: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error' 
+    });
+  }
+});
+
 module.exports = router;

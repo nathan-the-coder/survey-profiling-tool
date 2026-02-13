@@ -126,10 +126,12 @@ function loadParishes() {
 		})
 		.then((parishes) => {
 			parishes.forEach((parish) => {
-				const option = document.createElement("option");
-				option.value = parish;
-				option.textContent = parish;
-				parishSelect.appendChild(option);
+				if (parish !== 'SJCB_Admin' && parish !== 'Archdiocese of Tuguegarao') {
+					const option = document.createElement("option");
+					option.value = parish;
+					option.textContent = parish;
+					parishSelect.appendChild(option);
+				}
 			});
 		})
 		.catch((err) => {

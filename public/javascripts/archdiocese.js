@@ -279,7 +279,7 @@ async function fetchParticipantDetails(id) {
 }
 
 function showParticipantDetails(data) {
-    const { household, family_members, socio_economic } = data;
+    const { household, family_members, health_conditions, socio_economic } = data;
     
     const accessDiv = document.getElementById('accessIndicator');
     if (userRole === 'Archdiocese') {
@@ -287,24 +287,109 @@ function showParticipantDetails(data) {
     } else {
         accessDiv.innerHTML = `<div class="alert alert-info small py-2"><i class="bi bi-info-circle me-2"></i>Parish Access: ${household?.parish_name || 'N/A'}</div>`;
     }
-    
-    document.getElementById('modalFullName').textContent = family_members?.[0]?.full_name || 'N/A';
-    document.getElementById('modalAddress').textContent = `${household?.purok_gimong || ''}, ${household?.barangay_name || ''}`;
-    document.getElementById('modalParish').textContent = household?.parish_name || 'N/A';
-    document.getElementById('modalFamilyCount').textContent = household?.num_family_members || 'N/A';
-    document.getElementById('modalIncome').textContent = socio_economic?.income_monthly_code || 'N/A';
-    document.getElementById('modalHouseOwnership').textContent = socio_economic?.house_lot_ownership_code || 'N/A';
-    
+
+    // Mapping tables for code to text
+    const maps = {
+        sex: { '1': 'Male', '2': 'Female' },
+        civil: { '1': 'Single', '2': 'Married', '3': 'Common Law', '4': 'Widowed', '5': 'Divorced', '6': 'Separated', '7': 'Annulled', '8': 'Unknown' },
+        sacrament: { '1': 'Not yet Baptized', '2': 'Baptism only', '3': 'Baptism & Confirmation', '4': 'First Holy Communion', '5': 'Holy Matrimony', '6': 'Holy Orders', '66': 'Not Applicable' },
+        studying: { '1': 'Yes', '2': 'No' },
+        workStatus: { '1': 'Regular/Permanent', '2': 'Contractual', '3': 'Worker for different employers', '5': 'Others', '6': 'Not Applicable' },
+        illness: { '00': 'None', '01': 'Fever', '02': 'Flu', '03': 'Cough', '04': 'Cold', '05': 'Diarrhea', '06': 'Cholera', '07': 'Asthma', '08': 'Typhoid Fever', '09': 'Dengue', '10': 'Pneumonia', '11': 'Chicken Pox', '12': 'Measles', '13': 'Heart Disease', '14': 'Lung Disease', '15': 'High Blood', '16': 'Anemia', '17': 'Malaria', '99': 'Others' },
+        treatment: { '00': 'None', '01': 'Traditional Healers', '02': 'Private Doctors', '03': 'RHU Doctors', '04': 'Self-medication', '05': 'Brgy. Health Station', '06': 'Rural Health Unit', '07': 'Brgy. Health Worker', '08': 'Brgy. Nutrition Scholar', '09': 'CBHP/DHW', '10': 'Private Clinic', '99': 'Others' },
+        water: { '1': 'Local Water System', '2': 'Spring Water', '3': 'River', '4': 'Open Well', '5': 'Own Artesian Well', '6': 'Community Artesian Well', '7': 'Community Faucet', '8': 'Electric Deep Well', '9': 'Free Flowing Water Pipe', '10': 'Rain Water', '11': 'Water Refilling Station', '12': 'NAWASA', '99': 'Others' },
+        lighting: { '1': 'Electricity', '2': 'Kerosene (Gaas)', '3': 'LPG', '4': 'Solar Panel / Solar Lamp', '5': 'Battery', '6': 'Generator', '7': 'None', '99': 'Others' },
+        cooking: { '1': 'Woods', '2': 'Charcoal', '3': 'Kerosene (Gas)', '4': 'LPG', '5': 'Electricity', '99': 'Others' },
+        garbage: { '1': 'Segregating Waste', '2': 'Collected by Garbage Truck', '3': 'Recycling / Reusing at Home', '4': 'Selling / Giving Away Recyclables', '5': 'Composting', '6': 'Burning', '7': 'Dumping in Pit with Cover', '8': 'Dumping in Pit without Cover', '9': 'Throwing in Uninhabited Locations', '99': 'Others' },
+        toilet: { '1': 'Water-Sealed Flush (Own)', '2': 'Water-Sealed Flush (Shared)', '3': 'Closed Pit', '4': 'Open Pit', '5': 'No Toilet', '99': 'Others' },
+        toiletDist: { '1': 'Below 200 meters', '2': '201-500 meters', '3': '501-1000 meters', '4': 'More than 1000 meters' },
+        distance: { '1': 'Walking Distance (Ideal)', '2': '5-15 Minute Drive', '3': '30-Minute Drive', '4': 'Over 45 Minutes - 1 Hour+' },
+        income: { '1': '₱3,000 and below', '2': '₱3,001 - ₱6,000', '3': '₱6,001 - ₱9,000', '4': '₱9,001 - ₱12,000', '5': '₱12,001 - ₱15,000', '6': '₱15,001 - ₱18,000', '7': '₱18,001 - ₱21,000', '8': '₱21,001 - ₱24,000', '9': '₱24,001 - ₱27,000', '10': '₱27,001 - ₱30,000', '11': '₱30,001 and up' },
+        expenses: { '1': '₱300 and below', '2': '₱301 - ₱600', '3': '₱601 - ₱900', '4': '₱901 - ₱1,200', '5': '₱1,201 - ₱1,500', '6': '₱1,501 - ₱1,800', '7': '₱1,801 - ₱2,100', '8': '₱2,101 - ₱2,400', '9': '₱2,401 - ₱2,700', '10': '₱2,701 - ₱3,000', '11': '₱3,001 and up' },
+        savings: { 'true': 'Yes', 'false': 'None' },
+        savingsLoc: { '1': 'House', '2': 'Bank', '3': 'E-money (GCash, etc.)', '4': 'Microfinance (Card, ASA, etc.)', '66': 'Not Applicable', '99': 'Others' },
+        ownership: { '1': 'Owned', '2': 'Rented House', '3': 'Tenanted', '4': 'Rent Free', '5': 'Caretaker', '99': 'Others' },
+        houseClass: { '1': 'Concrete', '2': 'Semi-Concrete', '3': 'Indigenous Materials', '4': 'Galvanized Iron / aluminum', '5': 'Barong-barong', '6': 'Makeshift', '99': 'Others' },
+        transportation: { 'Bicycle': 'Bicycle', 'Tricycle': 'Tricycle', 'Motorcycle': 'Motorcycle', 'Jeepney': 'Jeepney', 'Van': 'Van', 'Private Vehicle': 'Private Vehicle' },
+        livestock: { 'carabao': 'Carabao', 'cow': 'Cow', 'goat': 'Goat', 'chicken': 'Chicken', 'pig': 'Pig', 'geese': 'Geese', 'turkey': 'Turkey', 'duck': 'Duck', 'horse': 'Horse', 'sheep': 'Sheep', 'rabbit': 'Rabbit', 'others': 'Others' },
+        assets: { 'refrigerator': 'Refrigerator', 'freezer': 'Freezer', 'stove': 'Stove', 'gas_range': 'Gas Range', 'rice_cooker': 'Rice Cooker', 'air_fryer': 'Air Fryer', 'microwave_oven': 'Microwave Oven', 'washing_machine': 'Washing Machine', 'air_conditioner': 'Air Conditioner', 'electric_fan': 'Electric Fan', 'electric_iron': 'Electric Iron', 'sewing_machine': 'Sewing Machine', 'am_radio': 'AM Radio', 'cassette_player': 'Cassette Player', 'television': 'Television', 'cd_dvd_vcd_player': 'CD / DVD / VCD Player', 'karaoke': 'Karaoke', 'landline': 'Landline Telephone', 'mobile_phone': 'Mobile Phone', 'tablet': 'Tablet', 'personal_computer': 'Personal Computer', 'vehicle': 'Car / Vehicle', 'others': 'Others' }
+    };
+
+    const setText = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value || '-';
+    };
+
+    const mapArrayValue = (value, map) => {
+        if (!value) return '-';
+        try {
+            const valArr = typeof value === 'string' ? JSON.parse(value) : value;
+            if (Array.isArray(valArr)) {
+                return valArr.map(v => map[v] || v).filter(v => v !== '').join(', ') || '-';
+            }
+            return map[valArr] || valArr || '-';
+        } catch {
+            return value || '-';
+        }
+    };
+
+    // General Information
+    setText('gen-purok', household?.purok_gimong);
+    setText('gen-barangay', household?.barangay_name);
+    setText('gen-municipality', household?.municipality);
+    setText('gen-province', household?.province);
+    setText('gen-parish', household?.parish_name);
+    setText('gen-diocese', household?.diocese_prelature);
+    setText('gen-residency', household?.years_residency);
+    setText('gen-familyMembers', household?.num_family_members);
+    setText('gen-familyStructure', household?.family_structure);
+    setText('gen-dialect', household?.local_dialect);
+    setText('gen-ethnicity', household?.ethnicity);
+    setText('gen-transportation', mapArrayValue(household?.mode_of_transportation, maps.transportation));
+    setText('gen-road', household?.road_structure);
+    setText('gen-classification', household?.urban_rural_classification);
+
+    // Family Members Table
     const familyTbody = document.getElementById('modalFamilyTable');
     familyTbody.innerHTML = family_members?.map(m => `
         <tr>
-            <td>${m.full_name || 'N/A'}</td>
-            <td>${m.relation_to_head_code || 'N/A'}</td>
-            <td>${m.age || 'N/A'}</td>
-            <td>${m.highest_educ_attainment || 'N/A'}</td>
-            <td>${m.occupation || 'N/A'}</td>
+            <td>${m.full_name || '-'}</td>
+            <td>${m.relation_to_head_code || '-'}</td>
+            <td>${maps.sex[m.sex_code] || '-'}</td>
+            <td>${m.age || '-'}</td>
+            <td>${maps.civil[m.civil_status_code] || '-'}</td>
+            <td>${m.religion_code || '-'}</td>
+            <td>${mapArrayValue(m.sacraments_code, maps.sacrament)}</td>
+            <td>${maps.studying[m.is_studying] || '-'}</td>
+            <td>${m.highest_educ_attainment || '-'}</td>
+            <td>${m.occupation || '-'}</td>
+            <td>${maps.workStatus[m.status_of_work_code] || '-'}</td>
         </tr>
-    `).join('') || '<tr><td colspan="5">None</td></tr>';
+    `).join('') || '<tr><td colspan="11">No family members</td></tr>';
+
+    // Health & Living Conditions
+    setText('health-illness', mapArrayValue(health_conditions?.common_illness_codes, maps.illness));
+    setText('health-treatment', mapArrayValue(health_conditions?.treatment_source_code, maps.treatment));
+    setText('health-water', mapArrayValue(health_conditions?.potable_water_source_code, maps.water));
+    setText('health-lighting', mapArrayValue(health_conditions?.lighting_source_code, maps.lighting));
+    setText('health-cooking', mapArrayValue(health_conditions?.cooking_source_code, maps.cooking));
+    setText('health-garbage', mapArrayValue(health_conditions?.garbage_disposal_code, maps.garbage));
+    setText('health-toilet', mapArrayValue(health_conditions?.toilet_facility_code, maps.toilet));
+    setText('health-toiletDist', maps.toiletDist[health_conditions?.water_to_toilet_distance_code] || '-');
+
+    // Socio-Economic
+    setText('soc-income', maps.income[socio_economic?.income_monthly_code] || '-');
+    setText('soc-expenses', maps.expenses[socio_economic?.expenses_weekly_code] || '-');
+    setText('soc-savings', maps.savings[String(socio_economic?.has_savings)] || '-');
+    setText('soc-savingsLoc', mapArrayValue(socio_economic?.savings_location_code, maps.savingsLoc));
+    setText('soc-ownership', maps.ownership[socio_economic?.house_lot_ownership_code] || '-');
+    setText('soc-houseClass', mapArrayValue(socio_economic?.house_classification_code, maps.houseClass));
+    setText('soc-landArea', socio_economic?.land_area_hectares || '-');
+    setText('soc-church', maps.distance[socio_economic?.dist_from_church_code] || '-');
+    setText('soc-market', maps.distance[socio_economic?.dist_from_market_code] || '-');
+    setText('soc-organizations', mapArrayValue(socio_economic?.organizations, { '1': 'PCM', '2': 'BCC', '3': 'ICS', '4': 'CMA', '5': 'COP', '6': 'MWI', '7': 'YWL', '8': 'MCC', '9': 'Others' }));
+    setText('soc-livestock', '-');
+    setText('soc-assets', '-');
     
     participantModal.show();
 }

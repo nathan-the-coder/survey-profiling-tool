@@ -572,6 +572,298 @@ class DatabaseAdapter {
         }
     }
 
+    // Create a complete survey participant (household + family members + health + socio)
+    async createSurveyParticipant(data) {
+        const { general, primary, health, socio } = data;
+
+        const toNumber = (val) => {
+            if (val === '' || val === null || val === undefined) return null;
+            const num = Number(val);
+            return isNaN(num) ? null : num;
+        };
+
+        const getValue = (obj, key) => (obj && obj[key] !== undefined && obj[key] !== '' ? obj[key] : null);
+        const getArrayValue = (obj, key) => {
+            if (!obj || !obj[key]) return null;
+            const val = obj[key];
+            if (Array.isArray(val)) {
+                return val.length > 0 ? val : null;
+            }
+            return val ? [val] : null;
+        };
+
+        const toBoolean = (val) => {
+            if (val === '1' || val === 1 || val === true) return true;
+            if (val === '2' || val === 2 || val === false || val === '66' || val === null || val === '') return false;
+            return null;
+        };
+
+        try {
+            if (this.useSupabase) {
+                // Create household
+                const householdData = {
+                    purok_gimong: getValue(general, 'purokGimong'),
+                    barangay_name: getValue(general, 'barangayName'),
+                    municipality: getValue(general, 'municipality-select') || getValue(general, 'municipalityName'),
+                    province: getValue(general, 'provinceName'),
+                    mode_of_transportation: getArrayValue(general, 'modeOfTransportation'),
+                    road_structure: getValue(general, 'road_Structure'),
+                    urban_rural_classification: getValue(general, 'urban_ruralClassification'),
+                    parish_name: getValue(general, 'nameOfParish'),
+                    diocese_prelature: getValue(general, 'diocesePrelatureName'),
+                    years_residency: toNumber(getValue(general, 'yrOfResInTheCommunity')),
+                    num_family_members: toNumber(getValue(general, 'numOfFamMembers')),
+                    family_structure: getValue(general, 'familyStructure'),
+                    local_dialect: getValue(general, 'lclDialect'),
+                    ethnicity: getValue(general, 'ethnicity'),
+                    missionary_companion: getValue(socio, 'missionary_companion'),
+                    date_of_listing: getValue(socio, 'listing_date')
+                };
+
+                const { data: household, error: hhError } = await this.supabaseClient
+                    .from('households')
+                    .insert([householdData])
+                    .select()
+                    .single();
+
+                if (hhError) throw hhError;
+                const householdId = household.household_id;
+
+                // Create family members
+                const insertMember = async (role, memberData) => {
+                    if (memberData.full_name) {
+                        await this.supabaseClient
+                            .from('family_members')
+                            .insert([{ household_id: householdId, role, ...memberData }]);
+                    }
+                };
+
+                await insertMember('HH Head', {
+                    full_name: getValue(primary, 'head_name'),
+                    type_of_marriage: getValue(primary, 'head_marriage'),
+                    civil_status_code: getValue(primary, 'civil_status_code') || '',
+                    religion_code: getValue(primary, 'head_religion'),
+                    sex_code: getValue(primary, 'head_sex'),
+                    age: toNumber(getValue(primary, 'head_age')),
+                    highest_educ_attainment: getValue(primary, 'head_educ'),
+                    occupation: getValue(primary, 'head_job'),
+                    status_of_work_code: getValue(primary, 'head_work_status')
+                });
+
+                await insertMember('Spouse', {
+                    full_name: getValue(primary, 'spouse_name') || '',
+                    civil_status_code: getValue(primary, 'civil_status_code') || '',
+                    type_of_marriage: getValue(primary, 'spouse_marriage') || '',
+                    religion_code: getValue(primary, 'spouse_religion') || '',
+                    sex_code: getValue(primary, 'spouse_sex') || '',
+                    age: toNumber(getValue(primary, 'spouse_age')) || '',
+                    highest_educ_attainment: getValue(primary, 'spouse_educ') || '',
+                    occupation: getValue(primary, 'spouse_job') || '',
+                    status_of_work_code: getValue(primary, 'spouse_work_status') || ''
+                });
+
+                if (primary?.m_name && Array.isArray(primary.m_name)) {
+                    const memberInserts = primary.m_name.map((name, i) => {
+                        if (!name) return null;
+                        return {
+                            household_id: householdId,
+                            role: primary.m_role?.[i] || 'Member',
+                            full_name: name,
+                            relation_to_head_code: primary.m_relation?.[i],
+                            sex_code: primary.m_sex?.[i],
+                            age: toNumber(primary.m_age?.[i]),
+                            civil_status_code: primary.m_civil?.[i],
+                            religion_code: primary.m_religion?.[i],
+                            sacraments_code: getArrayValue({ m_sacraments: primary.m_sacraments }, 'm_sacraments'),
+                            is_studying: toBoolean(primary.m_studying?.[i]),
+                            highest_educ_attainment: primary.m_educ?.[i],
+                            occupation: primary.m_job?.[i],
+                            status_of_work_code: primary.m_work_status?.[i],
+                            fully_immunized_child: toBoolean(primary.m_immunized?.[i]),
+                            organization_code: getArrayValue({ m_organization: primary.m_organization }, 'm_organization'),
+                            position: primary.m_position?.[i] || null
+                        };
+                    }).filter(Boolean);
+
+                    if (memberInserts.length > 0) {
+                        await this.supabaseClient.from('family_members').insert(memberInserts);
+                    }
+                }
+
+                // Create health conditions
+                const healthData = {
+                    household_id: householdId,
+                    common_illness_codes: getArrayValue(health, 'common_illness'),
+                    treatment_source_code: getArrayValue(health, 'treatment_source'),
+                    potable_water_source_code: getArrayValue(health, 'water_source'),
+                    lighting_source_code: getArrayValue(health, 'lighting_source'),
+                    cooking_source_code: getArrayValue(health, 'cooking_source'),
+                    garbage_disposal_code: getArrayValue(health, 'garbage_disposal'),
+                    toilet_facility_code: getArrayValue(health, 'toilet_type'),
+                    water_to_toilet_distance_code: getValue(health, 'toilet_distance')
+                };
+                await this.supabaseClient.from('health_conditions').insert([healthData]);
+
+                // Create socio-economic
+                const socioData = {
+                    household_id: householdId,
+                    income_monthly_code: getValue(socio, 'income_monthly'),
+                    expenses_weekly_code: getValue(socio, 'expenses_weekly'),
+                    has_savings: toBoolean(getValue(socio, 'has_savings')),
+                    savings_location_code: getArrayValue(socio, 'savings_location'),
+                    house_lot_ownership_code: getArrayValue(socio, 'house_ownership'),
+                    house_classification_code: getArrayValue(socio, 'house_classification'),
+                    land_area_hectares: toNumber(getValue(socio, 'land_area')),
+                    dist_from_church_code: getValue(socio, 'distance_church'),
+                    dist_from_market_code: getValue(socio, 'distance_market'),
+                    organizations: getArrayValue(socio, 'organizations'),
+                    organizations_others_text: getValue(socio, 'organizations_others_text')
+                };
+                await this.supabaseClient.from('socio_economic').insert([socioData]);
+
+                return { success: true, id: householdId };
+            } else {
+                // MySQL implementation
+                const householdData = {
+                    purok_gimong: getValue(general, 'purokGimong'),
+                    barangay_name: getValue(general, 'barangayName'),
+                    municipality: getValue(general, 'municipality-select') || getValue(general, 'municipalityName'),
+                    province: getValue(general, 'provinceName'),
+                    mode_of_transportation: getArrayValue(general, 'modeOfTransportation')?.join(','),
+                    road_structure: getValue(general, 'road_Structure'),
+                    urban_rural_classification: getValue(general, 'urban_ruralClassification'),
+                    parish_name: getValue(general, 'nameOfParish'),
+                    diocese_prelature: getValue(general, 'diocesePrelatureName'),
+                    years_residency: toNumber(getValue(general, 'yrOfResInTheCommunity')),
+                    num_family_members: toNumber(getValue(general, 'numOfFamMembers')),
+                    family_structure: getValue(general, 'familyStructure'),
+                    local_dialect: getValue(general, 'lclDialect'),
+                    ethnicity: getValue(general, 'ethnicity'),
+                    missionary_companion: getValue(socio, 'missionary_companion'),
+                    date_of_listing: getValue(socio, 'listing_date')
+                };
+
+                const hhFields = Object.keys(householdData).filter(k => householdData[k] !== null);
+                const hhValues = hhFields.map(k => householdData[k]);
+                const hhPlaceholders = hhFields.map(() => '?').join(', ');
+
+                const [hhResult] = await this.mysqlPool.execute(
+                    `INSERT INTO households (${hhFields.join(', ')}) VALUES (${hhPlaceholders})`,
+                    hhValues
+                );
+                const householdId = hhResult.insertId;
+
+                // Create family members
+                const insertMember = async (role, memberData) => {
+                    if (memberData.full_name) {
+                        const fields = Object.keys(memberData).filter(k => memberData[k] !== null && memberData[k] !== '');
+                        const values = fields.map(k => memberData[k]);
+                        const placeholders = fields.map(() => '?').join(', ');
+                        await this.mysqlPool.execute(
+                            `INSERT INTO family_members (household_id, role, ${fields.join(', ')}) VALUES (?, ${placeholders})`,
+                            [householdId, role, ...values]
+                        );
+                    }
+                };
+
+                await insertMember('HH Head', {
+                    full_name: getValue(primary, 'head_name'),
+                    type_of_marriage: getValue(primary, 'head_marriage'),
+                    civil_status_code: getValue(primary, 'civil_status_code') || '',
+                    religion_code: getValue(primary, 'head_religion'),
+                    sex_code: getValue(primary, 'head_sex'),
+                    age: toNumber(getValue(primary, 'head_age')),
+                    highest_educ_attainment: getValue(primary, 'head_educ'),
+                    occupation: getValue(primary, 'head_job'),
+                    status_of_work_code: getValue(primary, 'head_work_status')
+                });
+
+                await insertMember('Spouse', {
+                    full_name: getValue(primary, 'spouse_name') || '',
+                    civil_status_code: getValue(primary, 'civil_status_code') || '',
+                    type_of_marriage: getValue(primary, 'spouse_marriage') || '',
+                    religion_code: getValue(primary, 'spouse_religion') || '',
+                    sex_code: getValue(primary, 'spouse_sex') || '',
+                    age: toNumber(getValue(primary, 'spouse_age')) || '',
+                    highest_educ_attainment: getValue(primary, 'spouse_educ') || '',
+                    occupation: getValue(primary, 'spouse_job') || '',
+                    status_of_work_code: getValue(primary, 'spouse_work_status') || ''
+                });
+
+                if (primary?.m_name && Array.isArray(primary.m_name)) {
+                    for (let i = 0; i < primary.m_name.length; i++) {
+                        if (!primary.m_name[i]) continue;
+                        const memberData = {
+                            role: primary.m_role?.[i] || 'Member',
+                            full_name: primary.m_name[i],
+                            relation_to_head_code: primary.m_relation?.[i],
+                            sex_code: primary.m_sex?.[i],
+                            age: toNumber(primary.m_age?.[i]),
+                            civil_status_code: primary.m_civil?.[i],
+                            religion_code: primary.m_religion?.[i],
+                            sacraments_code: getArrayValue({ m_sacraments: primary.m_sacraments }, 'm_sacraments')?.join(','),
+                            is_studying: toBoolean(primary.m_studying?.[i]),
+                            highest_educ_attainment: primary.m_educ?.[i],
+                            occupation: primary.m_job?.[i],
+                            status_of_work_code: primary.m_work_status?.[i],
+                            fully_immunized_child: toBoolean(primary.m_immunized?.[i]),
+                            organization_code: getArrayValue({ m_organization: primary.m_organization }, 'm_organization')?.join(','),
+                            position: primary.m_position?.[i] || null
+                        };
+                        await insertMember('Member', memberData);
+                    }
+                }
+
+                // Create health conditions
+                const healthData = {
+                    household_id: householdId,
+                    common_illness_codes: getArrayValue(health, 'common_illness')?.join(','),
+                    treatment_source_code: getArrayValue(health, 'treatment_source')?.join(','),
+                    potable_water_source_code: getArrayValue(health, 'water_source')?.join(','),
+                    lighting_source_code: getArrayValue(health, 'lighting_source')?.join(','),
+                    cooking_source_code: getArrayValue(health, 'cooking_source')?.join(','),
+                    garbage_disposal_code: getArrayValue(health, 'garbage_disposal')?.join(','),
+                    toilet_facility_code: getArrayValue(health, 'toilet_type')?.join(','),
+                    water_to_toilet_distance_code: getValue(health, 'toilet_distance')
+                };
+                const healthFields = Object.keys(healthData).filter(k => healthData[k] !== null);
+                const healthValues = healthFields.map(k => healthData[k]);
+                const healthPlaceholders = healthFields.map(() => '?').join(', ');
+                await this.mysqlPool.execute(
+                    `INSERT INTO health_conditions (${healthFields.join(', ')}) VALUES (${healthPlaceholders})`,
+                    healthValues
+                );
+
+                // Create socio-economic
+                const socioData = {
+                    household_id: householdId,
+                    income_monthly_code: getValue(socio, 'income_monthly'),
+                    expenses_weekly_code: getValue(socio, 'expenses_weekly'),
+                    has_savings: toBoolean(getValue(socio, 'has_savings')),
+                    savings_location_code: getArrayValue(socio, 'savings_location')?.join(','),
+                    house_lot_ownership_code: getArrayValue(socio, 'house_ownership')?.join(','),
+                    house_classification_code: getArrayValue(socio, 'house_classification')?.join(','),
+                    land_area_hectares: toNumber(getValue(socio, 'land_area')),
+                    dist_from_church_code: getValue(socio, 'distance_church'),
+                    dist_from_market_code: getValue(socio, 'distance_market'),
+                    organizations: getArrayValue(socio, 'organizations')?.join(','),
+                    organizations_others_text: getValue(socio, 'organizations_others_text')
+                };
+                const socioFields = Object.keys(socioData).filter(k => socioData[k] !== null);
+                const socioValues = socioFields.map(k => socioData[k]);
+                const socioPlaceholders = socioFields.map(() => '?').join(', ');
+                await this.mysqlPool.execute(
+                    `INSERT INTO socio_economic (${socioFields.join(', ')}) VALUES (${socioPlaceholders})`,
+                    socioValues
+                );
+
+                return { success: true, id: householdId };
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
     // Close connections
     async close() {
         if (this.mysqlPool) {

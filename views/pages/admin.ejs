@@ -169,7 +169,7 @@
             
             <!-- Participant Details Modal -->
             <div class="modal fade" id="participantModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Participant Details</h5>
@@ -177,32 +177,101 @@
                         </div>
                         <div class="modal-body">
                             <div id="accessIndicator"></div>
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <p class="mb-1"><strong>Full Name:</strong> <span id="modalFullName">-</span></p>
-                                    <p class="mb-1"><strong>Address:</strong> <span id="modalAddress">-</span></p>
-                                    <p class="mb-1"><strong>Parish:</strong> <span id="modalParish">-</span></p>
+                            
+                            <!-- General Information Section -->
+                            <div class="card mb-3">
+                                <div class="card-header bg-light py-2">
+                                    <h6 class="mb-0"><i class="bi bi-person me-2"></i>General Information</h6>
                                 </div>
-                                <div class="col-md-6">
-                                    <p class="mb-1"><strong>Family Members:</strong> <span id="modalFamilyCount">-</span></p>
-                                    <p class="mb-1"><strong>Monthly Income:</strong> <span id="modalIncome">-</span></p>
-                                    <p class="mb-1"><strong>House/Lot Ownership:</strong> <span id="modalHouseOwnership">-</span></p>
+                                <div class="card-body py-2">
+                                    <div class="row g-2">
+                                        <div class="col-md-3"><strong>Purok/Gimong:</strong> <span id="gen-purok">-</span></div>
+                                        <div class="col-md-3"><strong>Barangay:</strong> <span id="gen-barangay">-</span></div>
+                                        <div class="col-md-3"><strong>Municipality:</strong> <span id="gen-municipality">-</span></div>
+                                        <div class="col-md-3"><strong>Province:</strong> <span id="gen-province">-</span></div>
+                                        <div class="col-md-3"><strong>Parish:</strong> <span id="gen-parish">-</span></div>
+                                        <div class="col-md-3"><strong>Diocese:</strong> <span id="gen-diocese">-</span></div>
+                                        <div class="col-md-3"><strong>Years of Residency:</strong> <span id="gen-residency">-</span></div>
+                                        <div class="col-md-3"><strong>Family Members:</strong> <span id="gen-familyMembers">-</span></div>
+                                        <div class="col-md-3"><strong>Family Structure:</strong> <span id="gen-familyStructure">-</span></div>
+                                        <div class="col-md-3"><strong>Local Dialect:</strong> <span id="gen-dialect">-</span></div>
+                                        <div class="col-md-3"><strong>Ethnicity:</strong> <span id="gen-ethnicity">-</span></div>
+                                        <div class="col-md-3"><strong>Transportation:</strong> <span id="gen-transportation">-</span></div>
+                                        <div class="col-md-3"><strong>Road Structure:</strong> <span id="gen-road">-</span></div>
+                                        <div class="col-md-3"><strong>Classification:</strong> <span id="gen-classification">-</span></div>
+                                    </div>
                                 </div>
                             </div>
-                            <h6>Family Members</h6>
-                            <div class="table-responsive">
-                                <table class="table table-sm table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Relation</th>
-                                            <th>Age</th>
-                                            <th>Education</th>
-                                            <th>Occupation</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="modalFamilyTable"></tbody>
-                                </table>
+
+                            <!-- Family Members Section -->
+                            <div class="card mb-3">
+                                <div class="card-header bg-light py-2">
+                                    <h6 class="mb-0"><i class="bi bi-people me-2"></i>Family Members</h6>
+                                </div>
+                                <div class="card-body py-2">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-bordered mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Relation</th>
+                                                    <th>Sex</th>
+                                                    <th>Age</th>
+                                                    <th>Civil Status</th>
+                                                    <th>Religion</th>
+                                                    <th>Sacraments</th>
+                                                    <th>Studying</th>
+                                                    <th>Education</th>
+                                                    <th>Occupation</th>
+                                                    <th>Work Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="modalFamilyTable"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Health & Living Conditions Section -->
+                            <div class="card mb-3">
+                                <div class="card-header bg-light py-2">
+                                    <h6 class="mb-0"><i class="bi bi-heart-pulse me-2"></i>Health & Living Conditions</h6>
+                                </div>
+                                <div class="card-body py-2">
+                                    <div class="row g-2">
+                                        <div class="col-md-4"><strong>Common Illnesses:</strong> <span id="health-illness">-</span></div>
+                                        <div class="col-md-4"><strong>Treatment Source:</strong> <span id="health-treatment">-</span></div>
+                                        <div class="col-md-4"><strong>Water Source:</strong> <span id="health-water">-</span></div>
+                                        <div class="col-md-4"><strong>Lighting Source:</strong> <span id="health-lighting">-</span></div>
+                                        <div class="col-md-4"><strong>Cooking Source:</strong> <span id="health-cooking">-</span></div>
+                                        <div class="col-md-4"><strong>Garbage Disposal:</strong> <span id="health-garbage">-</span></div>
+                                        <div class="col-md-4"><strong>Toilet Facility:</strong> <span id="health-toilet">-</span></div>
+                                        <div class="col-md-4"><strong>Toilet Distance:</strong> <span id="health-toiletDist">-</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Socio-Economic Section -->
+                            <div class="card mb-3">
+                                <div class="card-header bg-light py-2">
+                                    <h6 class="mb-0"><i class="bi bi-currency-exchange me-2"></i>Socio-Economic</h6>
+                                </div>
+                                <div class="card-body py-2">
+                                    <div class="row g-2">
+                                        <div class="col-md-3"><strong>Monthly Income:</strong> <span id="soc-income">-</span></div>
+                                        <div class="col-md-3"><strong>Weekly Expenses:</strong> <span id="soc-expenses">-</span></div>
+                                        <div class="col-md-3"><strong>Has Savings:</strong> <span id="soc-savings">-</span></div>
+                                        <div class="col-md-3"><strong>Savings Location:</strong> <span id="soc-savingsLoc">-</span></div>
+                                        <div class="col-md-3"><strong>House Ownership:</strong> <span id="soc-ownership">-</span></div>
+                                        <div class="col-md-3"><strong>House Classification:</strong> <span id="soc-houseClass">-</span></div>
+                                        <div class="col-md-3"><strong>Land Area (ha):</strong> <span id="soc-landArea">-</span></div>
+                                        <div class="col-md-3"><strong>Distance of House from Church:</strong> <span id="soc-church">-</span></div>
+                                        <div class="col-md-3"><strong>Distance of House from Market:</strong> <span id="soc-market">-</span></div>
+                                        <div class="col-md-3"><strong>Organizations:</strong> <span id="soc-organizations">-</span></div>
+                                        <div class="col-md-3"><strong>Livestock:</strong> <span id="soc-livestock">-</span></div>
+                                        <div class="col-md-3"><strong>Assets:</strong> <span id="soc-assets">-</span></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">

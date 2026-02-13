@@ -175,7 +175,36 @@
                             <h5 class="modal-title">Participant Details</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body" id="detailsContent"></div>
+                        <div class="modal-body">
+                            <div id="accessIndicator"></div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <p class="mb-1"><strong>Full Name:</strong> <span id="modalFullName">-</span></p>
+                                    <p class="mb-1"><strong>Address:</strong> <span id="modalAddress">-</span></p>
+                                    <p class="mb-1"><strong>Parish:</strong> <span id="modalParish">-</span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="mb-1"><strong>Family Members:</strong> <span id="modalFamilyCount">-</span></p>
+                                    <p class="mb-1"><strong>Monthly Income:</strong> <span id="modalIncome">-</span></p>
+                                    <p class="mb-1"><strong>House/Lot Ownership:</strong> <span id="modalHouseOwnership">-</span></p>
+                                </div>
+                            </div>
+                            <h6>Family Members</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Relation</th>
+                                            <th>Age</th>
+                                            <th>Education</th>
+                                            <th>Occupation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="modalFamilyTable"></tbody>
+                                </table>
+                            </div>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary d-none" id="editBtn">

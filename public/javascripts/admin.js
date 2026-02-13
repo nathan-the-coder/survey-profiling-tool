@@ -266,6 +266,11 @@ async function fetchParticipantDetails(id) {
         const response = await fetch(`${API_URL}/participant/${id}`, {
             headers: { 'X-Username': username }
         });
+        if (!response.ok) {
+            const err = await response.json().catch(() => ({}));
+            alert(err.error || `Failed to fetch details (${response.status})`);
+            return;
+        }
         const data = await response.json();
         showParticipantDetails(data);
     } catch (_err) {

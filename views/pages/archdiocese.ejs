@@ -96,13 +96,26 @@
                         <div class="collapse mt-3" id="filterSection">
                             <div class="row g-2">
                                 <div class="col-md-3 col-sm-6">
-                                    <input type="text" class="form-control form-control-sm" id="filterName" placeholder="Filter by Name...">
+                                    <select class="form-select form-select-sm" id="filterOccupation">
+                                        <option value="">All Occupations</option>
+                                        <option value="Farming">Farming</option>
+                                        <option value="Tenant">Tenant</option>
+                                        <option value="Fishing">Fishing</option>
+                                        <option value="Vending">Vending</option>
+                                        <option value="Hired Labor">Hired Labor</option>
+                                        <option value="Employed">Employed</option>
+                                        <option value="OFW">OFW</option>
+                                        <option value="Domestic Worker">Domestic Worker</option>
+                                        <option value="Entertainment">Entertainment</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-3 col-sm-6">
                                     <input type="text" class="form-control form-control-sm" id="filterAddress" placeholder="Filter by Address...">
                                 </div>
                                 <div class="col-md-3 col-sm-6">
-                                    <input type="text" class="form-control form-control-sm" id="filterParish" placeholder="Filter by Parish...">
+                                    <select class="form-select form-select-sm" id="filterParish">
+                                        <option value="">All Parishes</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-3 col-sm-6">
                                     <select class="form-select form-select-sm" id="filterRelation">
@@ -177,5 +190,5 @@
             </div>
         </main>
     `,
-    extraScripts: `<script src="/javascripts/dashboard.js"></script>`
+    extraScripts: `<script src="/javascripts/archdiocese.js"></script>`
 }) %>

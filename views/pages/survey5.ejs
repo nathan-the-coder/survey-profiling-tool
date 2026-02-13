@@ -151,14 +151,13 @@
                             <div class="checkbox-item"><input type="checkbox" name="assets[]" value="tablet" id="asset20"><label for="asset20">Tablet</label></div>
                             <div class="checkbox-item"><input type="checkbox" name="assets[]" value="personal_computer" id="asset21"><label for="asset21">Personal Computer (Desktop/Laptop/etc.)</label></div>
                             <div class="checkbox-item"><input type="checkbox" name="assets[]" value="vehicle" id="asset22"><label for="asset22">Car / Vehicle</label></div>
-                            <div class="checkbox-item"><input type="checkbox" name="assets[]" value="others" id="asset99"><label for="asset99">Others</label></div>
-                        </div>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <div class="checkbox-item" style="text-align: left; padding: 12px 16px;"><input type="checkbox" name="assets[]" value="others" id="asset11" onchange="toggleOthersText(this, 'assets_others_container')"><label for="asset11">Others</label></div>
-                                <div id="assets_others_container" class="d-none mt-2"><input type="text" class="form-control" name="assets_others" placeholder="Please specify other assets"></div>
+                            <div class="checkbox-item" style="text-align:left; padding:12px 16px;">
+                                <input type="checkbox" name="assets[]" value="others" id="assets11" onchange="toggleOthersText(this, 'assets_others_container')">
+                                <label for="assets11">Others</label>
                             </div>
                         </div>
+                        <div id="assets_others_container" class="d-none mt-2"><input type="text" class="form-control" name="assets_others" placeholder="Please specify other assets"></div>
+                        
                     </div>
                     
                     <div class="form-card p-4 mb-4">

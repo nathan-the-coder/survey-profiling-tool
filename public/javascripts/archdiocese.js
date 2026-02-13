@@ -16,7 +16,7 @@ if (username === 'Archdiocese of Tuguegarao') {
 }
 
 // Filter elements
-const filterName = document.getElementById('filterName');
+const filterOccupation = document.getElementById('filterOccupation');
 const filterAddress = document.getElementById('filterAddress');
 const filterParish = document.getElementById('filterParish');
 const filterRelation = document.getElementById('filterRelation');
@@ -105,10 +105,11 @@ function displayParticipantsTable(participants) {
 function applyFilters() {
     let filtered = [...allParticipants];
     
-    // Name filter
-    const nameFilter = filterName?.value?.toLowerCase() || '';
-    if (nameFilter) {
-        filtered = filtered.filter(p => p.full_name?.toLowerCase().includes(nameFilter));
+    // Occupation filter (NEW)
+    const occupationFilter = filterOccupation?.value || '';
+    if (occupationFilter) {
+        // Assuming your data object has a property called 'occupation_code' or 'occupation'
+        filtered = filtered.filter(p => p.occupation_code === occupationFilter);
     }
     
     // Address filter
@@ -153,7 +154,7 @@ function updateShowingInfo(filteredCount, totalCount) {
 }
 
 function clearFilters() {
-    if (filterName) filterName.value = '';
+    if (filterOccupation) filterOccupation.value = '';
     if (filterAddress) filterAddress.value = '';
     if (filterParish) filterParish.value = '';
     if (filterRelation) filterRelation.value = '';
@@ -163,13 +164,55 @@ function clearFilters() {
 }
 
 // Add event listeners to filters
-if (filterName) filterName.addEventListener('input', applyFilters);
+if (filterOccupation) filterOccupation.addEventListener('change', applyFilters);
 if (filterAddress) filterAddress.addEventListener('input', applyFilters);
-if (filterParish) filterParish.addEventListener('input', applyFilters);
+if (filterParish) filterParish.addEventListener('change', applyFilters);
 if (filterRelation) filterRelation.addEventListener('change', applyFilters);
 if (filterMinAge) filterMinAge.addEventListener('input', applyFilters);
 if (filterMaxAge) filterMaxAge.addEventListener('input', applyFilters);
 if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearFilters);
+
+function loadParishes() {
+    console.log("1. loadParishes function triggered");
+    
+    const parishSelect = document.getElementById('filterParish');
+    
+    if (!parishSelect) {
+        console.error("2. ERROR: Could not find HTML element with ID 'filterParish'");
+        return;
+    }
+
+    console.log("3. Attempting to fetch from:", `${API_URL}/parishes`);
+
+    fetch(`${API_URL}/parishes`, {
+        headers: { 'X-Username': sessionStorage.getItem('username') || 'Guest' }
+    })
+    .then(response => {
+        console.log("4. Response received:", response.status);
+        return response.json();
+    })
+    .then(data => {
+        console.log("5. Data parsed:", data);
+        parishSelect.innerHTML = '<option value="">All Parishes</option>';
+        
+        const list = Array.isArray(data) ? data : (data.parishes || []);
+        list.forEach(p => {
+            const option = document.createElement('option');
+            option.value = p;
+            option.textContent = p;
+            parishSelect.appendChild(option);
+        });
+    })
+    .catch(err => {
+        console.error("6. Fetch Error:", err);
+        // Fallback to defaults so the UI isn't broken
+        ['St. Louis Cathedral', 'St. Joseph Parish'].forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p; opt.textContent = p;
+            parishSelect.appendChild(opt);
+        });
+    });
+}
 
 async function fetchParticipantDetails(id) {
     try {
@@ -223,5 +266,9 @@ document.getElementById('signoutBtn').addEventListener('click', (e) => {
     sessionStorage.clear();
     window.location.href = '/login';
 });
-
-loadAllParticipants();
+// Ensure the HTML is fully "drawn" before we try to find the dropdowns
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM fully loaded. Initializing...");
+    loadParishes();
+    loadAllParticipants();
+});

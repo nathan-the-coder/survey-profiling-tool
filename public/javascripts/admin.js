@@ -1,231 +1,274 @@
 const API_URL = 'https://survey-profiling-tool-backend.vercel.app';
-const username = sessionStorage.getItem('username') || 'Guest';
+const searchInput = document.getElementById('searchInput');
+const autocompleteList = document.getElementById('autocompleteList');
+const participantModal = new bootstrap.Modal(document.getElementById('participantModal'));
+let debounceTimer;
+let allParticipants = []; // Store all participants for filtering
 
-// Check if user is admin
-if (username !== 'SJCB_Admin' && !username.toLowerCase().includes('admin')) {
-    alert('Access denied. Admin only.');
-    window.location.href = '/login';
+const username = sessionStorage.getItem('username') || 'Guest';
+document.getElementById('nameDisplay').textContent = username;
+
+let userRole = 'Guest';
+if (username === 'Archdiocese of Tuguegarao') {
+    userRole = 'Archdiocese';
+} else if (username.includes('Parish')) {
+    userRole = 'Parish';
 }
 
-document.querySelector('#name').textContent = username;
+// Filter elements
+const filterOccupation = document.getElementById('filterOccupation');
+const filterAddress = document.getElementById('filterAddress');
+const filterParish = document.getElementById('filterParish');
+const filterRelation = document.getElementById('filterRelation');
+const filterMinAge = document.getElementById('filterMinAge');
+const filterMaxAge = document.getElementById('filterMaxAge');
+const clearFiltersBtn = document.getElementById('clearFilters');
 
-// Add admin badge
-const roleBadge = document.createElement('span');
-roleBadge.className = 'badge ms-2 bg-danger';
-roleBadge.textContent = 'Admin';
-document.querySelector('#name').appendChild(roleBadge);
+searchInput.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    const query = searchInput.value.trim();
+    if (query.length < 2) {
+        autocompleteList.classList.add('d-none');
+        return;
+    }
+    debounceTimer = setTimeout(() => fetchParticipants(query), 300);
+});
 
-let allUsers = [];
-
-// Load users on page load
-loadUsers();
-
-async function loadUsers() {
+async function fetchParticipants(query) {
     try {
-        const response = await fetch(`${API_URL}/api/users`, {
+        const response = await fetch(`${API_URL}/search-participants?q=${encodeURIComponent(query)}`, {
             headers: { 'X-Username': username }
         });
-        
-        if (!response.ok) {
-            throw new Error('Failed to load users');
-        }
-        
         const data = await response.json();
-        allUsers = data || [];
-        displayUsers(allUsers);
-    } catch (err) {
-        document.getElementById('usersTableBody').innerHTML = 
-            `<tr><td colspan="5" class="text-center text-danger">Failed to load users: ${err.message}</td></tr>`;
+        const results = Array.isArray(data) ? data : (data.results || []);
+        showAutocomplete(results);
+    } catch (_err) {}
+}
+
+function showAutocomplete(results) {
+    autocompleteList.innerHTML = '';
+    if (results.length === 0) {
+        autocompleteList.innerHTML = '<div class="p-2 text-muted">No results found</div>';
+    } else {
+        results.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'p-2 border-bottom autocomplete-item';
+            div.style.cursor = 'pointer';
+            div.innerHTML = `<strong>${item.full_name}</strong><br><small class="text-muted">${item.barangay_name}</small>`;
+            div.addEventListener('click', () => {
+                searchInput.value = item.full_name;
+                autocompleteList.classList.add('d-none');
+                fetchParticipantDetails(item.id);
+            });
+            autocompleteList.appendChild(div);
+        });
+    }
+    autocompleteList.classList.remove('d-none');
+}
+
+async function loadAllParticipants() {
+    const tbody = document.getElementById('participantsTableBody');
+    try {
+        const response = await fetch(`${API_URL}/all-participants`, {
+            headers: { 'X-Username': username }
+        });
+        const data = await response.json();
+        allParticipants = data || []; // Store for filtering
+        applyFilters(); // Apply any active filters
+    } catch (_err) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error loading data.</td></tr>';
     }
 }
 
-function displayUsers(users) {
-    const tbody = document.getElementById('usersTableBody');
-    
-    if (!users || users.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4">No users found</td></tr>';
+function displayParticipantsTable(participants) {
+    const tbody = document.getElementById('participantsTableBody');
+    if (!participants || participants.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">No participants found matching your filters</td></tr>';
+        updateShowingInfo(0, 0);
         return;
     }
     
-    tbody.innerHTML = users.map(user => `
+    tbody.innerHTML = participants.map(p => `
         <tr>
-            <td>${user.username}</td>
-            <td><span class="badge bg-${getRoleBadgeColor(user.role)}">${user.role || 'Parish'}</span></td>
-            <td>${user.parish || 'N/A'}</td>
-            <td><span class="badge bg-success">Active</span></td>
-            <td>
-                <button class="btn btn-sm btn-outline-primary me-1" onclick="editUser(${user.id})">
-                    <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger" onclick="deleteUser(${user.id}, '${user.username}')">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </td>
+            <td>${p.full_name || 'N/A'}</td>
+            <td>${p.relation_to_head_code || 'N/A'}</td>
+            <td>${p.purok_gimong || ''}, ${p.barangay_name || ''}</td>
+            <td>${p.parish_name || 'N/A'}</td>
+            <td>${p.age || 'N/A'}</td>
+            <td><button class="btn btn-sm btn-primary" onclick="fetchParticipantDetails(${p.id})"><i class="bi bi-eye"></i> View</button></td>
         </tr>
     `).join('');
+    
+    updateShowingInfo(participants.length, allParticipants.length);
 }
 
-function getRoleBadgeColor(role) {
-    switch(role) {
-        case 'admin': return 'danger';
-        case 'archdiocese': return 'success';
-        case 'parish': return 'primary';
-        default: return 'secondary';
+function applyFilters() {
+    let filtered = [...allParticipants];
+    
+    // Occupation filter (NEW)
+    const occupationFilter = filterOccupation?.value || '';
+    if (occupationFilter) {
+        // Assuming your data object has a property called 'occupation_code' or 'occupation'
+        filtered = filtered.filter(p => p.occupation_code === occupationFilter);
     }
-}
-
-// Search and filter
-const searchInput = document.getElementById('searchUsers');
-const roleFilter = document.getElementById('filterRole');
-
-if (searchInput) {
-    searchInput.addEventListener('input', filterUsers);
-}
-
-if (roleFilter) {
-    roleFilter.addEventListener('change', filterUsers);
-}
-
-function filterUsers() {
-    const searchTerm = searchInput?.value?.toLowerCase() || '';
-    const selectedRole = roleFilter?.value || '';
     
-    let filtered = allUsers;
-    
-    if (searchTerm) {
-        filtered = filtered.filter(u => 
-            u.username?.toLowerCase().includes(searchTerm) ||
-            u.parish?.toLowerCase().includes(searchTerm)
+    // Address filter
+    const addressFilter = filterAddress?.value?.toLowerCase() || '';
+    if (addressFilter) {
+        filtered = filtered.filter(p => 
+            (p.purok_gimong?.toLowerCase().includes(addressFilter) || 
+             p.barangay_name?.toLowerCase().includes(addressFilter))
         );
     }
     
-    if (selectedRole) {
-        filtered = filtered.filter(u => u.role === selectedRole);
+    // Parish filter
+    const parishFilter = filterParish?.value?.toLowerCase() || '';
+    if (parishFilter) {
+        filtered = filtered.filter(p => p.parish_name?.toLowerCase().includes(parishFilter));
     }
     
-    displayUsers(filtered);
+    // Relation filter
+    const relationFilter = filterRelation?.value || '';
+    if (relationFilter) {
+        filtered = filtered.filter(p => p.relation_to_head_code === relationFilter);
+    }
+    
+    // Age range filter
+    const minAge = parseInt(filterMinAge?.value) || 0;
+    const maxAge = parseInt(filterMaxAge?.value) || 999;
+    if (minAge > 0 || maxAge < 999) {
+        filtered = filtered.filter(p => {
+            const age = parseInt(p.age) || 0;
+            return age >= minAge && age <= maxAge;
+        });
+    }
+    
+    displayParticipantsTable(filtered);
 }
 
-// Add user
-document.getElementById('saveUserBtn').addEventListener('click', async () => {
-    const form = document.getElementById('addUserForm');
-    const formData = new FormData(form);
-    
-    const userData = {
-        username: formData.get('username'),
-        password: formData.get('password'),
-        role: formData.get('role'),
-        parish: formData.get('parish') || null
-    };
-    
-    try {
-        const response = await fetch(`${API_URL}/api/users`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Username': username
-            },
-            body: JSON.stringify(userData)
-        });
-        
-        if (response.ok) {
-            bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
-            form.reset();
-            loadUsers();
-            alert('User created successfully');
-        } else {
-            const error = await response.json();
-            alert(error.error || 'Failed to create user');
-        }
-    } catch (err) {
-        alert('Failed to create user');
+function updateShowingInfo(filteredCount, totalCount) {
+    const showingInfo = document.getElementById('showingInfo');
+    if (showingInfo) {
+        showingInfo.textContent = `Showing ${filteredCount} of ${totalCount} entries`;
     }
-});
-
-// Edit user
-async function editUser(userId) {
-    const user = allUsers.find(u => u.id === userId);
-    if (!user) return;
-    
-    document.getElementById('editUserId').value = user.id;
-    document.getElementById('editUsername').value = user.username;
-    document.getElementById('editRole').value = user.role || 'parish';
-    document.getElementById('editParish').value = user.parish || '';
-    document.getElementById('editPassword').value = '';
-    
-    new bootstrap.Modal(document.getElementById('editUserModal')).show();
 }
 
-// Update user
-document.getElementById('updateUserBtn').addEventListener('click', async () => {
-    const userId = document.getElementById('editUserId').value;
-    const form = document.getElementById('editUserForm');
-    const formData = new FormData(form);
-    
-    const userData = {
-        username: formData.get('username'),
-        role: formData.get('role'),
-        parish: formData.get('parish') || null
-    };
-    
-    const password = formData.get('password');
-    if (password) {
-        userData.password = password;
-    }
-    
-    try {
-        const response = await fetch(`${API_URL}/api/users/${userId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Username': username
-            },
-            body: JSON.stringify(userData)
-        });
-        
-        if (response.ok) {
-            bootstrap.Modal.getInstance(document.getElementById('editUserModal')).hide();
-            loadUsers();
-            alert('User updated successfully');
-        } else {
-            const error = await response.json();
-            alert(error.error || 'Failed to update user');
-        }
-    } catch (err) {
-        alert('Failed to update user');
-    }
-});
+function clearFilters() {
+    if (filterOccupation) filterOccupation.value = '';
+    if (filterAddress) filterAddress.value = '';
+    if (filterParish) filterParish.value = '';
+    if (filterRelation) filterRelation.value = '';
+    if (filterMinAge) filterMinAge.value = '';
+    if (filterMaxAge) filterMaxAge.value = '';
+    applyFilters();
+}
 
-// Delete user
-async function deleteUser(userId, usernameToDelete) {
-    if (!confirm(`Are you sure you want to delete user "${usernameToDelete}"? This action cannot be undone.`)) {
+// Add event listeners to filters
+if (filterOccupation) filterOccupation.addEventListener('change', applyFilters);
+if (filterAddress) filterAddress.addEventListener('input', applyFilters);
+if (filterParish) filterParish.addEventListener('change', applyFilters);
+if (filterRelation) filterRelation.addEventListener('change', applyFilters);
+if (filterMinAge) filterMinAge.addEventListener('input', applyFilters);
+if (filterMaxAge) filterMaxAge.addEventListener('input', applyFilters);
+if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearFilters);
+
+function loadParishes() {
+    console.log("1. loadParishes function triggered");
+    
+    const parishSelect = document.getElementById('filterParish');
+    
+    if (!parishSelect) {
+        console.error("2. ERROR: Could not find HTML element with ID 'filterParish'");
         return;
     }
-    
+
+    console.log("3. Attempting to fetch from:", `${API_URL}/parishes`);
+
+    fetch(`${API_URL}/parishes`, {
+        headers: { 'X-Username': sessionStorage.getItem('username') || 'Guest' }
+    })
+    .then(response => {
+        console.log("4. Response received:", response.status);
+        return response.json();
+    })
+    .then(data => {
+        console.log("5. Data parsed:", data);
+        parishSelect.innerHTML = '<option value="">All Parishes</option>';
+        
+        const list = Array.isArray(data) ? data : (data.parishes || []);
+        list.forEach(p => {
+            const option = document.createElement('option');
+            option.value = p;
+            option.textContent = p;
+            parishSelect.appendChild(option);
+        });
+    })
+    .catch(err => {
+        console.error("6. Fetch Error:", err);
+        // Fallback to defaults so the UI isn't broken
+        ['St. Louis Cathedral', 'St. Joseph Parish'].forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p; opt.textContent = p;
+            parishSelect.appendChild(opt);
+        });
+    });
+}
+
+async function fetchParticipantDetails(id) {
     try {
-        const response = await fetch(`${API_URL}/api/users/${userId}`, {
-            method: 'DELETE',
+        const response = await fetch(`${API_URL}/participant/${id}`, {
             headers: { 'X-Username': username }
         });
-        
-        if (response.ok) {
-            loadUsers();
-            alert('User deleted successfully');
-        } else {
-            const error = await response.json();
-            alert(error.error || 'Failed to delete user');
-        }
-    } catch (err) {
-        alert('Failed to delete user');
+        const data = await response.json();
+        showParticipantDetails(data);
+    } catch (_err) {
+        alert('Failed to fetch details.');
     }
 }
 
-// Sign out
-document.querySelector('#signoutBtn').addEventListener('click', (e) => {
+function showParticipantDetails(data) {
+    const { household, family_members, socio_economic } = data;
+    
+    const accessDiv = document.getElementById('accessIndicator');
+    if (userRole === 'Archdiocese') {
+        accessDiv.innerHTML = '<div class="alert alert-success small py-2"><i class="bi bi-shield-check me-2"></i>Archdiocese Full Access</div>';
+    } else {
+        accessDiv.innerHTML = `<div class="alert alert-info small py-2"><i class="bi bi-info-circle me-2"></i>Parish Access: ${household?.parish_name || 'N/A'}</div>`;
+    }
+    
+    document.getElementById('modalFullName').textContent = family_members?.[0]?.full_name || 'N/A';
+    document.getElementById('modalAddress').textContent = `${household?.purok_gimong || ''}, ${household?.barangay_name || ''}`;
+    document.getElementById('modalParish').textContent = household?.parish_name || 'N/A';
+    document.getElementById('modalFamilyCount').textContent = household?.num_family_members || 'N/A';
+    document.getElementById('modalIncome').textContent = socio_economic?.income_monthly_code || 'N/A';
+    document.getElementById('modalHouseOwnership').textContent = socio_economic?.house_lot_ownership_code || 'N/A';
+    
+    const familyTbody = document.getElementById('modalFamilyTable');
+    familyTbody.innerHTML = family_members?.map(m => `
+        <tr>
+            <td>${m.full_name}</td>
+            <td>${m.relation_to_head_code}</td>
+            <td>${m.age}</td>
+            <td>${m.educational_attainment_code}</td>
+            <td>${m.occupation_code}</td>
+        </tr>
+    `).join('') || '<tr><td colspan="5">None</td></tr>';
+    
+    participantModal.show();
+}
+
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.position-relative')) autocompleteList.classList.add('d-none');
+});
+
+document.getElementById('signoutBtn').addEventListener('click', (e) => {
     e.preventDefault();
     sessionStorage.clear();
     window.location.href = '/login';
 });
-
-// Style navbar
-document.querySelector('.navbar').style.backgroundColor = '#dc3545';
+// Ensure the HTML is fully "drawn" before we try to find the dropdowns
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM fully loaded. Initializing...");
+    loadParishes();
+    loadAllParticipants();
+});

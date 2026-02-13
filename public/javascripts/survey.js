@@ -23,20 +23,24 @@ function saveFormData() {
             data[key] = value;
         }
     }
-    const checkboxes = form.querySelectorAll('input[type="checkbox"]:not([value])');
-    checkboxes.forEach(cb => {
-        if (cb.checked) {
-            data[cb.name] = data[cb.name] ? (Array.isArray(data[cb.name]) ? [...data[cb.name], cb.value] : [data[cb.name], cb.value]) : cb.value;
-        }
-    });
     sessionStorage.setItem('profiling_general', JSON.stringify(data));
 }
 
 function loadSavedData() {
     const saved = JSON.parse(sessionStorage.getItem('profiling_general') || '{}');
     for (const key in saved) {
-        const el = document.querySelector(`[name="${key}"]`);
-        if (el) el.value = saved[key];
+        const value = saved[key];
+        if (Array.isArray(value)) {
+            value.forEach(val => {
+                const el = document.querySelector(`[name="${key}"][value="${val}"]`);
+                if (el && el.type === 'checkbox') {
+                    el.checked = true;
+                }
+            });
+        } else {
+            const el = document.querySelector(`[name="${key}"]`);
+            if (el) el.value = value;
+        }
     }
 }
 

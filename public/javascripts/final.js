@@ -124,19 +124,23 @@ const maps = {
     immunized: { '1': 'Yes', '2': 'No', '66': 'N/A' },
     occupation: { '01': 'Farming', '02': 'Tenant', '03': 'Fishing', '04': 'Vending', '05': 'Hired Labor', '06': 'Employed', '07': 'OFW', '08': 'Domestic Worker', '09': 'Entertainment', '99': 'Others' },
     transportation: { 'Bicycle': 'Bicycle', 'Tricycle': 'Tricycle', 'Motorcycle': 'Motorcycle', 'Jeepney': 'Jeepney', 'Van': 'Van', 'Private Vehicle': 'Private Vehicle' },
-    illness: { '00': 'None', '01': 'Fever', '02': 'Flu', '03': 'Cough', '04': 'Cold', '05': 'Diarrhea', '07': 'Asthma', '09': 'Dengue', '13': 'Heart Disease', '15': 'High Blood', '99': 'Others' },
-    treatment: { '01': 'Traditional Healers', '02': 'Private Doctors', '03': 'RHU Doctors', '05': 'Brgy. Health Station', '06': 'Rural Health Unit', '99': 'Others' },
-    water: { '1': 'Local Water System', '2': 'Spring Water', '5': 'Own Artesian Well', '11': 'Water Refilling Station', '12': 'NAWASA', '99': 'Others' },
-    lighting: { '1': 'Electricity', '4': 'Solar Panel / Lamp', '6': 'Generator', '7': 'None' },
-    cooking: { '1': 'Woods', '2': 'Charcoal', '4': 'LPG', '5': 'Electricity' },
-    garbage: { '1': 'Segregating', '2': 'Truck Collection', '5': 'Composting', '6': 'Burning' },
-    toilet: { '1': 'Water-Sealed (Own)', '2': 'Water-Sealed (Shared)', '5': 'No Toilet' },
-    distance: { '1': 'Walking Distance', '2': '5-15 Minute Drive', '3': '30-Minute Drive', '4': '1 Hour+' },
-    income: { '1': '₱3,000 and below', '2': '₱3,001 - ₱6,000', '11': '₱30,001 and up' },
-    expenses: { '1': '₱300 and below', '5': '₱1,201 - ₱1,500', '11': '₱3,001 and up' },
-    savingsLoc: { '1': 'House', '2': 'Bank', '3': 'E-money', '4': 'Microfinance', '66': 'N/A' },
-    ownership: { '1': 'Owned', '2': 'Rented', '4': 'Rent Free' },
-    houseClass: { '1': 'Concrete', '2': 'Semi-Concrete', '3': 'Indigenous', '6': 'Makeshift' }
+    illness: { '00': 'None', '01': 'Fever', '02': 'Flu', '03': 'Cough', '04': 'Cold', '05': 'Diarrhea', '06': 'Cholera', '07': 'Asthma', '08': 'Typhoid Fever', '09': 'Dengue', '10': 'Pneumonia', '11': 'Chicken Pox', '12': 'Measles', '13': 'Heart Disease', '14': 'Lung Disease', '15': 'High Blood', '16': 'Anemia', '17': 'Malaria', '99': 'Others' },
+    treatment: { '00': 'None', '01': 'Traditional Healers', '02': 'Private Doctors', '03': 'RHU Doctors', '04': 'Self-medication', '05': 'Brgy. Health Station', '06': 'Rural Health Unit', '07': 'Brgy. Health Worker', '08': 'Brgy. Nutrition Scholar', '09': 'CBHP/DHW', '10': 'Private Clinic', '99': 'Others' },
+    water: { '1': 'Local Water System', '2': 'Spring Water', '3': 'River', '4': 'Open Well', '5': 'Own Artesian Well', '6': 'Community Artesian Well', '7': 'Community Faucet', '8': 'Electric Deep Well', '9': 'Free Flowing Water Pipe', '10': 'Rain Water', '11': 'Water Refilling Station', '12': 'NAWASA', '99': 'Others' },
+    lighting: { '1': 'Electricity', '2': 'Kerosene (Gaas)', '3': 'LPG', '4': 'Solar Panel / Solar Lamp', '5': 'Battery', '6': 'Generator', '7': 'None', '99': 'Others' },
+    cooking: { '1': 'Woods', '2': 'Charcoal', '3': 'Kerosene (Gas)', '4': 'LPG', '5': 'Electricity', '99': 'Others' },
+    garbage: { '1': 'Segregating Waste', '2': 'Collected by Garbage Truck', '3': 'Recycling / Reusing at Home', '4': 'Selling / Giving Away Recyclables', '5': 'Composting', '6': 'Burning', '7': 'Dumping in Pit with Cover', '8': 'Dumping in Pit without Cover', '9': 'Throwing in Uninhabited Locations', '99': 'Others' },
+    toilet: { '1': 'Water-Sealed Flush (Own)', '2': 'Water-Sealed Flush (Shared)', '3': 'Closed Pit', '4': 'Open Pit', '5': 'No Toilet', '99': 'Others' },
+    toiletDist: { '1': 'Below 200 meters', '2': '201-500 meters', '3': '501-1000 meters', '4': 'More than 1000 meters' },
+    distance: { '1': 'Walking Distance (Ideal)', '2': '5-15 Minute Drive', '3': '30-Minute Drive', '4': 'Over 45 Minutes - 1 Hour+' },
+    income: { '1': '₱3,000 and below', '2': '₱3,001 - ₱6,000', '3': '₱6,001 - ₱9,000', '4': '₱9,001 - ₱12,000', '5': '₱12,001 - ₱15,000', '6': '₱15,001 - ₱18,000', '7': '₱18,001 - ₱21,000', '8': '₱21,001 - ₱24,000', '9': '₱24,001 - ₱27,000', '10': '₱27,001 - ₱30,000', '11': '₱30,001 and up' },
+    expenses: { '1': '₱300 and below', '2': '₱301 - ₱600', '3': '₱601 - ₱900', '4': '₱901 - ₱1,200', '5': '₱1,201 - ₱1,500', '6': '₱1,501 - ₱1,800', '7': '₱1,801 - ₱2,100', '8': '₱2,101 - ₱2,400', '9': '₱2,401 - ₱2,700', '10': '₱2,701 - ₱3,000', '11': '₱3,001 and up' },
+    savings: { '1': 'Yes', '2': 'None' },
+    savingsLoc: { '1': 'House', '2': 'Bank', '3': 'E-money (GCash, etc.)', '4': 'Microfinance (Card, ASA, etc.)', '66': 'Not Applicable', '99': 'Others' },
+    ownership: { '1': 'Owned', '2': 'Rented House', '3': 'Tenanted', '4': 'Rent Free', '5': 'Caretaker', '99': 'Others' },
+    houseClass: { '1': 'Concrete', '2': 'Semi-Concrete', '3': 'Indigenous Materials', '4': 'Galvanized Iron / aluminum', '5': 'Barong-barong', '6': 'Makeshift', '99': 'Others' },
+    livestock: { 'carabao': 'Carabao', 'cow': 'Cow', 'goat': 'Goat', 'chicken': 'Chicken', 'pig': 'Pig', 'geese': 'Geese', 'turkey': 'Turkey', 'duck': 'Duck', 'horse': 'Horse', 'sheep': 'Sheep', 'rabbit': 'Rabbit', 'others': 'Others' },
+    assets: { 'refrigerator': 'Refrigerator', 'freezer': 'Freezer', 'stove': 'Stove', 'gas_range': 'Gas Range', 'rice_cooker': 'Rice Cooker', 'air_fryer': 'Air Fryer', 'microwave_oven': 'Microwave Oven', 'washing_machine': 'Washing Machine', 'air_conditioner': 'Air Conditioner', 'electric_fan': 'Electric Fan', 'electric_iron': 'Electric Iron', 'sewing_machine': 'Sewing Machine', 'am_radio': 'AM Radio', 'cassette_player': 'Cassette Player', 'television': 'Television', 'cd_dvd_vcd_player': 'CD / DVD / VCD Player', 'karaoke': 'Karaoke', 'landline': 'Landline Telephone', 'mobile_phone': 'Mobile Phone', 'tablet': 'Tablet', 'personal_computer': 'Personal Computer', 'vehicle': 'Car / Vehicle', 'others': 'Others' }
 };
 
 function setText(id, value) {
@@ -219,19 +223,20 @@ function loadProfilingData() {
     setText('health-cooking', mapArrayValue(health.cooking_source, maps.cooking));
     setText('health-garbage', mapArrayValue(health.garbage_disposal, maps.garbage));
     setText('health-toilet', mapArrayValue(health.toilet_type, maps.toilet));
-    setText('health-toiletDist', maps.distance[health.toilet_distance] || '-');
+    setText('health-toiletDist', maps.toiletDist[health.toilet_distance] || '-');
 
     // Section IV: Socio-Economic
-    setText('soc-income', maps.income[socio.income_monthly]);
-    setText('soc-expenses', maps.expenses[socio.expenses_weekly]);
-    setText('soc-savings', socio.has_savings === '1' ? 'Yes' : 'None');
+    setText('soc-income', maps.income[socio.income_monthly] || '-');
+    setText('soc-expenses', maps.expenses[socio.expenses_weekly] || '-');
+    setText('soc-savings', maps.savings[socio.has_savings] || '-');
     setText('soc-savingsLoc', mapArrayValue(socio.savings_location, maps.savingsLoc));
-    setText('soc-ownership', mapArrayValue(socio.house_ownership, maps.ownership));
+    setText('soc-ownership', maps.ownership[socio.house_ownership] || '-');
     setText('soc-houseClass', mapArrayValue(socio.house_classification, maps.houseClass));
-    setText('soc-landArea', socio.land_area);
-    setText('soc-assets', Array.isArray(socio.assets) ? socio.assets.join(', ') : '-');
-    setText('soc-livestock', socio.livestock_owned);
-    setText('soc-church', maps.distance[socio.distance_church]);
-    setText('soc-market', maps.distance[socio.distance_market]);
-    setText('soc-companion', socio.missionary_companion);
+    setText('soc-landArea', socio.land_area || '-');
+    setText('soc-assets', mapArrayValue(socio.assets, maps.assets));
+    setText('soc-livestock', mapArrayValue(socio.livestock_owned, maps.livestock));
+    setText('soc-livestockOther', mapArrayValue(socio.livestock_for_others, maps.livestock));
+    setText('soc-church', maps.distance[socio.distance_church] || '-');
+    setText('soc-market', maps.distance[socio.distance_market] || '-');
+    setText('soc-companion', socio.missionary_companion || '-');
 }

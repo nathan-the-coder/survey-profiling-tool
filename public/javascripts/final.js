@@ -46,6 +46,37 @@ function normalizeData(data) {
     return normalized;
 }
 
+// --- Map codes to text for database ---
+
+const occupationMap = { '01': 'Farming', '02': 'Tenant', '03': 'Fishing', '04': 'Vending', '05': 'Hired Labor', '06': 'Employed', '07': 'OFW', '08': 'Domestic Worker', '09': 'Entertainment', '99': 'Others' };
+const educationMap = { 'Pre-School': 'Pre-School', 'Elementary': 'Elementary', 'Junior High': 'Junior High', 'Senior High': 'Senior High', 'College': 'College', 'Post-Graduate': 'Post-Graduate' };
+
+function mapCodesToText(data) {
+    if (!data || typeof data !== 'object') return data;
+    
+    const mapped = { ...data };
+    
+    // Map occupation codes to text for head and spouse
+    if (mapped.head_job) {
+        mapped.head_job = occupationMap[mapped.head_job] || mapped.head_job;
+    }
+    if (mapped.spouse_job) {
+        mapped.spouse_job = occupationMap[mapped.spouse_job] || mapped.spouse_job;
+    }
+    
+    // Map occupation codes for household members (arrays)
+    if (mapped.m_job && Array.isArray(mapped.m_job)) {
+        mapped.m_job = mapped.m_job.map(j => occupationMap[j] || j);
+    }
+    
+    // Map education for household members
+    if (mapped.m_educ && Array.isArray(mapped.m_educ)) {
+        mapped.m_educ = mapped.m_educ.map(e => educationMap[e] || e);
+    }
+    
+    return mapped;
+}
+
 // --- Submission Logic ---
 
 function submitEntry() {
@@ -60,7 +91,7 @@ function submitEntry() {
     // 2. Normalize Data
     const allData = {
         general: normalizeData(rawData.general),
-        primary: normalizeData(rawData.primary),
+        primary: mapCodesToText(normalizeData(rawData.primary)),
         health: normalizeData(rawData.health),
         socio: normalizeData(rawData.socio)
     };

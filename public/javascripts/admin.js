@@ -75,8 +75,6 @@ async function loadAllParticipants() {
     const totalParticipantsEl = document.getElementById('totalParticipants');
     
     try {
-        console.log("Fetching participants from:", `${API_URL}/all-participants`);
-
         const response = await fetch(`${API_URL}/all-participants`, {
             headers: {
                 'X-Username': username,
@@ -89,7 +87,6 @@ async function loadAllParticipants() {
         }
 
         const data = await response.json();
-        console.log("Data received from API:", data);
 
         // Ensure we are dealing with an array
         allParticipants = Array.isArray(data) ? data : [];
@@ -136,7 +133,7 @@ function displayParticipantsTable(participants) {
                 <td>${parish}</td>
                 <td>${age}</td>
                 <td>
-                    <button class="btn btn-sm btn-primary" onclick="fetchParticipantsDetails(${id})">
+                    <button class="btn btn-sm btn-primary" onclick="fetchParticipantDetails(${id})">
                         <i class="bi bi-eye"></i> View
                     </button>
                 </td>
@@ -231,26 +228,19 @@ if (filterMaxAge) filterMaxAge.addEventListener('input', applyFilters);
 if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearFilters);
 
 function loadParishes() {
-    console.log("1. loadParishes function triggered");
-    
     const parishSelect = document.getElementById('filterParish');
     
     if (!parishSelect) {
-        console.error("2. ERROR: Could not find HTML element with ID 'filterParish'");
         return;
     }
-
-    console.log("3. Attempting to fetch from:", `${API_URL}/parishes`);
 
     fetch(`${API_URL}/parishes`, {
         headers: { 'X-Username': sessionStorage.getItem('username') || 'Guest' }
     })
     .then(response => {
-        console.log("4. Response received:", response.status);
         return response.json();
     })
     .then(data => {
-        console.log("5. Data parsed:", data);
         parishSelect.innerHTML = '<option value="">All Parishes</option>';
         
         const list = Array.isArray(data) ? data : (data.parishes || []);
@@ -262,7 +252,6 @@ function loadParishes() {
         });
     })
     .catch(err => {
-        console.error("6. Fetch Error:", err);
         // Fallback to defaults so the UI isn't broken
         ['St. Louis Cathedral', 'St. Joseph Parish'].forEach(p => {
             const opt = document.createElement('option');
@@ -326,7 +315,6 @@ document.getElementById('signoutBtn').addEventListener('click', (e) => {
 });
 // Ensure the HTML is fully "drawn" before we try to find the dropdowns
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM fully loaded. Initializing...");
     loadParishes();
     loadAllParticipants();
 });

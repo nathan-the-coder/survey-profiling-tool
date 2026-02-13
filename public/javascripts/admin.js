@@ -5,7 +5,11 @@ const participantModal = new bootstrap.Modal(document.getElementById('participan
 let debounceTimer;
 let allParticipants = []; // Store all participants for filtering
 
-const username = sessionStorage.getItem('username') || 'Guest';
+const username = sessionStorage.getItem('username');
+if (!username) {
+    window.location.href = '/login';
+    throw new Error('No user logged in');
+}
 document.getElementById('nameDisplay').textContent = username;
 
 let userRole = 'Guest';
@@ -68,38 +72,92 @@ function showAutocomplete(results) {
 
 async function loadAllParticipants() {
     const tbody = document.getElementById('participantsTableBody');
+    const totalParticipantsEl = document.getElementById('totalParticipants');
+    
     try {
+        console.log("Fetching participants from:", `${API_URL}/all-participants`);
+
         const response = await fetch(`${API_URL}/all-participants`, {
-            headers: { 'X-Username': username }
+            headers: {
+                'X-Username': username,
+                'Content-Type': 'application/json'
+            }
         });
+ 
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
-        allParticipants = data || []; // Store for filtering
-        applyFilters(); // Apply any active filters
-    } catch (_err) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error loading data.</td></tr>';
+        console.log("Data received from API:", data);
+
+        // Ensure we are dealing with an array
+        allParticipants = Array.isArray(data) ? data : [];
+        
+        if (allParticipants.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">No record found in the database.</td></tr>';
+            return;
+        }
+
+        // 1. Update the Summary Cards at the top
+        if (totalParticipantsEl) totalParticipantsEl.textContent = allParticipants.length;
+        updateDashboardStats(allParticipants);
+
+        // 2. Render the table
+        displayParticipantsTable(allParticipants);
+
+    } catch (err) {
+        console.error("Detailed Fetch Error:", err);
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">
+            Error: ${err.message}. Check console for details.
+        </td></tr>`    
     }
 }
 
 function displayParticipantsTable(participants) {
     const tbody = document.getElementById('participantsTableBody');
-    if (!participants || participants.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">No participants found matching your filters</td></tr>';
-        updateShowingInfo(0, 0);
-        return;
-    }
-    
-    tbody.innerHTML = participants.map(p => `
-        <tr>
-            <td>${p.full_name || 'N/A'}</td>
-            <td>${p.relation_to_head_code || 'N/A'}</td>
-            <td>${p.purok_gimong || ''}, ${p.barangay_name || ''}</td>
-            <td>${p.parish_name || 'N/A'}</td>
-            <td>${p.age || 'N/A'}</td>
-            <td><button class="btn btn-sm btn-primary" onclick="fetchParticipantDetails(${p.id})"><i class="bi bi-eye"></i> View</button></td>
-        </tr>
-    `).join('');
-    
+    if (!tbody) return;
+
+    // Map through the data and create rows
+    const rows = participants.map(p => {
+        // Handle potential null values properly
+        const name = p.full_name || 'Unknown';
+        const relation = p.relation_to_head_code || 'N/A';
+        const address = `${p.purok_gimong || ''} ${p.barangay_name || ''}`.trim();
+        const parish = p.parish_name || 'N/A';
+        const age = p.age || 'N/A';
+        const id = p.id;
+
+        return `
+            <tr>
+                <td><div class="fw-bold">${name}</div></td>
+                <td><span class="badge bg-light text-dark border">${relation}</span></td>
+                <td><small>${address}</small></td>
+                <td>${parish}</td>
+                <td>${age}</td>
+                <td>
+                    <button class="btn btn-sm btn-primary" onclick="fetchParticipantsDetails(${id})">
+                        <i class="bi bi-eye"></i> View
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    tbody.innerHTML = rows;
     updateShowingInfo(participants.length, allParticipants.length);
+}
+
+function updateDashboardStats(data) {
+    // Household (Unique household_id)
+    const totalHouseholds = new Set(data.map(p => p.household_id)).size;
+    const hhEl = document.getElementById('totalHouseholds');
+    if (hhEl) hhEl.textContent = totalHouseholds;
+
+    // Parishes (Unique parish names)
+    const totalParishes = new Set(data.map(p => p.parish_name).filter(Boolean)).size;
+    const prEl = document.getElementById('totalParishes');
+    if (prEl) prEl.textContent = totalParishes;
 }
 
 function applyFilters() {

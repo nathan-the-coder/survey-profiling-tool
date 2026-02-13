@@ -43,7 +43,7 @@ router.get('/archdiocese', function(req, res, next) {
 });
 
 /* GET admin page. */
-router.get('/admin/users', function(req, res, next) {
+router.get('/admin', function(req, res, next) {
   res.render('pages/admin');
 });
 

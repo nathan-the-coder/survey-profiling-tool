@@ -42,10 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Determine user role and redirect accordingly
                 const userRole = response.data.user.role || 
                     (username === 'Archdiocese of Tuguegarao' ? 'archdiocese' : 
-                     username.toLowerCase().includes('admin') ? 'admin' : 'parish');
+                    username.toLowerCase().includes('admin') ? 'admin' : 'parish');
                 
                 if (userRole === 'admin' || username.toLowerCase().includes('admin')) {
-                    window.location.href = '/admin/users';
+                    window.location.href = '/admin';
                 } else if (username === 'Archdiocese of Tuguegarao' || userRole === 'archdiocese') {
                     window.location.href = '/archdiocese';
                 } else {

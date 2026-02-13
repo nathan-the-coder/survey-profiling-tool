@@ -313,8 +313,8 @@ function showParticipantDetails(data, participantId) {
                                 <td>${m.full_name || 'N/A'}</td>
                                 <td>${m.relation_to_head_code || 'N/A'}</td>
                                 <td>${m.age || 'N/A'}</td>
-                                <td>${m.educational_attainment_code || 'N/A'}</td>
-                                <td>${m.occupation_code || 'N/A'}</td>
+                                <td>${m.highest_educ_attainment || 'N/A'}</td>
+                                <td>${m.occupation || 'N/A'}</td>
                             </tr>
                         `).join('')}
                     </tbody>

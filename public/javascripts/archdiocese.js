@@ -163,8 +163,8 @@ function applyFilters() {
     // Occupation filter (NEW)
     const occupationFilter = filterOccupation?.value || '';
     if (occupationFilter) {
-        // Assuming your data object has a property called 'occupation_code' or 'occupation'
-        filtered = filtered.filter(p => p.occupation_code === occupationFilter);
+        // Using occupation field (stores full text, not code)
+        filtered = filtered.filter(p => p.occupation === occupationFilter);
     }
     
     // Address filter
@@ -301,8 +301,8 @@ function showParticipantDetails(data) {
             <td>${m.full_name || 'N/A'}</td>
             <td>${m.relation_to_head_code || 'N/A'}</td>
             <td>${m.age || 'N/A'}</td>
-            <td>${m.educational_attainment_code || 'N/A'}</td>
-            <td>${m.occupation_code || 'N/A'}</td>
+            <td>${m.highest_educ_attainment || 'N/A'}</td>
+            <td>${m.occupation || 'N/A'}</td>
         </tr>
     `).join('') || '<tr><td colspan="5">None</td></tr>';
     

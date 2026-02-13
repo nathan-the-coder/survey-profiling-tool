@@ -1,58 +1,71 @@
 /** biome-ignore-all lint/correctness/noUnusedVariables: unused variables are used outside of js */
+
+// --- Navigation ---
 function editEntry() {
     window.location.href = '/survey';
 }
 
+// --- Data Normalization Logic ---
+
+/**
+ * Cleans data by mapping keys and converting "Select..." placeholders to null.
+ * Also handles generic array cleaning for any field that is an array.
+ */
 function normalizeData(data) {
     if (!data || typeof data !== 'object') return data;
+    
     const normalized = {};
     const keyMappings = {
         'municipality-select': 'municipalityName',
-        'municipalityselect': 'municipalityName'
+        'municipalityselect': 'municipalityName',
+        'road_Structure': 'roadStructure' // Ensuring consistency
     };
+
+    const emptyPlaceholders = [
+        '', 'Select...', 'Select a municipality', 'Select number...', 
+        'Select structure...', 'Choose classification', 'Choose duration...', 
+        'Select type...', 'Choose mode of transportation...', 'Choose Road Structure',
+        null, undefined
+    ];
     
     for (const key in data) {
         let value = data[key];
         const mappedKey = keyMappings[key] || key;
-        if (value === '' || value === 'Select...' || value === 'Select a municipality' || value === 'Select number...' ||
-            value === 'Select structure...' || value === 'Choose classification' || value === 'Choose duration...' ||
-            value === 'Select type...' || value === 'Choose mode of transportation...' || value === 'Choose Road Structure' ||
-            value === null || value === undefined) {
-            value = null;
+
+        if (Array.isArray(value)) {
+            // Clean up arrays (remove empty strings/placeholders)
+            value = value.filter(v => !emptyPlaceholders.includes(v));
+            if (value.length === 0) value = null;
+        } else {
+            if (emptyPlaceholders.includes(value)) {
+                value = null;
+            }
         }
         normalized[mappedKey] = value;
     }
     return normalized;
 }
 
-function normalizeArrayFields(data) {
-    if (!data || typeof data !== 'object') return data;
-    const normalized = {};
-    for (const key in data) {
-        const value = data[key];
-        if (key === 'assets' && Array.isArray(value)) {
-            normalized[key] = value.filter(v => v && v !== '');
-        } else {
-            normalized[key] = value;
-        }
-    }
-    return normalized;
-}
+// --- Submission Logic ---
 
 function submitEntry() {
-    let general = JSON.parse(sessionStorage.getItem('profiling_general') || '{}');
-    let primary = JSON.parse(sessionStorage.getItem('profiling_primary') || '{}');
-    let health = JSON.parse(sessionStorage.getItem('profiling_health') || '{}');
-    let socio = JSON.parse(sessionStorage.getItem('profiling_socio') || '{}');
+    // 1. Retrieve Data
+    const rawData = {
+        general: JSON.parse(sessionStorage.getItem('profiling_general') || '{}'),
+        primary: JSON.parse(sessionStorage.getItem('profiling_primary') || '{}'),
+        health: JSON.parse(sessionStorage.getItem('profiling_health') || '{}'),
+        socio: JSON.parse(sessionStorage.getItem('profiling_socio') || '{}')
+    };
     
-    general = normalizeData(general);
-    primary = normalizeData(primary);
-    health = normalizeData(health);
-    socio = normalizeData(socio);
-    socio = normalizeArrayFields(socio);
+    // 2. Normalize Data
+    const allData = {
+        general: normalizeData(rawData.general),
+        primary: normalizeData(rawData.primary),
+        health: normalizeData(rawData.health),
+        socio: normalizeData(rawData.socio)
+    };
     
-    const allData = { general, primary, health, socio };
-    
+    // 3. UI Feedback
     Swal.fire({
         title: 'Submitting Entry...',
         text: 'Please wait while your data is being saved.',
@@ -62,6 +75,7 @@ function submitEntry() {
         },
     });
     
+    // 4. API Call
     axios.post('https://survey-profiling-tool-backend.vercel.app/submit-survey', { data: allData })
         .then(response => {
             Swal.fire({
@@ -81,7 +95,7 @@ function submitEntry() {
             if (error.response) {
                 errorMessage = error.response.data?.error || error.response.statusText || errorMessage;
             } else if (error.request) {
-                errorMessage = 'Cannot connect to server. Please make sure the backend is running.';
+                errorMessage = 'Cannot connect to server. Please check your internet connection.';
             }
             Swal.fire({
                 icon: 'error',
@@ -92,62 +106,37 @@ function submitEntry() {
         });
 }
 
+// --- Display Logic ---
+
 document.addEventListener('DOMContentLoaded', () => {
     loadProfilingData();
 });
 
-const religionMap = {
-    '1': 'Roman Catholic',
-    '2': 'Islam',
-    '99': 'Others'
-};
-
-const sexMap = {
-    '1': 'Male',
-    '2': 'Female'
-};
-
-const workStatusMap = {
-    '1': 'Regular',
-    '2': 'Contractual',
-    '3': 'Unemployed',
-    '4': 'Self-Employed'
-};
-
-const civilMap = {
-    '1': 'Single',
-    '2': 'Married',
-    '3': 'Common Law',
-    '4': 'Widowed',
-    '5': 'Divorced',
-    '6': 'Separated',
-    '7': 'Annulled',
-    '8': 'Unknown'
-};
-
-const sacramentMap = {
-    '1': 'None',
-    '2': 'Baptism',
-    '3': 'Confirmation',
-    '4': 'First Communion',
-    '5': 'Marriage',
-    '6': 'Holy Orders'
-};
-
-const marriageMap = {
-    '1': 'Civil',
-    '2': 'Church'
-};
-
-const studyingMap = {
-    '1': 'Yes',
-    '2': 'No'
-};
-
-const immunizedMap = {
-    '1': 'Yes',
-    '2': 'No',
-    '66': 'N/A'
+// Mapping Configurations
+const maps = {
+    religion: { '1': 'Roman Catholic', '2': 'Islam', '99': 'Others' },
+    sex: { '1': 'Male', '2': 'Female' },
+    workStatus: { '1': 'Regular/Permanent', '2': 'Contractual', '3': 'Worker for different employers', '5': 'Others', '6': 'Not Applicable' },
+    civil: { '1': 'Single', '2': 'Married', '3': 'Common Law', '4': 'Widowed', '5': 'Divorced', '6': 'Separated', '7': 'Annulled', '8': 'Unknown' },
+    sacrament: { '1': 'Not yet Baptized', '2': 'Baptism only', '3': 'Baptism & Confirmation', '4': 'First Holy Communion', '5': 'Holy Matrimony', '6': 'Holy Orders', '66': 'Not Applicable' },
+    marriage: { '1': 'Civil', '2': 'Church' },
+    studying: { '1': 'Yes', '2': 'No' },
+    immunized: { '1': 'Yes', '2': 'No', '66': 'N/A' },
+    occupation: { '01': 'Farming', '02': 'Tenant', '03': 'Fishing', '04': 'Vending', '05': 'Hired Labor', '06': 'Employed', '07': 'OFW', '08': 'Domestic Worker', '09': 'Entertainment', '99': 'Others' },
+    transportation: { 'Bicycle': 'Bicycle', 'Tricycle': 'Tricycle', 'Motorcycle': 'Motorcycle', 'Jeepney': 'Jeepney', 'Van': 'Van', 'Private Vehicle': 'Private Vehicle' },
+    illness: { '00': 'None', '01': 'Fever', '02': 'Flu', '03': 'Cough', '04': 'Cold', '05': 'Diarrhea', '07': 'Asthma', '09': 'Dengue', '13': 'Heart Disease', '15': 'High Blood', '99': 'Others' },
+    treatment: { '01': 'Traditional Healers', '02': 'Private Doctors', '03': 'RHU Doctors', '05': 'Brgy. Health Station', '06': 'Rural Health Unit', '99': 'Others' },
+    water: { '1': 'Local Water System', '2': 'Spring Water', '5': 'Own Artesian Well', '11': 'Water Refilling Station', '12': 'NAWASA', '99': 'Others' },
+    lighting: { '1': 'Electricity', '4': 'Solar Panel / Lamp', '6': 'Generator', '7': 'None' },
+    cooking: { '1': 'Woods', '2': 'Charcoal', '4': 'LPG', '5': 'Electricity' },
+    garbage: { '1': 'Segregating', '2': 'Truck Collection', '5': 'Composting', '6': 'Burning' },
+    toilet: { '1': 'Water-Sealed (Own)', '2': 'Water-Sealed (Shared)', '5': 'No Toilet' },
+    distance: { '1': 'Walking Distance', '2': '5-15 Minute Drive', '3': '30-Minute Drive', '4': '1 Hour+' },
+    income: { '1': '₱3,000 and below', '2': '₱3,001 - ₱6,000', '11': '₱30,001 and up' },
+    expenses: { '1': '₱300 and below', '5': '₱1,201 - ₱1,500', '11': '₱3,001 and up' },
+    savingsLoc: { '1': 'House', '2': 'Bank', '3': 'E-money', '4': 'Microfinance', '66': 'N/A' },
+    ownership: { '1': 'Owned', '2': 'Rented', '4': 'Rent Free' },
+    houseClass: { '1': 'Concrete', '2': 'Semi-Concrete', '3': 'Indigenous', '6': 'Makeshift' }
 };
 
 function setText(id, value) {
@@ -155,176 +144,94 @@ function setText(id, value) {
     if (el) el.textContent = value || '-';
 }
 
+function mapArrayValue(value, map) {
+    if (!value) return '-';
+    const valArr = Array.isArray(value) ? value : String(value).split(',');
+    return valArr.map(v => map[v.trim()] || v.trim()).filter(v => v !== '').join(', ') || '-';
+}
+
 function loadProfilingData() {
     const general = JSON.parse(sessionStorage.getItem('profiling_general') || '{}');
     const primary = JSON.parse(sessionStorage.getItem('profiling_primary') || '{}');
     const health = JSON.parse(sessionStorage.getItem('profiling_health') || '{}');
     const socio = JSON.parse(sessionStorage.getItem('profiling_socio') || '{}');
-    
+
+    // Section I: General Information
     setText('gen-purokGimong', general.purokGimong);
     setText('gen-barangayName', general.barangayName);
-    setText('gen-municipalityselect', general['municipality-select'] || general.municipalityselect);
+    setText('gen-municipalityselect', general.municipalityName || general['municipality-select'] || general.municipalityselect);
     setText('gen-provinceName', general.provinceName);
-    setText('gen-modeOfTransportation', general.modeOfTransportation);
-    setText('gen-roadStructure', general.road_Structure);
-    setText('gen-urbanRural', general.urban_ruralClassification);
+    setText('gen-modeOfTransportation', mapArrayValue(general.modeOfTransportation, maps.transportation));
+    setText('gen-roadStructure', general.roadStructure || general.road_Structure);
     setText('gen-parish', general.nameOfParish);
     setText('gen-diocese', general.diocesePrelatureName);
     setText('gen-residency', general.yrOfResInTheCommunity);
     setText('gen-familyMembers', general.numOfFamMembers);
     setText('gen-familyStructure', general.familyStructure);
     setText('gen-dialect', general.lclDialect);
-    setText('gen-ethnicity', general.ethnicity);
-    
-    setText('head-name', primary.head_name);
-    setText('head-marriage', marriageMap[primary.head_marriage]);
-    setText('head-religion', religionMap[primary.head_religion]);
-    setText('head-sex', sexMap[primary.head_sex]);
-    setText('head-age', primary.head_age);
-    setText('head-educ', primary.head_educ);
-    setText('head-job', primary.head_job);
-    setText('head-work', workStatusMap[primary.head_work_status]);
-    
-    setText('spouse-name', primary.spouse_name);
-    setText('spouse-marriage', marriageMap[primary.spouse_marriage]);
-    setText('spouse-religion', religionMap[primary.spouse_religion]);
-    setText('spouse-sex', sexMap[primary.spouse_sex]);
-    setText('spouse-age', primary.spouse_age);
-    setText('spouse-educ', primary.spouse_educ);
-    setText('spouse-job', primary.spouse_job);
-    setText('spouse-work', workStatusMap[primary.spouse_work_status]);
-    
+
+    // Section II: Primary Information (Parents)
+    const setParentRow = (prefix, data) => {
+        setText(`${prefix}-name`, data[`${prefix}_name`]);
+        setText(`${prefix}-marriage`, maps.marriage[data[`${prefix}_marriage`]]);
+        setText(`${prefix}-religion`, data[`${prefix}_religion_others`] || maps.religion[data[`${prefix}_religion`]] || '-');
+        setText(`${prefix}-sex`, maps.sex[data[`${prefix}_sex`]]);
+        setText(`${prefix}-age`, data[`${prefix}_age`]);
+        setText(`${prefix}-educ`, data[`${prefix}_educ`]);
+        setText(`${prefix}-job`, data[`${prefix}_job_others`] || maps.occupation[data[`${prefix}_job`]] || data[`${prefix}_job`] || '-');
+        setText(`${prefix}-work`, data[`${prefix}_work_status_others`] || maps.workStatus[data[`${prefix}_work_status`]] || '-');
+    };
+    setParentRow('head', primary);
+    setParentRow('spouse', primary);
+
+    // Household Members Table
     const membersTable = document.getElementById('membersTable');
-    if (membersTable) {
-        membersTable.innerHTML = '';
-        if (primary.m_name && Array.isArray(primary.m_name)) {
-            primary.m_name.forEach((name, idx) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
+    if (membersTable && primary.m_name && Array.isArray(primary.m_name)) {
+        membersTable.innerHTML = primary.m_name.map((name, idx) => {
+            const sacraments = mapArrayValue(primary.m_sacraments?.[idx], maps.sacrament);
+            const workStatus = maps.workStatus[primary.m_work_status?.[idx]] || primary.m_work_status_others?.[idx] || '-';
+            
+            return `
+                <tr>
                     <td>${name || '-'}</td>
                     <td>${primary.m_relation?.[idx] || '-'}</td>
-                    <td>${sexMap[primary.m_sex?.[idx]] || primary.m_sex?.[idx] || '-'}</td>
+                    <td>${maps.sex[primary.m_sex?.[idx]] || '-'}</td>
                     <td>${primary.m_age?.[idx] || '-'}</td>
-                    <td>${civilMap[primary.m_civil?.[idx]] || primary.m_civil?.[idx] || '-'}</td>
-                    <td>${religionMap[primary.m_religion?.[idx]] || primary.m_religion?.[idx] || '-'}</td>
-                    <td>${sacramentMap[primary.m_sacraments?.[idx]] || primary.m_sacraments?.[idx] || '-'}</td>
-                    <td>${studyingMap[primary.m_studying?.[idx]] || primary.m_studying?.[idx] || '-'}</td>
+                    <td>${maps.civil[primary.m_civil?.[idx]] || '-'}</td>
+                    <td>${primary.m_religion?.[idx] || '-'}</td>
+                    <td>${sacraments}</td>
+                    <td>${maps.studying[primary.m_studying?.[idx]] || '-'}</td>
                     <td>${primary.m_educ?.[idx] || '-'}</td>
-                    <td>${primary.m_job?.[idx] || '-'}</td>
-                    <td>${workStatusMap[primary.m_work_status?.[idx]] || primary.m_work_status?.[idx] || '-'}</td>
-                    <td>${immunizedMap[primary.m_immunized?.[idx]] || primary.m_immunized?.[idx] || '-'}</td>
-                `;
-                membersTable.appendChild(row);
-            });
-        }
+                    <td>${maps.occupation[primary.m_job?.[idx]] || '-'}</td>
+                    <td>${workStatus}</td>
+                    <td>${maps.immunized[primary.m_immunized?.[idx]] || '-'}</td>
+                    <td>${primary.m_organization?.[idx] || '-'}</td>
+                    <td>${primary.m_position?.[idx] || '-'}</td>
+                </tr>`;
+        }).join('');
     }
-    
-    const illnessMap = {
-        '00': 'None', '01': 'Fever', '02': 'Flu', '03': 'Cough',
-        '04': 'Cold', '05': 'Diarrhea', '07': 'Asthma', '13': 'Heart Disease',
-        '15': 'High Blood', '99': 'Others'
-    };
-    const treatmentMap = {
-        '01': 'Traditional Healers', '02': 'Private Doctors',
-        '05': 'Brgy. Health Station', '06': 'Rural Health Unit',
-        '10': 'Private Clinic', '99': 'Others'
-    };
-    const waterMap = {
-        '1': 'Local Water System', '5': 'Own Artesian Well',
-        '11': 'Water Refilling Station', '12': 'NAWASA', '99': 'Others'
-    };
-    const lightingMap = {
-        '1': 'Electricity', '2': 'Kerosene (Gaas)', '4': 'Solar Lamp', '99': 'Others'
-    };
-    const cookingMap = {
-        '1': 'Woods', '2': 'Charcoal', '4': 'LPG', '5': 'Electricity', '99': 'Others'
-    };
-    const garbageMap = {
-        '1': 'Segregating waste', '2': 'Collected by garbage truck',
-        '6': 'Burning', '99': 'Others'
-    };
-    const toiletMap = {
-        '1': 'Water-sealed flush (own)', '2': 'Water-sealed flush (shared)',
-        '3': 'Closed pit', '5': 'No toilet'
-    };
-    const toiletDistMap = {
-        '1': 'Below 200 meters', '2': '201-500 meters', '5': 'More than 1000 meters'
-    };
-    
-    setText('health-illness', illnessMap[health.common_illness] || health.common_illness_others || '-');
-    setText('health-treatment', treatmentMap[health.treatment_source] || health.treatment_source_others || '-');
-    setText('health-water', waterMap[health.water_source] || health.water_source_others || '-');
-    setText('health-lighting', lightingMap[health.lighting_source] || health.lighting_others || '-');
-    setText('health-cooking', cookingMap[health.cooking_source] || health.cooking_others || '-');
-    setText('health-garbage', garbageMap[health.garbage_disposal] || health.garbage_others || '-');
-    setText('health-toilet', toiletMap[health.toilet_type] || '-');
-    setText('health-toiletDist', toiletDistMap[health.toilet_distance] || '-');
-    
-    const incomeMap = {
-        '1': '₱3,000 and below', '2': '₱3,001 - ₱6,000', '3': '₱6,001 - ₱9,000',
-        '4': '₱9,001 - ₱12,000', '5': '₱12,001 - ₱15,000', '6': '₱15,001 - ₱18,000',
-        '7': '₱18,001 - ₱21,000', '8': '₱21,001 - ₱24,000', '9': '₱24,001 - ₱27,000',
-        '10': '₱27,001 - ₱30,000', '11': '₱30,001 and up'
-    };
-    const expensesMap = {
-        '1': '₱300 and below', '2': '₱301 - ₱600', '3': '₱601 - ₱900',
-        '4': '₱901 - ₱1,200', '5': '₱1,201 - ₱1,500', '6': '₱1,501 - ₱1,800',
-        '7': '₱1,801 - ₱2,100', '8': '₱2,101 - ₱2,400', '9': '₱2,401 - ₱2,700',
-        '10': '₱2,701 - ₱3,000', '11': '₱3,001 and up'
-    };
-    const savingsMap = { '1': 'Yes', '2': 'None' };
-    const savingsLocMap = {
-        '1': 'House', '2': 'Bank', '3': 'E-money (GCash, etc.)',
-        '4': 'Microfinance / ASA', '99': 'Others', '66': 'Not Applicable'
-    };
-    const ownershipMap = {
-        '1': 'Owned', '2': 'Rented House', '3': 'Tenanted',
-        '4': 'Rent Free', '5': 'Caretaker', '99': 'Others'
-    };
-    const houseClassMap = {
-        '1': 'Concrete', '2': 'Semi-Concrete', '3': 'Indigenous Materials',
-        '4': 'Galvanized Iron / Aluminum', '5': 'Barong-barong', '6': 'Makeshift', '99': 'Others'
-    };
-    const distMap = {
-        '1': 'Walking Distance (Ideal)', '2': '5-15 Minute Drive',
-        '3': '30-Minute Drive', '4': 'Over 45 Minutes - 1 Hour+'
-    };
-    
-    const orgMap = {
-        'Religious': 'Religious',
-        'Youth': 'Youth',
-        'Cultural': 'Cultural',
-        'Political': 'Political',
-        'Women\'s': "Women's",
-        'Agricultural': 'Agricultural',
-        'Labor': 'Labor',
-        'Civic': 'Civic',
-        'Cooperatives': 'Cooperatives',
-        'Others': 'Others'
-    };
-    
-    setText('soc-income', incomeMap[socio.income_monthly] || '-');
-    setText('soc-expenses', expensesMap[socio.expenses_weekly] || '-');
-    setText('soc-savings', savingsMap[socio.has_savings] || '-');
-    setText('soc-savingsLoc', savingsLocMap[socio.savings_location] || '-');
-    setText('soc-ownership', ownershipMap[socio.house_ownership] || '-');
-    setText('soc-houseClass', houseClassMap[socio.house_classification] || '-');
-    setText('soc-landArea', socio.land_area || '-');
-    setText('soc-assets', socio.assets ? socio.assets.join(', ') : '-');
-    setText('soc-livestock', socio.livestock_owned || '-');
-    setText('soc-livestockOther', socio.livestock_for_others || '-');
-    setText('soc-church', distMap[socio.distance_church] || '-');
-    setText('soc-market', distMap[socio.distance_market] || '-');
-    setText('soc-companion', socio.missionary_companion || '-');
-    setText('soc-date', socio.listening_date || '-');
-    
-    // Organizations display
-    const orgElement = document.getElementById('soc-organizations');
-    if (orgElement && socio.organizations && Array.isArray(socio.organizations) && socio.organizations.length > 0) {
-        const orgDisplay = socio.organizations.map(org => orgMap[org] || org).join(', ');
-        const othersText = socio.organizations_others_text ? ` (Others: ${socio.organizations_others_text})` : '';
-        orgElement.textContent = orgDisplay + othersText;
-    } else if (orgElement) {
-        orgElement.textContent = '-';
-    }
+
+    // Section III: Health
+    setText('health-illness', mapArrayValue(health.common_illness, maps.illness));
+    setText('health-treatment', mapArrayValue(health.treatment_source, maps.treatment));
+    setText('health-water', mapArrayValue(health.water_source, maps.water));
+    setText('health-lighting', mapArrayValue(health.lighting_source, maps.lighting));
+    setText('health-cooking', mapArrayValue(health.cooking_source, maps.cooking));
+    setText('health-garbage', mapArrayValue(health.garbage_disposal, maps.garbage));
+    setText('health-toilet', mapArrayValue(health.toilet_type, maps.toilet));
+    setText('health-toiletDist', maps.distance[health.toilet_distance] || '-');
+
+    // Section IV: Socio-Economic
+    setText('soc-income', maps.income[socio.income_monthly]);
+    setText('soc-expenses', maps.expenses[socio.expenses_weekly]);
+    setText('soc-savings', socio.has_savings === '1' ? 'Yes' : 'None');
+    setText('soc-savingsLoc', mapArrayValue(socio.savings_location, maps.savingsLoc));
+    setText('soc-ownership', mapArrayValue(socio.house_ownership, maps.ownership));
+    setText('soc-houseClass', mapArrayValue(socio.house_classification, maps.houseClass));
+    setText('soc-landArea', socio.land_area);
+    setText('soc-assets', Array.isArray(socio.assets) ? socio.assets.join(', ') : '-');
+    setText('soc-livestock', socio.livestock_owned);
+    setText('soc-church', maps.distance[socio.distance_church]);
+    setText('soc-market', maps.distance[socio.distance_market]);
+    setText('soc-companion', socio.missionary_companion);
 }

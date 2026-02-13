@@ -58,7 +58,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label">Religion</label>
-                                                <select name="head_religion" class="form-select">
+                                                <select name="head_religion" class="form-select" id="head_religion" onchange="toggleReligionOthers(this, 'head_religion_others')">
                                                     <option value="1">Roman Catholic</option>
                                                     <option value="2">Islam</option>
                                                     <option value="3">UCCP/Protestant</option>
@@ -72,18 +72,54 @@
                                                     <option value="12">Church of Christ</option>
                                                     <option value="13">Others Please Specify...</option>
                                                 </select>
+                                                <input type="text" name="head_religion_others" id="head_religion_others" class="form-control mt-2 d-none" placeholder="Please specify religion">
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Sacraments</label>
-                                                <select name="head_sacraments" class="form-select">
-                                                    <option value="">Select...</option>
-                                                    <option value="1">None</option>
-                                                    <option value="2">Baptism</option>
-                                                    <option value="3">Confirmation</option>
-                                                    <option value="4">First Communion</option>
-                                                    <option value="5">Marriage</option>
-                                                    <option value="6">Holy Orders</option>
-                                                </select>
+                                                <div class="row g-2">
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="head_sacraments[]" value="1" id="head_sacrament_1">
+                                                            <label class="form-check-label" for="head_sacrament_1">Not yet Baptized</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="head_sacraments[]" value="2" id="head_sacrament_2">
+                                                            <label class="form-check-label" for="head_sacrament_2">Baptism only</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="head_sacraments[]" value="3" id="head_sacrament_3">
+                                                            <label class="form-check-label" for="head_sacrament_3">Baptism & Confirmation</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="head_sacraments[]" value="4" id="head_sacrament_4">
+                                                            <label class="form-check-label" for="head_sacrament_4">First Holy Communion</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="head_sacraments[]" value="5" id="head_sacrament_5">
+                                                            <label class="form-check-label" for="head_sacrament_5">Holy Matrimony</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="head_sacraments[]" value="6" id="head_sacrament_6">
+                                                            <label class="form-check-label" for="head_sacrament_6">Holy Orders</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="head_sacraments[]" value="66" id="head_sacrament_66">
+                                                            <label class="form-check-label" for="head_sacrament_66">Not Applicable</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Sex</label>
@@ -110,7 +146,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Status of Work</label>
-                                                <select name="head_work_status" class="form-select">
+                                                <select name="head_work_status" class="form-select" id="head_work_status" onchange="toggleWorkStatusOthers(this, 'head_work_status_others')">
                                                     <option value="">Select...</option>
                                                     <option value="1">Regular/Permanent</option>
                                                     <option value="2">Contractual</option>
@@ -119,21 +155,22 @@
                                                     <option value="5">Others Please Specify...</option>
                                                     <option value="6">Not Applicable</option>
                                                 </select>
+                                                <input type="text" name="head_work_status_others" id="head_work_status_others" class="form-control mt-2 d-none" placeholder="Please specify work status">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Occupation</label>
                                                 <select name="head_job" class="form-select" id="head_job" onchange="toggleOccupationInput(this, 'head_job_others')">
                                                     <option value="">Select...</option>
-                                                    <option value="Farming">Farming</option>
-                                                    <option value="Tenant">Tenant</option>
-                                                    <option value="Fishing">Fishing</option>
-                                                    <option value="Vending">Vending</option>
-                                                    <option value="Hired Labor">Hired Labor</option>
-                                                    <option value="Employed">Employed</option>
-                                                    <option value="OFW">OFW</option>
-                                                    <option value="Domestic Worker">Domestic Worker</option>
-                                                    <option value="Entertainment">Entertainment</option>
-                                                    <option value="Others">Others Please Specify...</option>
+                                                    <option value="01">Farming</option>
+                                                    <option value="02">Tenant</option>
+                                                    <option value="03">Fishing</option>
+                                                    <option value="04">Vending</option>
+                                                    <option value="05">Hired Labor</option>
+                                                    <option value="06">Employed</option>
+                                                    <option value="07">OFW</option>
+                                                    <option value="08">Domestic Worker</option>
+                                                    <option value="09">Entertainment</option>
+                                                    <option value="99">Others Please Specify...</option>
                                                 </select>
                                                 <input type="text" name="head_job_others" id="head_job_others" class="form-control mt-2 d-none" placeholder="Please specify occupation">
                                             </div>
@@ -157,7 +194,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label">Religion</label>
-                                                <select name="spouse_religion" class="form-select">
+                                                <select name="spouse_religion" class="form-select" id="spouse_religion" onchange="toggleReligionOthers(this, 'spouse_religion_others')">
                                                     <option value="1">Roman Catholic</option>
                                                     <option value="2">Islam</option>
                                                     <option value="3">UCCP/Protestant</option>
@@ -171,18 +208,54 @@
                                                     <option value="12">Church of Christ</option>
                                                     <option value="99">Others Please Specify...</option>
                                                 </select>
+                                                <input type="text" name="spouse_religion_others" id="spouse_religion_others" class="form-control mt-2 d-none" placeholder="Please specify religion">
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Sacraments</label>
-                                                <select name="spouse_sacraments" class="form-select">
-                                                    <option value="">Select...</option>
-                                                    <option value="1">None</option>
-                                                    <option value="2">Baptism</option>
-                                                    <option value="3">Confirmation</option>
-                                                    <option value="4">First Communion</option>
-                                                    <option value="5">Marriage</option>
-                                                    <option value="6">Holy Orders</option>
-                                                </select>
+                                                <div class="row g-2">
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="spouse_sacraments[]" value="1" id="spouse_sacrament_1">
+                                                            <label class="form-check-label" for="spouse_sacrament_1">Not yet Baptized</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="spouse_sacraments[]" value="2" id="spouse_sacrament_2">
+                                                            <label class="form-check-label" for="spouse_sacrament_2">Baptism only</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="spouse_sacraments[]" value="3" id="spouse_sacrament_3">
+                                                            <label class="form-check-label" for="spouse_sacrament_3">Baptism & Confirmation</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="spouse_sacraments[]" value="4" id="spouse_sacrament_4">
+                                                            <label class="form-check-label" for="spouse_sacrament_4">First Holy Communion</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="spouse_sacraments[]" value="5" id="spouse_sacrament_5">
+                                                            <label class="form-check-label" for="spouse_sacrament_5">Holy Matrimony</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="spouse_sacraments[]" value="6" id="spouse_sacrament_6">
+                                                            <label class="form-check-label" for="spouse_sacrament_6">Holy Orders</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="spouse_sacraments[]" value="66" id="spouse_sacrament_66">
+                                                            <label class="form-check-label" for="spouse_sacrament_66">Not Applicable</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Sex</label>
@@ -209,7 +282,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Status of Work</label>
-                                                <select name="spouse_work_status" class="form-select">
+                                                <select name="spouse_work_status" class="form-select" id="spouse_work_status" onchange="toggleWorkStatusOthers(this, 'spouse_work_status_others')">
                                                     <option value="">Select...</option>
                                                     <option value="1">Regular/Permanent</option>
                                                     <option value="2">Contractual</option>
@@ -218,21 +291,22 @@
                                                     <option value="5">Others Please Specify...</option>
                                                     <option value="6">Not Applicable</option>
                                                 </select>
+                                                <input type="text" name="spouse_work_status_others" id="spouse_work_status_others" class="form-control mt-2 d-none" placeholder="Please specify work status">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Occupation</label>
                                                 <select name="spouse_job" class="form-select" id="spouse_job" onchange="toggleOccupationInput(this, 'spouse_job_others')">
                                                     <option value="">Select...</option>
-                                                    <option value="Farming">Farming</option>
-                                                    <option value="Tenant">Tenant</option>
-                                                    <option value="Fishing">Fishing</option>
-                                                    <option value="Vending">Vending</option>
-                                                    <option value="Hired Labor">Hired Labor</option>
-                                                    <option value="Employed">Employed</option>
-                                                    <option value="OFW">OFW</option>
-                                                    <option value="Domestic Worker">Domestic Worker</option>
-                                                    <option value="Entertainment">Entertainment</option>
-                                                    <option value="Others">Others Please Specify...</option>
+                                                    <option value="01">Farming</option>
+                                                    <option value="02">Tenant</option>
+                                                    <option value="03">Fishing</option>
+                                                    <option value="04">Vending</option>
+                                                    <option value="05">Hired Labor</option>
+                                                    <option value="06">Employed</option>
+                                                    <option value="07">OFW</option>
+                                                    <option value="08">Domestic Worker</option>
+                                                    <option value="09">Entertainment</option>
+                                                    <option value="99">Others Please Specify...</option>
                                                 </select>
                                                 <input type="text" name="spouse_job_others" id="spouse_job_others" class="form-control mt-2 d-none" placeholder="Please specify occupation">
                                             </div>

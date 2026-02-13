@@ -81,14 +81,47 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Where do you put your savings?</label>
-                                <select class="form-select" id="savings_loc" name="savings_location">
-                                    <option value="1">House</option>
-                                    <option value="2">Bank</option>
-                                    <option value="3">E-money (GCash, etc.)</option>
-                                    <option value="4">Microfinance (Card, ASA, etc.)</option>
-                                    <option value="99">Others</option>
-                                    <option value="66">Not Applicable</option>
-                                </select>
+                                <div class="row g-2">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="savings_location[]" value="1" id="savings_1">
+                                            <label class="form-check-label" for="savings_1">House</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="savings_location[]" value="2" id="savings_2">
+                                            <label class="form-check-label" for="savings_2">Bank</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="savings_location[]" value="3" id="savings_3">
+                                            <label class="form-check-label" for="savings_3">E-money (GCash, etc.)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="savings_location[]" value="4" id="savings_4">
+                                            <label class="form-check-label" for="savings_4">Microfinance (Card, ASA, etc.)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="savings_location[]" value="99" id="savings_99" onchange="toggleOthersText(this, 'savings_others_div')">
+                                            <label class="form-check-label" for="savings_99">Others</label>
+                                        </div>
+                                        <div id="savings_others_div" class="d-none mt-2">
+                                            <input type="text" class="form-control form-control-sm" name="savings_location_others" placeholder="Please specify">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="savings_location[]" value="66" id="savings_66">
+                                            <label class="form-check-label" for="savings_66">Not Applicable</label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -98,7 +131,7 @@
                         <div class="row g-4">
                             <div class="col-md-4">
                                 <label class="form-label">Ownership of House/Lot</label>
-                                <select class="form-select" id="ownership" name="house_ownership">
+                                <select class="form-select" id="ownership" name="house_ownership" onchange="toggleOwnershipOthers(this)">
                                     <option value="1">Owned</option>
                                     <option value="2">Rented House</option>
                                     <option value="3">Tenanted</option>
@@ -106,18 +139,59 @@
                                     <option value="5">Caretaker</option>
                                     <option value="99">Others</option>
                                 </select>
+                                <div id="ownership_others_div" class="d-none mt-2">
+                                    <input type="text" class="form-control form-control-sm" name="house_ownership_others" placeholder="Please specify">
+                                </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-8">
                                 <label class="form-label">House Classification</label>
-                                <select class="form-select" id="house_class" name="house_classification">
-                                    <option value="1">Concrete</option>
-                                    <option value="2">Semi-Concrete</option>
-                                    <option value="3">Indigenous Materials</option>
-                                    <option value="4">Galvanized Iron / Aluminum</option>
-                                    <option value="5">Barong-barong</option>
-                                    <option value="6">Makeshift</option>
-                                    <option value="99">Others</option>
-                                </select>
+                                <div class="row g-2">
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="house_classification[]" value="1" id="house_1">
+                                            <label class="form-check-label" for="house_1">Concrete</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="house_classification[]" value="2" id="house_2">
+                                            <label class="form-check-label" for="house_2">Semi-Concrete</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="house_classification[]" value="3" id="house_3">
+                                            <label class="form-check-label" for="house_3">Indigenous Materials</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="house_classification[]" value="4" id="house_4">
+                                            <label class="form-check-label" for="house_4">Galvanized Iron / Aluminum</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="house_classification[]" value="5" id="house_5">
+                                            <label class="form-check-label" for="house_5">Barong-barong</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="house_classification[]" value="6" id="house_6">
+                                            <label class="form-check-label" for="house_6">Makeshift</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="house_classification[]" value="99" id="house_99" onchange="toggleOthersText(this, 'house_others_div')">
+                                            <label class="form-check-label" for="house_99">Others</label>
+                                        </div>
+                                        <div id="house_others_div" class="d-none mt-2">
+                                            <input type="text" class="form-control form-control-sm" name="house_classification_others" placeholder="Please specify">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Land Area (hectares)</label>
@@ -187,17 +261,17 @@
                             <div class="col-md-6">
                                 <label class="form-label mb-3">Raised for Others (Check all that apply)</label>
                                 <div class="checkbox-grid">
-                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="carabao" id="livestock1"><label for="livestock1">Carabao</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="cow" id="livestock2"><label for="livestock2">Cow</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="goat" id="livestock3"><label for="livestock3">Goat</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="chicken" id="livestock4"><label for="livestock4">Chicken</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="pig" id="livestock5"><label for="livestock5">Pig</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="geese" id="livestock6"><label for="livestock6">Geese</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="turkey" id="livestock7"><label for="livestock7">Turkey</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="duck" id="livestock8"><label for="livestock8">Duck</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="horse" id="livestock9"><label for="livestock9">Horse</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="sheep" id="livestock10"><label for="livestock10">Sheep</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="livestock_owned[]" value="rabbit" id="livestock11"><label for="livestock11">Rabbit</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="carabao" id="livestock_r1"><label for="livestock_r1">Carabao</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="cow" id="livestock_r2"><label for="livestock_r2">Cow</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="goat" id="livestock_r3"><label for="livestock_r3">Goat</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="chicken" id="livestock_r4"><label for="livestock_r4">Chicken</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="pig" id="livestock_r5"><label for="livestock_r5">Pig</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="geese" id="livestock_r6"><label for="livestock_r6">Geese</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="turkey" id="livestock_r7"><label for="livestock_r7">Turkey</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="duck" id="livestock_r8"><label for="livestock_r8">Duck</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="horse" id="livestock_r9"><label for="livestock_r9">Horse</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="sheep" id="livestock_r10"><label for="livestock_r10">Sheep</label></div>
+                                    <div class="checkbox-item"><input type="checkbox" name="livestock_for_others[]" value="rabbit" id="livestock_r11"><label for="livestock_r11">Rabbit</label></div>
                                     <div class="checkbox-item" style="text-align: left; padding: 12px 16px;"><input type="checkbox" name="livestock_for_others[]" value="others" id="livestock_o_others" onchange="toggleOthersText(this, 'livestock_for_others_text')"><label for="livestock_o_others">Others</label></div>
                                 </div>
                                 <div id="livestock_for_others_text" class="d-none mt-2"><input type="text" class="form-control" name="livestock_for_others_text" placeholder="Please specify other livestock..."></div>
@@ -274,28 +348,7 @@
                             <div class="col-md-6">
                                 <label class="form-label">Date of Listening</label>
                                 <input type="date" id="date" name="listening_date" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-card p-4 mb-4">
-                        <h4 class="section-title">Organization Involved</h4>
-                        <div class="row g-4">
-                            <div class="col-md-12">
-                                <label class="form-label mb-3">Member of (Check all that apply)</label>
-                                <div class="checkbox-grid">
-                                    <div class="checkbox-item"><input type="checkbox" name="organizations[]" value="Religious" id="org_religious"><label for="org_religious">Religious</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="organizations[]" value="Youth" id="org_youth"><label for="org_youth">Youth</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="organizations[]" value="Cultural" id="org_cultural"><label for="org_cultural">Cultural</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="organizations[]" value="Political" id="org_political"><label for="org_political">Political</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="organizations[]" value="Women's" id="org_women"><label for="org_women">Women's</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="organizations[]" value="Agricultural" id="org_agricultural"><label for="org_agricultural">Agricultural</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="organizations[]" value="Labor" id="org_labor"><label for="org_labor">Labor</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="organizations[]" value="Civic" id="org_civic"><label for="org_civic">Civic</label></div>
-                                    <div class="checkbox-item"><input type="checkbox" name="organizations[]" value="Cooperatives" id="org_cooperatives"><label for="org_cooperatives">Cooperatives</label></div>
-                                    <div class="checkbox-item" style="text-align: left; padding: 12px 16px;"><input type="checkbox" name="organizations[]" value="Others" id="org_others" onchange="toggleOthersText(this, 'org_others_container')"><label for="org_others">Others</label></div>
-                                </div>
-                                <div id="org_others_container" class="d-none mt-2"><input type="text" class="form-control" name="organizations_others_text" placeholder="Please specify other organization..."></div>
+                                <input type="hidden" name="listing_date" id="listing_date">
                             </div>
                         </div>
                     </div>
@@ -336,12 +389,12 @@
                     data[key] = value;
                 }
             }
-            sessionStorage.setItem('survey_socio', JSON.stringify(data));
+            sessionStorage.setItem('profiling_socio', JSON.stringify(data));
         }
         function goPrev() { saveFormData(); window.location.href = '/survey4'; }
         function submitSurvey() { saveFormData(); window.location.href = '/final'; }
         document.addEventListener('DOMContentLoaded', () => {
-            const saved = JSON.parse(sessionStorage.getItem('survey_socio') || '{}');
+            const saved = JSON.parse(sessionStorage.getItem('profiling_socio') || '{}');
             for (let key in saved) {
                 if (Array.isArray(saved[key])) {
                     saved[key].forEach(val => {

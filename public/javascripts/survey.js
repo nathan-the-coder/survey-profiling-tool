@@ -13,8 +13,22 @@ function saveFormData() {
     const formData = new FormData(form);
     const data = {};
     for (const [key, value] of formData.entries()) {
-        data[key] = value;
+        if (data[key]) {
+            if (Array.isArray(data[key])) {
+                data[key].push(value);
+            } else {
+                data[key] = [data[key], value];
+            }
+        } else {
+            data[key] = value;
+        }
     }
+    const checkboxes = form.querySelectorAll('input[type="checkbox"]:not([value])');
+    checkboxes.forEach(cb => {
+        if (cb.checked) {
+            data[cb.name] = data[cb.name] ? (Array.isArray(data[cb.name]) ? [...data[cb.name], cb.value] : [data[cb.name], cb.value]) : cb.value;
+        }
+    });
     sessionStorage.setItem('profiling_general', JSON.stringify(data));
 }
 

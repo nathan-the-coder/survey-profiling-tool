@@ -21,11 +21,25 @@ function loadSavedData() {
         if (Array.isArray(saved[key])) {
             saved[key].forEach(val => {
                 const el = document.querySelector(`[name="${key}[]"][value="${val}"]`);
-                if (el) el.checked = true;
+                if (el) {
+                    el.checked = true;
+                    if (val === "99") {
+                        if (key === "savings_location") {
+                            document.getElementById('savings_others_div').classList.remove('d-none');
+                        } else if (key === "house_classification") {
+                            document.getElementById('house_others_div').classList.remove('d-none');
+                        }
+                    }
+                }
             });
         } else {
             const el = document.querySelector(`[name="${key}"]`);
-            if (el) el.value = saved[key];
+            if (el) {
+                el.value = saved[key];
+                if (key === "house_ownership" && saved[key] === "99") {
+                    document.getElementById('ownership_others_div').classList.remove('d-none');
+                }
+            }
         }
     }
 }
@@ -52,6 +66,27 @@ function toggleOthersText(checkbox, inputId) {
     }
 }
 
+function toggleOwnershipOthers(select) {
+    const othersDiv = document.getElementById('ownership_others_div');
+    if (select.value === "99") {
+        othersDiv.classList.remove('d-none');
+        othersDiv.querySelector('input').required = true;
+    } else {
+        othersDiv.classList.add('d-none');
+        othersDiv.querySelector('input').required = false;
+        othersDiv.querySelector('input').value = '';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+        const today = new Date().toISOString().split('T')[0];
+        const listeningDateEl = document.getElementById('date');
+        const listingDateEl = document.getElementById('listing_date');
+        if (listeningDateEl && !listeningDateEl.value) {
+            listeningDateEl.value = today;
+        }
+        if (listingDateEl) {
+            listingDateEl.value = today;
+        }
         loadSavedData();
     });

@@ -13,6 +13,12 @@
             .btn-modern { padding: 12px 32px; border-radius: 25px; font-weight: 600; transition: all 0.3s ease; }
             .btn-church-modern { background: linear-gradient(135deg, #457507 0%, #5a8f1a 100%); color: white; border: none; }
             .btn-church-modern:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(69, 117, 7, 0.35); color: white; }
+            .form-check { padding: 8px 12px; border-radius: 8px; transition: background-color 0.2s ease; }
+            .form-check:hover { background-color: rgba(69, 117, 7, 0.05); }
+            .form-check-input { width: 1.2em; height: 1.2em; margin-top: 0.1em; cursor: pointer; }
+            .form-check-input:checked { background-color: #457507; border-color: #457507; }
+            .form-check-input:focus { border-color: #457507; box-shadow: 0 0 0 4px rgba(69, 117, 7, 0.15); }
+            .form-check-label { cursor: pointer; color: #444; font-weight: 500; }
         </style>
     `,
     body: `
@@ -32,69 +38,286 @@
                     <div class="form-card p-4 mb-4">
                         <h4 class="section-title">Health & Treatment</h4>
                         <div class="row g-4">
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 <label class="form-label">Common illnesses in the Household (last 3 months)</label>
-                                <select name="common_illness" id="illness" class="form-select">
-                                    <option value="">Select Illness</option>
-                                    <option value="00">None</option>
-                                    <option value="01">Fever</option>
-                                    <option value="02">Flu</option>
-                                    <option value="03">Cough</option>
-                                    <option value="04">Cold</option>
-                                    <option value="05">Diarrhea</option>
-                                    <option value="06">Cholera</option>
-                                    <option value="07">Asthma</option>
-                                    <option value="08">Typhoid Fever</option>
-                                    <option value="09">Dengue</option>
-                                    <option value="10">Pneumonia</option>
-                                    <option value="11">Chicken Pox</option>
-                                    <option value="12">Measles</option>
-                                    <option value="13">Heart Disease</option>
-                                    <option value="14">Lung Disease</option>
-                                    <option value="15">High Blood</option>
-                                    <option value="16">Anemia</option>
-                                    <option value="17">Malaria</option>
-                                    <option value="99">Others</option>
-                                </select>
+                                <div class="row g-2">
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="00" id="illness_00">
+                                            <label class="form-check-label" for="illness_00">None</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="01" id="illness_01">
+                                            <label class="form-check-label" for="illness_01">Fever</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="02" id="illness_02">
+                                            <label class="form-check-label" for="illness_02">Flu</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="03" id="illness_03">
+                                            <label class="form-check-label" for="illness_03">Cough</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="04" id="illness_04">
+                                            <label class="form-check-label" for="illness_04">Cold</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="05" id="illness_05">
+                                            <label class="form-check-label" for="illness_05">Diarrhea</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="06" id="illness_06">
+                                            <label class="form-check-label" for="illness_06">Cholera</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="07" id="illness_07">
+                                            <label class="form-check-label" for="illness_07">Asthma</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="08" id="illness_08">
+                                            <label class="form-check-label" for="illness_08">Typhoid Fever</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="09" id="illness_09">
+                                            <label class="form-check-label" for="illness_09">Dengue</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="10" id="illness_10">
+                                            <label class="form-check-label" for="illness_10">Pneumonia</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="11" id="illness_11">
+                                            <label class="form-check-label" for="illness_11">Chicken Pox</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="12" id="illness_12">
+                                            <label class="form-check-label" for="illness_12">Measles</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="13" id="illness_13">
+                                            <label class="form-check-label" for="illness_13">Heart Disease</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="14" id="illness_14">
+                                            <label class="form-check-label" for="illness_14">Lung Disease</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="15" id="illness_15">
+                                            <label class="form-check-label" for="illness_15">High Blood</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="16" id="illness_16">
+                                            <label class="form-check-label" for="illness_16">Anemia</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="17" id="illness_17">
+                                            <label class="form-check-label" for="illness_17">Malaria</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="common_illness[]" value="99" id="illness_99">
+                                            <label class="form-check-label" for="illness_99">Others</label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <input type="text" name="common_illness_others" class="form-control mt-2" placeholder="If others, specify">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 <label class="form-label">Where do household go for treatment?</label>
-                                <select name="treatment_source" id="treatment" class="form-select">
-                                    <option value="">Select Facility</option>
-                                    <option value="00">None</option>
-                                    <option value="01">Traditional Healers</option>
-                                    <option value="02">Private Doctors</option>
-                                    <option value="03">RHU Doctors</option>
-                                    <option value="04">Self-medication</option>
-                                    <option value="05">Brgy. Health Station</option>
-                                    <option value="06">Rural Health Unit</option>
-                                    <option value="07">Brgy. Health Worker</option>
-                                    <option value="08">Brgy. Nutrition Scholar</option>
-                                    <option value="09">CBHP/DHW</option>
-                                    <option value="10">Private Clinic</option>
-                                    <option value="99">Others</option>
-                                </select>
+                                <div class="row g-2">
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="treatment_source[]" value="00" id="treatment_00">
+                                            <label class="form-check-label" for="treatment_00">None</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="treatment_source[]" value="01" id="treatment_01">
+                                            <label class="form-check-label" for="treatment_01">Traditional Healers</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="treatment_source[]" value="02" id="treatment_02">
+                                            <label class="form-check-label" for="treatment_02">Private Doctors</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="treatment_source[]" value="03" id="treatment_03">
+                                            <label class="form-check-label" for="treatment_03">RHU Doctors</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="treatment_source[]" value="04" id="treatment_04">
+                                            <label class="form-check-label" for="treatment_04">Self-medication</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="treatment_source[]" value="05" id="treatment_05">
+                                            <label class="form-check-label" for="treatment_05">Brgy. Health Station</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="treatment_source[]" value="06" id="treatment_06">
+                                            <label class="form-check-label" for="treatment_06">Rural Health Unit</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="treatment_source[]" value="07" id="treatment_07">
+                                            <label class="form-check-label" for="treatment_07">Brgy. Health Worker</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="treatment_source[]" value="08" id="treatment_08">
+                                            <label class="form-check-label" for="treatment_08">Brgy. Nutrition Scholar</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="treatment_source[]" value="09" id="treatment_09">
+                                            <label class="form-check-label" for="treatment_09">CBHP/DHW</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="treatment_source[]" value="10" id="treatment_10">
+                                            <label class="form-check-label" for="treatment_10">Private Clinic</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="treatment_source[]" value="99" id="treatment_99">
+                                            <label class="form-check-label" for="treatment_99">Others</label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <input type="text" name="treatment_source_others" class="form-control mt-2" placeholder="If others, specify">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 <label class="form-label">Source of potable water</label>
-                                <select name="water_source" id="water" class="form-select">
-                                    <option value="">Select Water Source</option>
-                                    <option value="1">Local Water System</option>
-                                    <option value="2">Spring Water</option>
-                                    <option value="3">River</option>
-                                    <option value="4">Open Well</option>
-                                    <option value="5">Own Artesian Well</option>
-                                    <option value="6">Community Artesian Well</option>
-                                    <option value="7">Community Faucet</option>
-                                    <option value="8">Electric Deep Well</option>
-                                    <option value="9">Free Flowing Water Pipe</option>
-                                    <option value="10">Rain Water</option>
-                                    <option value="11">Water Refilling Station</option>
-                                    <option value="12">NAWASA</option>
-                                    <option value="99">Others</option>
-                                </select>
+                                <div class="row g-2">
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="water_source[]" value="1" id="water_1">
+                                            <label class="form-check-label" for="water_1">Local Water System</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="water_source[]" value="2" id="water_2">
+                                            <label class="form-check-label" for="water_2">Spring Water</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="water_source[]" value="3" id="water_3">
+                                            <label class="form-check-label" for="water_3">River</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="water_source[]" value="4" id="water_4">
+                                            <label class="form-check-label" for="water_4">Open Well</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="water_source[]" value="5" id="water_5">
+                                            <label class="form-check-label" for="water_5">Own Artesian Well</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="water_source[]" value="6" id="water_6">
+                                            <label class="form-check-label" for="water_6">Community Artesian Well</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="water_source[]" value="7" id="water_7">
+                                            <label class="form-check-label" for="water_7">Community Faucet</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="water_source[]" value="8" id="water_8">
+                                            <label class="form-check-label" for="water_8">Electric Deep Well</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="water_source[]" value="9" id="water_9">
+                                            <label class="form-check-label" for="water_9">Free Flowing Water Pipe</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="water_source[]" value="10" id="water_10">
+                                            <label class="form-check-label" for="water_10">Rain Water</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="water_source[]" value="11" id="water_11">
+                                            <label class="form-check-label" for="water_11">Water Refilling Station</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="water_source[]" value="12" id="water_12">
+                                            <label class="form-check-label" for="water_12">NAWASA</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="water_source[]" value="99" id="water_99">
+                                            <label class="form-check-label" for="water_99">Others</label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <input type="text" name="water_source_others" class="form-control mt-2" placeholder="If others, specify">
                             </div>
                         </div>
@@ -103,48 +326,166 @@
                     <div class="form-card p-4 mb-4">
                         <h4 class="section-title">Energy & Utilities</h4>
                         <div class="row g-4">
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 <label class="form-label">Household lighting energy source</label>
-                                <select name="lighting_source" id="lighting" class="form-select">
-                                    <option value="">Select Lighting Source</option>
-                                    <option value="1">Electricity</option>
-                                    <option value="2">Kerosene (Gaas)</option>
-                                    <option value="3">Liquified Petroleum Gas (LPG)</option>
-                                    <option value="4">Solar Panel / Solar Lamp</option>
-                                    <option value="5">Battery</option>
-                                    <option value="6">Generator</option>
-                                    <option value="7">None</option>
-                                    <option value="99">Others</option>
-                                </select>
+                                <div class="row g-2">
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="lighting_source[]" value="1" id="lighting_1">
+                                            <label class="form-check-label" for="lighting_1">Electricity</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="lighting_source[]" value="2" id="lighting_2">
+                                            <label class="form-check-label" for="lighting_2">Kerosene (Gaas)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="lighting_source[]" value="3" id="lighting_3">
+                                            <label class="form-check-label" for="lighting_3">Liquified Petroleum Gas (LPG)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="lighting_source[]" value="4" id="lighting_4">
+                                            <label class="form-check-label" for="lighting_4">Solar Panel / Solar Lamp</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="lighting_source[]" value="5" id="lighting_5">
+                                            <label class="form-check-label" for="lighting_5">Battery</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="lighting_source[]" value="6" id="lighting_6">
+                                            <label class="form-check-label" for="lighting_6">Generator</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="lighting_source[]" value="7" id="lighting_7">
+                                            <label class="form-check-label" for="lighting_7">None</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="lighting_source[]" value="99" id="lighting_99">
+                                            <label class="form-check-label" for="lighting_99">Others</label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <input type="text" name="lighting_others" class="form-control mt-2" placeholder="If others, specify">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 <label class="form-label">Household cooking energy source</label>
-                                <select name="cooking_source" id="cooking" class="form-select">
-                                    <option value="1">Woods</option>
-                                    <option value="2">Charcoal</option>
-                                    <option value="3">Kerosene (Gas)</option>
-                                    <option value="4">Liquefied Petroleum Gas (LPG)</option>
-                                    <option value="5">Electricity</option>
-                                    <option value="99">Others</option>
-                                </select>
+                                <div class="row g-2">
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="cooking_source[]" value="1" id="cooking_1">
+                                            <label class="form-check-label" for="cooking_1">Woods</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="cooking_source[]" value="2" id="cooking_2">
+                                            <label class="form-check-label" for="cooking_2">Charcoal</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="cooking_source[]" value="3" id="cooking_3">
+                                            <label class="form-check-label" for="cooking_3">Kerosene (Gas)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="cooking_source[]" value="4" id="cooking_4">
+                                            <label class="form-check-label" for="cooking_4">Liquefied Petroleum Gas (LPG)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="cooking_source[]" value="5" id="cooking_5">
+                                            <label class="form-check-label" for="cooking_5">Electricity</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="cooking_source[]" value="99" id="cooking_99">
+                                            <label class="form-check-label" for="cooking_99">Others</label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <input type="text" name="cooking_others" class="form-control mt-2" placeholder="If others, specify">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 <label class="form-label">Way of disposing Household Garbage</label>
-                                <select name="garbage_disposal" id="garbage" class="form-select">
-                                    <option value="">Select Waste Disposal Method</option>
-                                    <option value="1">Segregating Waste</option>
-                                    <option value="2">Collected by Garbage Truck</option>
-                                    <option value="3">Recycling / Reusing at Home</option>
-                                    <option value="4">Selling / Giving Away Recyclables</option>
-                                    <option value="5">Composting</option>
-                                    <option value="6">Burning</option>
-                                    <option value="7">Dumping in Pit with Cover</option>
-                                    <option value="8">Dumping in Pit without Cover</option>
-                                    <option value="9">Throwing in Uninhabited Locations</option>
-                                    <option value="99">Others</option>
-                                </select>
+                                <div class="row g-2">
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="garbage_disposal[]" value="1" id="garbage_1">
+                                            <label class="form-check-label" for="garbage_1">Segregating Waste</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="garbage_disposal[]" value="2" id="garbage_2">
+                                            <label class="form-check-label" for="garbage_2">Collected by Garbage Truck</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="garbage_disposal[]" value="3" id="garbage_3">
+                                            <label class="form-check-label" for="garbage_3">Recycling / Reusing at Home</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="garbage_disposal[]" value="4" id="garbage_4">
+                                            <label class="form-check-label" for="garbage_4">Selling / Giving Away Recyclables</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="garbage_disposal[]" value="5" id="garbage_5">
+                                            <label class="form-check-label" for="garbage_5">Composting</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="garbage_disposal[]" value="6" id="garbage_6">
+                                            <label class="form-check-label" for="garbage_6">Burning</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="garbage_disposal[]" value="7" id="garbage_7">
+                                            <label class="form-check-label" for="garbage_7">Dumping in Pit with Cover</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="garbage_disposal[]" value="8" id="garbage_8">
+                                            <label class="form-check-label" for="garbage_8">Dumping in Pit without Cover</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="garbage_disposal[]" value="9" id="garbage_9">
+                                            <label class="form-check-label" for="garbage_9">Throwing in Uninhabited Locations</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="garbage_disposal[]" value="99" id="garbage_99">
+                                            <label class="form-check-label" for="garbage_99">Others</label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <input type="text" name="garbage_others" class="form-control mt-2" placeholder="If others, specify">
                             </div>
                         </div>
@@ -153,17 +494,46 @@
                     <div class="form-card p-4 mb-4">
                         <h4 class="section-title">Sanitation</h4>
                         <div class="row g-4">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label class="form-label">Toilet facility of the household</label>
-                                <select name="toilet_type" id="toilet" class="form-select">
-                                    <option value="">Select Toilet Type</option>
-                                    <option value="1">Water-Sealed Flush to Sewerage System / Septic Tank (Own Use)</option>
-                                    <option value="2">Water-Sealed Flush to Sewerage / Septic Tank (Shared with Other Households)</option>
-                                    <option value="3">Closed Pit</option>
-                                    <option value="4">Open Pit</option>
-                                    <option value="5">No Toilet</option>
-                                    <option value="99">Others</option>
-                                </select>
+                                <div class="row g-2">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="toilet_type[]" value="1" id="toilet_1">
+                                            <label class="form-check-label" for="toilet_1">Water-Sealed Flush to Sewerage System / Septic Tank (Own Use)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="toilet_type[]" value="2" id="toilet_2">
+                                            <label class="form-check-label" for="toilet_2">Water-Sealed Flush to Sewerage / Septic Tank (Shared with Other Households)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="toilet_type[]" value="3" id="toilet_3">
+                                            <label class="form-check-label" for="toilet_3">Closed Pit</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="toilet_type[]" value="4" id="toilet_4">
+                                            <label class="form-check-label" for="toilet_4">Open Pit</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="toilet_type[]" value="5" id="toilet_5">
+                                            <label class="form-check-label" for="toilet_5">No Toilet</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="toilet_type[]" value="99" id="toilet_99">
+                                            <label class="form-check-label" for="toilet_99">Others</label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Distance of toilet from water source</label>
@@ -189,26 +559,6 @@
         </main>
     `,
     extraScripts: `
-        <script>
-        function saveFormData() {
-            const form = document.querySelector('form');
-            const formData = new FormData(form);
-            const data = {};
-            for (const [key, value] of formData.entries()) {
-                data[key] = value;
-            }
-            sessionStorage.setItem('survey_health', JSON.stringify(data));
-        }
-        function goNext() { saveFormData(); window.location.href = '/survey5'; }
-        function goPrev() { saveFormData(); window.location.href = '/survey2'; }
-        document.addEventListener('DOMContentLoaded', () => {
-            const saved = JSON.parse(sessionStorage.getItem('survey_health') || '{}');
-            for (const key in saved) {
-                const el = document.querySelector('[name="' + key + '"]');
-                if (el) el.value = saved[key];
-            }
-        });
-        </script>
         <script src="/javascripts/survey4.js"></script>
     `
 }) %>

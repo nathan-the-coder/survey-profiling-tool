@@ -1,13 +1,55 @@
 <%- include('../layouts/layout', {
     title: 'Home',
-    bodyClass: 'd-flex flex-column min-vh-100 overflow-hidden',
-    headerType: 'default',
+    bodyClass: 'd-flex flex-column min-vh-100',
+    extraStyles: `
+        <style>
+            #mainContainer {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                min-height: 70vh;
+                padding: 2rem;
+            }
+            #startProfilingBtn {
+                font-size: 1.25rem;
+                padding: 1rem 3rem;
+                max-width: 300px;
+                width: 100%;
+            }
+            @media (max-width: 768px) {
+                #mainContainer {
+                    min-height: 60vh;
+                    padding: 1.5rem;
+                }
+                h2 { font-size: 1.5rem; }
+                h5 { font-size: 1rem; }
+                #startProfilingBtn {
+                    font-size: 1.1rem;
+                    padding: 0.875rem 2rem;
+                }
+            }
+            @media (max-width: 480px) {
+                #mainContainer {
+                    min-height: 55vh;
+                    padding: 1rem;
+                }
+                h2 { font-size: 1.25rem; }
+                h5 { font-size: 0.9rem; }
+                #startProfilingBtn {
+                    font-size: 1rem;
+                    padding: 0.75rem 1.5rem;
+                }
+            }
+        </style>
+    `,
     body: `
         <main class="flex-grow-1 d-flex">
-            <div id="mainContainer" class="container-fluid rounded-0 bg-light p-5">
-                <h2 class="font-bold mb-2 fw-bold">Household Profiling</h2>
-                <h5 class="text-secondary">Click "Start" to begin</h5>
-                <a href="/survey" id="startProfilingBtn" class="btn btn-success w-full p-3"><i class="bi bi-envelope-paper-fill"></i> START PROFILING</a>
+            <div id="mainContainer" class="container-fluid">
+                <h2 class="font-bold mb-3 fw-bold">Household Profiling</h2>
+                <h5 class="text-secondary mb-4">Click "Start" to begin</h5>
+                <a href="/survey" id="startProfilingBtn" class="btn btn-success"><i class="bi bi-envelope-paper-fill"></i> START PROFILING</a>
             </div>
         </main>
     `

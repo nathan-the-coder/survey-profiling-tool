@@ -175,6 +175,27 @@
             .animate-fade-in {
                 animation: fadeInUp 0.5s ease-out;
             }
+            @media (max-width: 768px) {
+                .login-wrapper { padding: 1rem; }
+                .login-card {
+                    padding: 1.5rem;
+                    max-width: 100%;
+                }
+                .login-logo { width: 60px; height: 60px; }
+                .login-logo i { font-size: 1.75rem; }
+                .login-title { font-size: 1.5rem; }
+                .form-control, .input-group-text { padding: 10px 12px; font-size: 14px; }
+                .form-label { font-size: 13px; }
+                .btn-login { padding: 12px 20px; font-size: 15px; }
+            }
+            @media (max-width: 480px) {
+                .login-card { padding: 1.25rem; border-radius: 12px; }
+                .login-logo { width: 50px; height: 50px; border-radius: 12px; }
+                .login-logo i { font-size: 1.5rem; }
+                .login-title { font-size: 1.25rem; }
+                .login-subtitle { font-size: 0.85rem; }
+                .form-label { font-size: 12px; }
+            }
         </style>
     `,
     body: `

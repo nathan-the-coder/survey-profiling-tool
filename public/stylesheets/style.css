@@ -117,3 +117,133 @@ a {
     overflow-y: auto;
     border: 1px solid #ddd;
 }
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    /* Base adjustments */
+    body {
+        font-size: 14px;
+    }
+    
+    h1 { font-size: 1.75rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.25rem; }
+    h4 { font-size: 1.1rem; }
+    
+    /* Form controls - smaller but touch-friendly */
+    .form-control, .form-select {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+    
+    .form-label {
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+    
+    /* Buttons - good touch targets (min 44px) */
+    .btn {
+        padding: 8px 16px;
+        font-size: 14px;
+        min-height: 44px;
+    }
+    
+    .btn-sm {
+        padding: 6px 12px;
+        font-size: 13px;
+        min-height: 36px;
+    }
+    
+    /* Checkbox cards - compact for mobile */
+    .checkbox-card {
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+    
+    .checkbox-card label {
+        font-size: 13px;
+    }
+    
+    /* Member cards */
+    .member-card {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .member-card h6 {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    
+    /* Remove button */
+    .remove-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+        top: 8px;
+        right: 8px;
+    }
+    
+    /* Table adjustments */
+    .table {
+        font-size: 12px;
+    }
+    
+    .table th, .table td {
+        padding: 6px 4px;
+    }
+    
+    /* Cards */
+    .form-card {
+        padding: 12px !important;
+    }
+    
+    /* Progress bar */
+    .progress-custom {
+        height: 6px;
+    }
+    
+    /* Navbar */
+    .navbar-brand {
+        font-size: 16px;
+    }
+    
+    /* Container */
+    .col-lg-10 {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    /* Modal */
+    .modal-body {
+        padding: 12px;
+    }
+    
+    /* SweetAlert */
+    .swal2-popup {
+        font-size: 14px;
+        padding: 12px;
+    }
+    
+    /* Autocomplete */
+    #autocompleteList {
+        font-size: 13px;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    .checkbox-card {
+        padding: 5px 8px;
+        font-size: 12px;
+    }
+    
+    .btn {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    
+    .form-control, .form-select {
+        font-size: 13px;
+    }
+}

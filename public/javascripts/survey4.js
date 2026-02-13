@@ -38,20 +38,15 @@ function loadSavedData() {
 function goNext() {
 	const errors = [];
 
-	const requiredFields = [
-		{ id: "water_source", name: "Water Source" },
-		{ id: "lighting_source", name: "Lighting Source" },
-		{ id: "cooking_source", name: "Cooking Fuel" },
-		{ id: "garbage_disposal", name: "Garbage Disposal" },
-		{ id: "toilet_type", name: "Toilet Type" },
-	];
+	const hasChecked = (name) => {
+		return document.querySelectorAll(`[name="${name}"]:checked`).length > 0;
+	};
 
-	requiredFields.forEach((field) => {
-		const el = document.getElementById(field.id);
-		if (!el?.value || el.value === "") {
-			errors.push(`${field.name} is required`);
-		}
-	});
+	if (!hasChecked("water_source[]")) errors.push("Water Source is required");
+	if (!hasChecked("lighting_source[]")) errors.push("Lighting Source is required");
+	if (!hasChecked("cooking_source[]")) errors.push("Cooking Fuel is required");
+	if (!hasChecked("garbage_disposal[]")) errors.push("Garbage Disposal is required");
+	if (!hasChecked("toilet_type[]")) errors.push("Toilet Type is required");
 
 	if (errors.length > 0) {
 		FormValidator.showFieldErrors(errors);

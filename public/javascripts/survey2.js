@@ -346,22 +346,16 @@ function saveFormData() {
 function goNext() {
 	const errors = [];
 
-	if (!document.getElementById("head_name")?.value.trim())
-		errors.push("Head Name is required");
-	if (!document.getElementById("head_sex")?.value)
-		errors.push("Head Sex is required");
-	if (!document.getElementById("head_age")?.value)
-		errors.push("Head Age is required");
-	if (!document.getElementById("head_religion")?.value)
-		errors.push("Head Religion is required");
-	if (!document.getElementById("head_marriage")?.value)
-		errors.push("Head Marriage Type is required");
-	if (!document.getElementById("head_educ")?.value)
-		errors.push("Head Education is required");
-	if (!document.getElementById("head_job")?.value)
-		errors.push("Head Occupation is required");
-	if (!document.getElementById("head_work_status")?.value)
-		errors.push("Head Work Status is required");
+	const getValue = (name) => document.querySelector(`[name="${name}"]`)?.value;
+
+	if (!getValue("head_name")?.trim()) errors.push("Head Name is required");
+	if (!getValue("head_sex")) errors.push("Head Sex is required");
+	if (!getValue("head_age")) errors.push("Head Age is required");
+	if (!getValue("head_religion")) errors.push("Head Religion is required");
+	if (!getValue("head_marriage")) errors.push("Head Marriage Type is required");
+	if (!getValue("head_educ")) errors.push("Head Education is required");
+	if (!getValue("head_job")) errors.push("Head Occupation is required");
+	if (!getValue("head_work_status")) errors.push("Head Work Status is required");
 
 	const memberCards = document.querySelectorAll(".member-card");
 	if (memberCards.length === 0) {

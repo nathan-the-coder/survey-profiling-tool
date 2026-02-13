@@ -58,20 +58,14 @@ function goPrev() {
 function submitEntry() {
 	const errors = [];
 
-	const requiredFields = [
-		{ id: "income_monthly", name: "Monthly Income" },
-		{ id: "expenses_weekly", name: "Weekly Expenses" },
-		{ id: "has_savings", name: "Savings Status" },
-		{ id: "house_ownership", name: "House Ownership" },
-		{ id: "house_classification", name: "House Classification" },
-	];
+	const getSelectValue = (id) => document.getElementById(id)?.value;
+	const hasChecked = (name) => document.querySelectorAll(`[name="${name}"]:checked`).length > 0;
 
-	requiredFields.forEach((field) => {
-		const el = document.getElementById(field.id);
-		if (!el?.value || el.value === "") {
-			errors.push(`${field.name} is required`);
-		}
-	});
+	if (!getSelectValue("income")) errors.push("Monthly Income is required");
+	if (!getSelectValue("expenses")) errors.push("Weekly Expenses is required");
+	if (!getSelectValue("savings")) errors.push("Savings Status is required");
+	if (!getSelectValue("ownership")) errors.push("House Ownership is required");
+	if (!hasChecked("house_classification[]")) errors.push("House Classification is required");
 
 	if (errors.length > 0) {
 		FormValidator.showFieldErrors(errors);

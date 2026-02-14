@@ -394,7 +394,7 @@ function showParticipantDetails(data) {
     setText('soc-expenses', maps.expenses[socio_economic?.expenses_weekly_code] || '-');
     setText('soc-savings', maps.savings[String(socio_economic?.has_savings)] || '-');
     setText('soc-savingsLoc', mapArrayValue(socio_economic?.savings_location_code, maps.savingsLoc));
-    setText('soc-ownership', maps.ownership[socio_economic?.house_lot_ownership_code] || '-');
+    setText('soc-ownership', mapArrayValue(socio_economic?.house_lot_ownership_code, maps.ownership));
     setText('soc-houseClass', mapArrayValue(socio_economic?.house_classification_code, maps.houseClass));
     setText('soc-landArea', socio_economic?.land_area_hectares || '-');
     setText('soc-church', maps.distance[socio_economic?.dist_from_church_code] || '-');

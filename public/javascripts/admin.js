@@ -119,7 +119,7 @@ function displayParticipantsTable(participants) {
     const rows = participants.map(p => {
         // Handle potential null values properly
         const name = p.full_name || 'Unknown';
-        const relation = p.relation_to_head_code || 'N/A';
+        const relation = p.role || 'N/A'; // Show role (HH Head, Spouse, Member)
         const address = `${p.purok_gimong || ''} ${p.barangay_name || ''}`.trim();
         const parish = p.parish_name || 'N/A';
         const age = p.age || 'N/A';
@@ -160,11 +160,11 @@ function updateDashboardStats(data) {
 function applyFilters() {
     let filtered = [...allParticipants];
     
-    // Occupation filter (NEW)
+    // Occupation filter
     const occupationFilter = filterOccupation?.value || '';
     if (occupationFilter) {
-        // Using occupation field (stores full text, not code)
-        filtered = filtered.filter(p => p.occupation === occupationFilter);
+        // Using partial match since occupation stores full text
+        filtered = filtered.filter(p => p.occupation?.toLowerCase().includes(occupationFilter.toLowerCase()));
     }
     
     // Address filter
@@ -182,10 +182,10 @@ function applyFilters() {
         filtered = filtered.filter(p => p.parish_name?.toLowerCase().includes(parishFilter));
     }
     
-    // Relation filter
+    // Relation filter - filter by role (HH Head, Spouse, Member)
     const relationFilter = filterRelation?.value || '';
     if (relationFilter) {
-        filtered = filtered.filter(p => p.relation_to_head_code === relationFilter);
+        filtered = filtered.filter(p => p.role === relationFilter);
     }
     
     // Age range filter
@@ -323,9 +323,21 @@ function showParticipantDetails(data) {
     const mapArrayValue = (value, map) => {
         if (!value) return '-';
         try {
-            const valArr = typeof value === 'string' ? JSON.parse(value) : value;
+            let valArr;
+            if (Array.isArray(value)) {
+                valArr = value;
+            } else if (typeof value === 'string') {
+                try {
+                    valArr = JSON.parse(value);
+                    if (!Array.isArray(valArr)) valArr = [valArr];
+                } catch {
+                    valArr = value.split(',');
+                }
+            } else {
+                valArr = [value];
+            }
             if (Array.isArray(valArr)) {
-                return valArr.map(v => map[v] || v).filter(v => v !== '').join(', ') || '-';
+                return valArr.map(v => map[v?.trim()] || v?.trim()).filter(v => v !== '').join(', ') || '-';
             }
             return map[valArr] || valArr || '-';
         } catch {

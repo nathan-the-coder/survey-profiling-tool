@@ -4,6 +4,8 @@ const autocompleteList = document.getElementById('autocompleteList');
 const participantModal = new bootstrap.Modal(document.getElementById('participantModal'));
 let debounceTimer;
 let allParticipants = []; // Store all participants for filtering
+let currentPage = 1;
+const itemsPerPage = 15;
 
 const username = sessionStorage.getItem('username');
 if (!username) {
@@ -115,8 +117,13 @@ function displayParticipantsTable(participants) {
     const tbody = document.getElementById('participantsTableBody');
     if (!tbody) return;
 
+    // Pagination
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedParticipants = participants.slice(startIndex, endIndex);
+
     // Map through the data and create rows
-    const rows = participants.map(p => {
+    const rows = paginatedParticipants.map(p => {
         // Handle potential null values properly
         const name = p.full_name || 'Unknown';
         const relation = p.role || 'N/A'; // Show role (HH Head, Spouse, Member)
@@ -142,7 +149,46 @@ function displayParticipantsTable(participants) {
     }).join('');
 
     tbody.innerHTML = rows;
-    updateShowingInfo(participants.length, allParticipants.length);
+    updateShowingInfo(paginatedParticipants.length, participants.length);
+    renderPagination(participants);
+}
+
+function renderPagination(participants) {
+    const pagination = document.getElementById('pagination');
+    if (!pagination) return;
+
+    const totalPages = Math.ceil(participants.length / itemsPerPage);
+    let paginationHTML = '';
+
+    // Previous button
+    paginationHTML += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+        <a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">Previous</a>
+    </li>`;
+
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+            paginationHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="changePage(${i}); return false;">${i}</a>
+            </li>`;
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+            paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+    }
+
+    // Next button
+    paginationHTML += `<li class="page-item ${currentPage === totalPages || totalPages === 0 ? 'disabled' : ''}">
+        <a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">Next</a>
+    </li>`;
+
+    pagination.innerHTML = paginationHTML;
+}
+
+function changePage(page) {
+    const totalPages = Math.ceil(allParticipants.length / itemsPerPage);
+    if (page < 1 || page > totalPages) return;
+    currentPage = page;
+    displayParticipantsTable(allParticipants);
 }
 
 function updateDashboardStats(data) {
@@ -158,6 +204,7 @@ function updateDashboardStats(data) {
 }
 
 function applyFilters() {
+    currentPage = 1; // Reset to first page when filters change
     let filtered = [...allParticipants];
     
     // Occupation filter

@@ -52,6 +52,7 @@ class DatabaseAdapter {
                         role,
                         relation_to_head_code,
                         age,
+                        occupation,
                         purok_gimong,
                         barangay_name,
                         households!inner(
@@ -75,6 +76,7 @@ class DatabaseAdapter {
                     role: item.role,
                     relation_to_head_code: item.relation_to_head_code,
                     age: item.age,
+                    occupation: item.occupation,
                     purok_gimong: item.purok_gimong,
                     barangay_name: item.barangay_name,
                     parish_name: item.households?.parish_name
@@ -88,6 +90,7 @@ class DatabaseAdapter {
                         fm.role,
                         fm.relation_to_head_code,
                         fm.age,
+                        fm.occupation,
                         fm.purok_gimong,
                         fm.barangay_name,
                         h.parish_name

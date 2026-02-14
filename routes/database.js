@@ -49,6 +49,7 @@ class DatabaseAdapter {
                     .select(`
                         member_id,
                         full_name,
+                        role,
                         relation_to_head_code,
                         age,
                         purok_gimong,
@@ -71,6 +72,7 @@ class DatabaseAdapter {
                 return data.map(item => ({
                     id: item.member_id,
                     full_name: item.full_name,
+                    role: item.role,
                     relation_to_head_code: item.relation_to_head_code,
                     age: item.age,
                     purok_gimong: item.purok_gimong,
@@ -83,6 +85,7 @@ class DatabaseAdapter {
                     SELECT 
                         fm.member_id as id,
                         fm.full_name,
+                        fm.role,
                         fm.relation_to_head_code,
                         fm.age,
                         fm.purok_gimong,

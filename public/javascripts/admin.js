@@ -340,6 +340,16 @@ function showParticipantDetails(data) {
         sex: { '1': 'Male', '2': 'Female' },
         civil: { '1': 'Single', '2': 'Married', '3': 'Common Law', '4': 'Widowed', '5': 'Divorced', '6': 'Separated', '7': 'Annulled', '8': 'Unknown' },
         sacrament: { '1': 'Not yet Baptized', '2': 'Baptism only', '3': 'Baptism & Confirmation', '4': 'First Holy Communion', '5': 'Holy Matrimony', '6': 'Holy Orders', '66': 'Not Applicable' },
+        religion: { '1': 'Roman Catholic', '2': 'Islam', '3': 'UCCP/Protestant', '4': 'Jehova\'s Witnesses', '6': 'Iglesia ni Cristo', '7': 'Four Square Church', '8': 'Seventh Day Adventist', '9': 'Mormons', '10': 'Born Again', '11': 'Bible Baptist', '12': 'Church of Christ', '13': 'Others' },
+        relation: { 
+            '1': 'Son', '2': 'Daughter', '3': 'Stepson', '4': 'Stepdaughter',
+            '5': 'Son-In-Law', '6': 'Daughter-In-Law', '7': 'Grandson', '8': 'Granddaughter',
+            '9': 'Father', '10': 'Mother', '11': 'Father-In-Law', '12': 'Mother-In-Law',
+            '13': 'Relative', '14': 'Brother', '15': 'Sister', '16': 'Brother-In-Law',
+            '17': 'Sister-In-Law', '18': 'Uncle', '19': 'Aunt', '20': 'Nephew',
+            '21': 'Niece', '22': 'Other Relative'
+        },
+        education: { '1': 'No Education', '2': 'Elementary Undergraduate', '3': 'Elementary Graduate', '4': 'High School Undergraduate', '5': 'High School Graduate', '6': 'College Undergraduate', '7': 'College Graduate', '8': 'Vocational', '9': 'Post-Graduate', '10': 'Master\'s Degree', '11': 'Doctorate Degree' },
         studying: { '1': 'Yes', '2': 'No' },
         workStatus: { '1': 'Regular/Permanent', '2': 'Contractual', '3': 'Worker for different employers', '5': 'Others', '6': 'Not Applicable' },
         illness: { '00': 'None', '01': 'Fever', '02': 'Flu', '03': 'Cough', '04': 'Cold', '05': 'Diarrhea', '06': 'Cholera', '07': 'Asthma', '08': 'Typhoid Fever', '09': 'Dengue', '10': 'Pneumonia', '11': 'Chicken Pox', '12': 'Measles', '13': 'Heart Disease', '14': 'Lung Disease', '15': 'High Blood', '16': 'Anemia', '17': 'Malaria', '99': 'Others' },
@@ -359,7 +369,8 @@ function showParticipantDetails(data) {
         houseClass: { '1': 'Concrete', '2': 'Semi-Concrete', '3': 'Indigenous Materials', '4': 'Galvanized Iron / aluminum', '5': 'Barong-barong', '6': 'Makeshift', '99': 'Others' },
         transportation: { 'Bicycle': 'Bicycle', 'Tricycle': 'Tricycle', 'Motorcycle': 'Motorcycle', 'Jeepney': 'Jeepney', 'Van': 'Van', 'Private Vehicle': 'Private Vehicle' },
         livestock: { 'carabao': 'Carabao', 'cow': 'Cow', 'goat': 'Goat', 'chicken': 'Chicken', 'pig': 'Pig', 'geese': 'Geese', 'turkey': 'Turkey', 'duck': 'Duck', 'horse': 'Horse', 'sheep': 'Sheep', 'rabbit': 'Rabbit', 'others': 'Others' },
-        assets: { 'refrigerator': 'Refrigerator', 'freezer': 'Freezer', 'stove': 'Stove', 'gas_range': 'Gas Range', 'rice_cooker': 'Rice Cooker', 'air_fryer': 'Air Fryer', 'microwave_oven': 'Microwave Oven', 'washing_machine': 'Washing Machine', 'air_conditioner': 'Air Conditioner', 'electric_fan': 'Electric Fan', 'electric_iron': 'Electric Iron', 'sewing_machine': 'Sewing Machine', 'am_radio': 'AM Radio', 'cassette_player': 'Cassette Player', 'television': 'Television', 'cd_dvd_vcd_player': 'CD / DVD / VCD Player', 'karaoke': 'Karaoke', 'landline': 'Landline Telephone', 'mobile_phone': 'Mobile Phone', 'tablet': 'Tablet', 'personal_computer': 'Personal Computer', 'vehicle': 'Car / Vehicle', 'others': 'Others' }
+        assets: { 'refrigerator': 'Refrigerator', 'freezer': 'Freezer', 'stove': 'Stove', 'gas_range': 'Gas Range', 'rice_cooker': 'Rice Cooker', 'air_fryer': 'Air Fryer', 'microwave_oven': 'Microwave Oven', 'washing_machine': 'Washing Machine', 'air_conditioner': 'Air Conditioner', 'electric_fan': 'Electric Fan', 'electric_iron': 'Electric Iron', 'sewing_machine': 'Sewing Machine', 'am_radio': 'AM Radio', 'cassette_player': 'Cassette Player', 'television': 'Television', 'cd_dvd_vcd_player': 'CD / DVD / VCD Player', 'karaoke': 'Karaoke', 'landline': 'Landline Telephone', 'mobile_phone': 'Mobile Phone', 'tablet': 'Tablet', 'personal_computer': 'Personal Computer', 'vehicle': 'Car / Vehicle', 'others': 'Others' },
+        organization: { 'Religious': 'Religious', 'Youth': 'Youth', 'Cultural': 'Cultural', 'Political': 'Political', 'Women\'s': 'Women\'s', 'Agricultural': 'Agricultural', 'Labor': 'Labor', 'Civic': 'Civic', 'Cooperatives': 'Cooperatives', 'Others': 'Others' }
     };
 
     const setText = (id, value) => {
@@ -384,9 +395,9 @@ function showParticipantDetails(data) {
                 valArr = [value];
             }
             if (Array.isArray(valArr)) {
-                return valArr.map(v => map[v?.trim()] || v?.trim()).filter(v => v !== '').join(', ') || '-';
+                return valArr.map(v => map[String(v).trim()] || String(v).trim()).filter(v => v !== '').join(', ') || '-';
             }
-            return map[valArr] || valArr || '-';
+            return map[String(valArr)] || valArr || '-';
         } catch {
             return value || '-';
         }
@@ -413,18 +424,20 @@ function showParticipantDetails(data) {
     familyTbody.innerHTML = family_members?.map(m => `
         <tr>
             <td>${m.full_name || '-'}</td>
-            <td>${m.relation_to_head_code || '-'}</td>
-            <td>${maps.sex[m.sex_code] || '-'}</td>
+            <td>${m.relation_to_head_code ? maps.relation[m.relation_to_head_code] : m.role || '-'}</td>
+            <td>${maps.sex[String(m.sex_code)] || '-'}</td>
             <td>${m.age || '-'}</td>
-            <td>${maps.civil[m.civil_status_code] || '-'}</td>
-            <td>${m.religion_code || '-'}</td>
+            <td>${maps.civil[String(m.civil_status_code)] || '-'}</td>
+            <td>${mapArrayValue(m.religion_code, maps.religion) || '-'}</td>
             <td>${mapArrayValue(m.sacraments_code, maps.sacrament)}</td>
-            <td>${maps.studying[m.is_studying] || '-'}</td>
-            <td>${m.highest_educ_attainment || '-'}</td>
+            <td>${m.is_studying === true ? 'Yes' : (m.is_studying === false ? 'No' : '-')}</td>
+            <td>${maps.education[String(m.highest_educ_attainment)] || '-'}</td>
             <td>${m.occupation || '-'}</td>
-            <td>${maps.workStatus[m.status_of_work_code] || '-'}</td>
+            <td>${maps.workStatus[String(m.status_of_work_code)] || '-'}</td>
+            <td>${mapArrayValue(m.organization_code, maps.organization) || '-'}</td>
+            <td>${m.position || '-'}</td>
         </tr>
-    `).join('') || '<tr><td colspan="11">No family members</td></tr>';
+    `).join('') || '<tr><td colspan="13">No family members</td></tr>';
 
     // Health & Living Conditions
     setText('health-illness', mapArrayValue(health_conditions?.common_illness_codes, maps.illness));
@@ -434,18 +447,18 @@ function showParticipantDetails(data) {
     setText('health-cooking', mapArrayValue(health_conditions?.cooking_source_code, maps.cooking));
     setText('health-garbage', mapArrayValue(health_conditions?.garbage_disposal_code, maps.garbage));
     setText('health-toilet', mapArrayValue(health_conditions?.toilet_facility_code, maps.toilet));
-    setText('health-toiletDist', maps.toiletDist[health_conditions?.water_to_toilet_distance_code] || '-');
+    setText('health-toiletDist', maps.toiletDist[String(health_conditions?.water_to_toilet_distance_code)] || '-');
 
     // Socio-Economic
-    setText('soc-income', maps.income[socio_economic?.income_monthly_code] || '-');
-    setText('soc-expenses', maps.expenses[socio_economic?.expenses_weekly_code] || '-');
+    setText('soc-income', maps.income[String(socio_economic?.income_monthly_code)] || '-');
+    setText('soc-expenses', maps.expenses[String(socio_economic?.expenses_weekly_code)] || '-');
     setText('soc-savings', maps.savings[String(socio_economic?.has_savings)] || '-');
     setText('soc-savingsLoc', mapArrayValue(socio_economic?.savings_location_code, maps.savingsLoc));
     setText('soc-ownership', mapArrayValue(socio_economic?.house_lot_ownership_code, maps.ownership));
     setText('soc-houseClass', mapArrayValue(socio_economic?.house_classification_code, maps.houseClass));
     setText('soc-landArea', socio_economic?.land_area_hectares || '-');
-    setText('soc-church', maps.distance[socio_economic?.dist_from_church_code] || '-');
-    setText('soc-market', maps.distance[socio_economic?.dist_from_market_code] || '-');
+    setText('soc-church', maps.distance[String(socio_economic?.dist_from_church_code)] || '-');
+    setText('soc-market', maps.distance[String(socio_economic?.dist_from_market_code)] || '-');
     setText('soc-organizations', mapArrayValue(socio_economic?.organizations, { '1': 'PCM', '2': 'BCC', '3': 'ICS', '4': 'CMA', '5': 'COP', '6': 'MWI', '7': 'YWL', '8': 'MCC', '9': 'Others' }));
     setText('soc-livestock', '-');
     setText('soc-assets', '-');

@@ -38,6 +38,51 @@ const filterMinAge = document.getElementById('filterMinAge');
 const filterMaxAge = document.getElementById('filterMaxAge');
 const clearFiltersBtn = document.getElementById('clearFilters');
 
+// Mapping tables for code to text
+const maps = {
+    sex: { '1': 'Male', '2': 'Female' },
+    civil: { '1': 'Single', '2': 'Married', '3': 'Common Law', '4': 'Widowed', '5': 'Divorced', '6': 'Separated', '7': 'Annulled', '8': 'Unknown' },
+    sacrament: { '1': 'Not yet Baptized', '2': 'Baptism only', '3': 'Baptism & Confirmation', '4': 'First Holy Communion', '5': 'Holy Matrimony', '6': 'Holy Orders', '66': 'Not Applicable' },
+    religion: { '1': 'Roman Catholic', '2': 'Islam', '3': 'UCCP/Protestant', '4': 'Jehova\'s Witnesses', '6': 'Iglesia ni Cristo', '7': 'Four Square Church', '8': 'Seventh Day Adventist', '9': 'Mormons', '10': 'Born Again', '11': 'Bible Baptist', '12': 'Church of Christ', '13': 'Others' },
+    relation: { 
+        '1': 'Son', '2': 'Daughter', '3': 'Stepson', '4': 'Stepdaughter',
+        '5': 'Son-In-Law', '6': 'Daughter-In-Law', '7': 'Grandson', '8': 'Granddaughter',
+        '9': 'Father', '10': 'Mother', '11': 'Father-In-Law', '12': 'Mother-In-Law',
+        '13': 'Relative', '14': 'Brother', '15': 'Sister', '16': 'Brother-In-Law',
+        '17': 'Sister-In-Law', '18': 'Uncle', '19': 'Aunt', '20': 'Nephew',
+        '21': 'Niece', '22': 'Other Relative'
+    },
+    education: { '1': 'No Education', '2': 'Elementary Undergraduate', '3': 'Elementary Graduate', '4': 'High School Undergraduate', '5': 'High School Graduate', '6': 'College Undergraduate', '7': 'College Graduate', '8': 'Vocational', '9': 'Post-Graduate', '10': 'Master\'s Degree', '11': 'Doctorate Degree' },
+    income: { '1': '₱3,000 and below', '2': '₱3,001 - ₱6,000', '3': '₱6,001 - ₱9,000', '4': '₱9,001 - ₱12,000', '5': '₱12,001 - ₱15,000', '6': '₱15,001 - ₱18,000', '7': '₱18,001 - ₱21,000', '8': '₱21,001 - ₱24,000', '9': '₱24,001 - ₱27,000', '10': '₱27,001 - ₱30,000', '11': '₱30,001 and up' },
+    ownership: { '1': 'Owned', '2': 'Rented House', '3': 'Tenanted', '4': 'Rent Free', '5': 'Caretaker', '99': 'Others' },
+    houseClass: { '1': 'Concrete', '2': 'Semi-Concrete', '3': 'Indigenous Materials', '4': 'Galvanized Iron / aluminum', '5': 'Barong-barong', '6': 'Makeshift', '99': 'Others' }
+};
+
+const mapArrayValue = (value, map) => {
+    if (!value) return '-';
+    try {
+        let valArr;
+        if (Array.isArray(value)) {
+            valArr = value;
+        } else if (typeof value === 'string') {
+            try {
+                valArr = JSON.parse(value);
+                if (!Array.isArray(valArr)) valArr = [valArr];
+            } catch {
+                valArr = value.split(',');
+            }
+        } else {
+            valArr = [value];
+        }
+        if (Array.isArray(valArr)) {
+            return valArr.map(v => map[String(v).trim()] || String(v).trim()).filter(v => v !== '').join(', ') || '-';
+        }
+        return map[String(valArr)] || valArr || '-';
+    } catch {
+        return value || '-';
+    }
+};
+
 searchInput.addEventListener('input', () => {
     clearTimeout(debounceTimer);
     const query = searchInput.value.trim();

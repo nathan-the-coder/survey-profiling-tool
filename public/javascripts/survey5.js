@@ -103,12 +103,8 @@ function toggleOwnershipOthers(select) {
 document.addEventListener("DOMContentLoaded", () => {
 	const today = new Date().toISOString().split("T")[0];
 	const listeningDateEl = document.getElementById("date");
-	const listingDateEl = document.getElementById("listing_date");
 	if (listeningDateEl && !listeningDateEl.value) {
 		listeningDateEl.value = today;
-	}
-	if (listingDateEl) {
-		listingDateEl.value = today;
 	}
 	loadSavedData();
 });

@@ -623,7 +623,7 @@ class DatabaseAdapter {
                     local_dialect: getValue(general, 'lclDialect'),
                     ethnicity: getValue(general, 'ethnicity'),
                     missionary_companion: getValue(socio, 'missionary_companion'),
-                    date_of_listing: getValue(socio, 'listing_date')
+                    date_of_listing: getValue(socio, 'listening_date')
                 };
 
                 const { data: household, error: hhError } = await this.supabaseClient
@@ -746,7 +746,7 @@ class DatabaseAdapter {
                     local_dialect: getValue(general, 'lclDialect'),
                     ethnicity: getValue(general, 'ethnicity'),
                     missionary_companion: getValue(socio, 'missionary_companion'),
-                    date_of_listing: getValue(socio, 'listing_date')
+                    date_of_listing: getValue(socio, 'listening_date')
                 };
 
                 const hhFields = Object.keys(householdData).filter(k => householdData[k] !== null);

@@ -6,6 +6,7 @@ const editModal = new bootstrap.Modal(document.getElementById('editModal'));
 let debounceTimer;
 let allParticipants = []; // Store all participants for filtering
 let currentPage = 1;
+const itemsPerPage = 15;
 let currentEditData = null; // Store current edit data for saving
 
 const username = sessionStorage.getItem('username');

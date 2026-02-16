@@ -21,10 +21,12 @@ if (username === 'Archdiocese of Tuguegarao') {
     userRole = 'Archdiocese';
 } else if (username.includes('Parish')) {
     userRole = 'Parish';
+} else if (username.toLowerCase().includes('admin') || username === 'SJCB_Admin') {
+    userRole = 'Admin';
 }
 
 const userRoleDisplay = document.getElementById('userRoleDisplay');
-if (userRoleDisplay) userRoleDisplay.textContent = `${userRole} User`;
+if (userRoleDisplay) userRoleDisplay.textContent = userRole === 'Guest' ? 'Guest User' : `${userRole} User`;
 
 // Filter elements
 const filterOccupation = document.getElementById('filterOccupation');

@@ -23,6 +23,9 @@ if (username === 'Archdiocese of Tuguegarao') {
     userRole = 'Parish';
 }
 
+const userRoleDisplay = document.getElementById('userRoleDisplay');
+if (userRoleDisplay) userRoleDisplay.textContent = `${userRole} User`;
+
 // Filter elements
 const filterOccupation = document.getElementById('filterOccupation');
 const filterAddress = document.getElementById('filterAddress');

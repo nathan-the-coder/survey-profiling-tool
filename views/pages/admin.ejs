@@ -287,6 +287,263 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Edit Participant Modal -->
+            <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Participant</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editForm">
+                                <!-- General Information -->
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0"><i class="bi bi-person me-2"></i>General Information</h6>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row g-2">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Purok/Gimong</label>
+                                                <input type="text" class="form-control form-control-sm" name="purok_gimong" id="edit-purok">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Barangay</label>
+                                                <input type="text" class="form-control form-control-sm" name="barangay_name" id="edit-barangay">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Municipality</label>
+                                                <input type="text" class="form-control form-control-sm" name="municipality" id="edit-municipality">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Province</label>
+                                                <input type="text" class="form-control form-control-sm" name="province" id="edit-province">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Parish</label>
+                                                <input type="text" class="form-control form-control-sm" name="parish_name" id="edit-parish">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Years of Residency</label>
+                                                <input type="number" class="form-control form-control-sm" name="years_residency" id="edit-residency">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Family Members</label>
+                                                <input type="number" class="form-control form-control-sm" name="num_family_members" id="edit-familyMembers">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Family Structure</label>
+                                                <input type="text" class="form-control form-control-sm" name="family_structure" id="edit-familyStructure">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Family Members -->
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0"><i class="bi bi-people me-2"></i>Family Members</h6>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="table-responsive">
+                                            <table class="table table-sm table-bordered mb-0" id="editFamilyTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Relation</th>
+                                                        <th>Sex</th>
+                                                        <th>Age</th>
+                                                        <th>Civil Status</th>
+                                                        <th>Religion</th>
+                                                        <th>Sacraments</th>
+                                                        <th>Studying</th>
+                                                        <th>Education</th>
+                                                        <th>Occupation</th>
+                                                        <th>Work Status</th>
+                                                        <th>Organization</th>
+                                                        <th>Position</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Health & Living Conditions -->
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0"><i class="bi bi-heart-pulse me-2"></i>Health & Living Conditions</h6>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row g-2">
+                                            <div class="col-md-4">
+                                                <label class="form-label">Water Source</label>
+                                                <select class="form-select form-select-sm" name="potable_water_source_code" id="edit-water">
+                                                    <option value="">Select...</option>
+                                                    <option value="1">Local Water System</option>
+                                                    <option value="2">Spring Water</option>
+                                                    <option value="3">River</option>
+                                                    <option value="4">Open Well</option>
+                                                    <option value="5">Own Artesian Well</option>
+                                                    <option value="6">Community Artesian Well</option>
+                                                    <option value="7">Community Faucet</option>
+                                                    <option value="8">Electric Deep Well</option>
+                                                    <option value="9">Free Flowing Water Pipe</option>
+                                                    <option value="10">Rain Water</option>
+                                                    <option value="11">Water Refilling Station</option>
+                                                    <option value="12">NAWASA</option>
+                                                    <option value="99">Others</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Lighting Source</label>
+                                                <select class="form-select form-select-sm" name="lighting_source_code" id="edit-lighting">
+                                                    <option value="">Select...</option>
+                                                    <option value="1">Electricity</option>
+                                                    <option value="2">Kerosene (Gaas)</option>
+                                                    <option value="3">LPG</option>
+                                                    <option value="4">Solar Panel / Solar Lamp</option>
+                                                    <option value="5">Battery</option>
+                                                    <option value="6">Generator</option>
+                                                    <option value="7">None</option>
+                                                    <option value="99">Others</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Cooking Source</label>
+                                                <select class="form-select form-select-sm" name="cooking_source_code" id="edit-cooking">
+                                                    <option value="">Select...</option>
+                                                    <option value="1">Woods</option>
+                                                    <option value="2">Charcoal</option>
+                                                    <option value="3">Kerosene (Gas)</option>
+                                                    <option value="4">LPG</option>
+                                                    <option value="5">Electricity</option>
+                                                    <option value="99">Others</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Toilet Facility</label>
+                                                <select class="form-select form-select-sm" name="toilet_facility_code" id="edit-toilet">
+                                                    <option value="">Select...</option>
+                                                    <option value="1">Water-Sealed Flush (Own)</option>
+                                                    <option value="2">Water-Sealed Flush (Shared)</option>
+                                                    <option value="3">Closed Pit</option>
+                                                    <option value="4">Open Pit</option>
+                                                    <option value="5">No Toilet</option>
+                                                    <option value="99">Others</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Garbage Disposal</label>
+                                                <select class="form-select form-select-sm" name="garbage_disposal_code" id="edit-garbage">
+                                                    <option value="">Select...</option>
+                                                    <option value="1">Segregating Waste</option>
+                                                    <option value="2">Collected by Garbage Truck</option>
+                                                    <option value="3">Recycling / Reusing at Home</option>
+                                                    <option value="4">Selling / Giving Away Recyclables</option>
+                                                    <option value="5">Composting</option>
+                                                    <option value="6">Burning</option>
+                                                    <option value="7">Dumping in Pit with Cover</option>
+                                                    <option value="8">Dumping in Pit without Cover</option>
+                                                    <option value="9">Throwing in Uninhabited Locations</option>
+                                                    <option value="99">Others</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Socio-Economic -->
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light py-2">
+                                        <h6 class="mb-0"><i class="bi bi-currency-exchange me-2"></i>Socio-Economic</h6>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row g-2">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Monthly Income</label>
+                                                <select class="form-select form-select-sm" name="income_monthly_code" id="edit-income">
+                                                    <option value="">Select...</option>
+                                                    <option value="1">₱3,000 and below</option>
+                                                    <option value="2">₱3,001 - ₱6,000</option>
+                                                    <option value="3">₱6,001 - ₱9,000</option>
+                                                    <option value="4">₱9,001 - ₱12,000</option>
+                                                    <option value="5">₱12,001 - ₱15,000</option>
+                                                    <option value="6">₱15,001 - ₱18,000</option>
+                                                    <option value="7">₱18,001 - ₱21,000</option>
+                                                    <option value="8">₱21,001 - ₱24,000</option>
+                                                    <option value="9">₱24,001 - ₱27,000</option>
+                                                    <option value="10">₱27,001 - ₱30,000</option>
+                                                    <option value="11">₱30,001 and up</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Weekly Expenses</label>
+                                                <select class="form-select form-select-sm" name="expenses_weekly_code" id="edit-expenses">
+                                                    <option value="">Select...</option>
+                                                    <option value="1">₱300 and below</option>
+                                                    <option value="2">₱301 - ₱600</option>
+                                                    <option value="3">₱601 - ₱900</option>
+                                                    <option value="4">₱901 - ₱1,200</option>
+                                                    <option value="5">₱1,201 - ₱1,500</option>
+                                                    <option value="6">₱1,501 - ₱1,800</option>
+                                                    <option value="7">₱1,801 - ₱2,100</option>
+                                                    <option value="8">₱2,101 - ₱2,400</option>
+                                                    <option value="9">₱2,401 - ₱2,700</option>
+                                                    <option value="10">₱2,701 - ₱3,000</option>
+                                                    <option value="11">₱3,001 and up</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Has Savings</label>
+                                                <select class="form-select form-select-sm" name="has_savings" id="edit-savings">
+                                                    <option value="">Select...</option>
+                                                    <option value="true">Yes</option>
+                                                    <option value="false">No</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">House Ownership</label>
+                                                <select class="form-select form-select-sm" name="house_lot_ownership_code" id="edit-ownership">
+                                                    <option value="">Select...</option>
+                                                    <option value="1">Owned</option>
+                                                    <option value="2">Rented House</option>
+                                                    <option value="3">Tenanted</option>
+                                                    <option value="4">Rent Free</option>
+                                                    <option value="5">Caretaker</option>
+                                                    <option value="99">Others</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">House Classification</label>
+                                                <select class="form-select form-select-sm" name="house_classification_code" id="edit-houseClass">
+                                                    <option value="">Select...</option>
+                                                    <option value="1">Concrete</option>
+                                                    <option value="2">Semi-Concrete</option>
+                                                    <option value="3">Indigenous Materials</option>
+                                                    <option value="4">Galvanized Iron / aluminum</option>
+                                                    <option value="5">Barong-barong</option>
+                                                    <option value="6">Makeshift</option>
+                                                    <option value="99">Others</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="saveEditBtn">
+                                <i class="bi bi-check-lg me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     `,
     extraScripts: `<script src="/javascripts/admin.js"></script>`

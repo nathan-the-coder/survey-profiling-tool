@@ -2,10 +2,11 @@ const API_URL = 'https://survey-profiling-tool-backend.vercel.app';
 const searchInput = document.getElementById('searchInput');
 const autocompleteList = document.getElementById('autocompleteList');
 const participantModal = new bootstrap.Modal(document.getElementById('participantModal'));
+const editModal = new bootstrap.Modal(document.getElementById('editModal'));
 let debounceTimer;
 let allParticipants = []; // Store all participants for filtering
 let currentPage = 1;
-const itemsPerPage = 15;
+let currentEditData = null; // Store current edit data for saving
 
 const username = sessionStorage.getItem('username');
 if (!username) {
@@ -140,9 +141,17 @@ function displayParticipantsTable(participants) {
                 <td>${parish}</td>
                 <td>${age}</td>
                 <td>
-                    <button class="btn btn-sm btn-primary" onclick="fetchParticipantDetails(${id})">
-                        <i class="bi bi-eye"></i> View
-                    </button>
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-primary" onclick="fetchParticipantDetails(${id})">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="btn btn-warning" onclick="editParticipant(${id})">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteParticipant(${id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
                 </td>
             </tr>
         `;
@@ -475,6 +484,230 @@ document.getElementById('signoutBtn').addEventListener('click', (e) => {
     sessionStorage.clear();
     window.location.href = '/login';
 });
+
+async function deleteParticipant(participantId) {
+    if (!confirm('Are you sure you want to delete this participant? This action cannot be undone.')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_URL}/participant/${participantId}`, {
+            method: 'DELETE',
+            headers: { 'X-Username': username }
+        });
+        
+        if (response.ok) {
+            participantModal.hide();
+            loadAllParticipants();
+            alert('Participant deleted successfully');
+        } else {
+            const error = await response.json();
+            alert(error.error || 'Failed to delete participant');
+        }
+    } catch (err) {
+        alert('Failed to delete participant');
+    }
+}
+
+function editParticipant(participantId) {
+    fetchParticipantDetailsForEdit(participantId);
+}
+
+async function fetchParticipantDetailsForEdit(id) {
+    try {
+        const response = await fetch(`${API_URL}/participant/${id}`, {
+            headers: { 'X-Username': username }
+        });
+        if (!response.ok) {
+            const err = await response.json().catch(() => ({}));
+            alert(err.error || `Failed to fetch details (${response.status})`);
+            return;
+        }
+        const data = await response.json();
+        populateEditForm(data);
+    } catch (_err) {
+        alert('Failed to fetch details.');
+    }
+}
+
+function populateEditForm(data) {
+    const { household, family_members, health_conditions, socio_economic } = data;
+    currentEditData = data;
+    
+    // Populate household fields
+    document.getElementById('edit-purok').value = household?.purok_gimong || '';
+    document.getElementById('edit-barangay').value = household?.barangay_name || '';
+    document.getElementById('edit-municipality').value = household?.municipality || '';
+    document.getElementById('edit-province').value = household?.province || '';
+    document.getElementById('edit-parish').value = household?.parish_name || '';
+    document.getElementById('edit-residency').value = household?.years_residency || '';
+    document.getElementById('edit-familyMembers').value = household?.num_family_members || '';
+    document.getElementById('edit-familyStructure').value = household?.family_structure || '';
+    
+    // Populate health fields
+    document.getElementById('edit-water').value = health_conditions?.potable_water_source_code || '';
+    document.getElementById('edit-lighting').value = health_conditions?.lighting_source_code || '';
+    document.getElementById('edit-cooking').value = health_conditions?.cooking_source_code || '';
+    document.getElementById('edit-toilet').value = health_conditions?.toilet_facility_code || '';
+    document.getElementById('edit-garbage').value = health_conditions?.garbage_disposal_code || '';
+    
+    // Populate socio-economic fields
+    document.getElementById('edit-income').value = socio_economic?.income_monthly_code || '';
+    document.getElementById('edit-expenses').value = socio_economic?.expenses_weekly_code || '';
+    document.getElementById('edit-savings').value = String(socio_economic?.has_savings) || '';
+    document.getElementById('edit-ownership').value = socio_economic?.house_lot_ownership_code || '';
+    document.getElementById('edit-houseClass').value = socio_economic?.house_classification_code || '';
+    
+    // Populate family members table
+    const familyTbody = document.querySelector('#editFamilyTable tbody');
+    familyTbody.innerHTML = family_members?.map(m => `
+        <tr>
+            <td><input type="hidden" name="member_id" value="${m.member_id}"><input type="text" class="form-control form-control-sm" name="full_name" value="${m.full_name || ''}"></td>
+            <td><select class="form-select form-select-sm" name="relation_to_head_code"><option value="">Select...</option>${getRelationOptions(m.relation_to_head_code)}</select></td>
+            <td><select class="form-select form-select-sm" name="sex_code"><option value="">Select...</option>${getSexOptions(m.sex_code)}</select></td>
+            <td><input type="number" class="form-control form-control-sm" name="age" value="${m.age || ''}"></td>
+            <td><select class="form-select form-select-sm" name="civil_status_code"><option value="">Select...</option>${getCivilOptions(m.civil_status_code)}</select></td>
+            <td><select class="form-select form-select-sm" name="religion_code"><option value="">Select...</option>${getReligionOptions(m.religion_code)}</select></td>
+            <td><select class="form-select form-select-sm" name="sacraments_code"><option value="">Select...</option>${getSacramentOptions(m.sacraments_code)}</select></td>
+            <td><select class="form-select form-select-sm" name="is_studying"><option value="">Select...</option><option value="true" ${m.is_studying === true ? 'selected' : ''}>Yes</option><option value="false" ${m.is_studying === false ? 'selected' : ''}>No</option></select></td>
+            <td><select class="form-select form-select-sm" name="highest_educ_attainment"><option value="">Select...</option>${getEducationOptions(m.highest_educ_attainment)}</select></td>
+            <td><input type="text" class="form-control form-control-sm" name="occupation" value="${m.occupation || ''}"></td>
+            <td><select class="form-select form-select-sm" name="status_of_work_code"><option value="">Select...</option>${getWorkStatusOptions(m.status_of_work_code)}</select></td>
+            <td><input type="text" class="form-control form-control-sm" name="organization_code" value="${typeof m.organization_code === 'string' ? m.organization_code.replace(/[\[\]"]/g, '') : ''}"></td>
+            <td><input type="text" class="form-control form-control-sm" name="position" value="${m.position || ''}"></td>
+        </tr>
+    `).join('') || '<tr><td colspan="13">No family members</td></tr>';
+    
+    editModal.show();
+}
+
+function getRelationOptions(selected) {
+    const opts = ['Son', 'Daughter', 'Stepson', 'Stepdaughter', 'Son-In-Law', 'Daughter-In-Law', 'Grandson', 'Granddaughter', 'Father', 'Mother', 'Father-In-Law', 'Mother-In-Law', 'Relative', 'Brother', 'Sister', 'Brother-In-Law', 'Sister-In-Law', 'Uncle', 'Aunt', 'Nephew', 'Niece', 'Other Relative'];
+    return opts.map((o, i) => `<option value="${i + 1}" ${String(selected) === String(i + 1) ? 'selected' : ''}>${o}</option>`).join('');
+}
+
+function getSexOptions(selected) {
+    return `<option value="1" ${String(selected) === '1' ? 'selected' : ''}>Male</option><option value="2" ${String(selected) === '2' ? 'selected' : ''}>Female</option>`;
+}
+
+function getCivilOptions(selected) {
+    const opts = ['Single', 'Married', 'Common Law', 'Widowed', 'Divorced', 'Separated', 'Annulled', 'Unknown'];
+    return opts.map((o, i) => `<option value="${i + 1}" ${String(selected) === String(i + 1) ? 'selected' : ''}>${o}</option>`).join('');
+}
+
+function getReligionOptions(selected) {
+    const opts = ['Roman Catholic', 'Islam', 'UCCP/Protestant', "Jehova's Witnesses", 'Iglesia ni Cristo', 'Four Square Church', 'Seventh Day Adventist', 'Mormons', 'Born Again', 'Bible Baptist', 'Church of Christ', 'Others'];
+    const codes = ['1', '2', '3', '4', '6', '7', '8', '9', '10', '11', '12', '13'];
+    return codes.map((c, i) => `<option value="${c}" ${String(selected) === c ? 'selected' : ''}>${opts[i]}</option>`).join('');
+}
+
+function getSacramentOptions(selected) {
+    const opts = ['None', 'Baptism', 'Confirmation', 'First Communion', 'Marriage', 'Holy Orders'];
+    return opts.map((o, i) => `<option value="${i + 1}" ${String(selected) === String(i + 1) ? 'selected' : ''}>${o}</option>`).join('');
+}
+
+function getEducationOptions(selected) {
+    const opts = ['No Education', 'Elementary Undergraduate', 'Elementary Graduate', 'High School Undergraduate', 'High School Graduate', 'College Undergraduate', 'College Graduate', 'Vocational', 'Post-Graduate', "Master's Degree", 'Doctorate Degree'];
+    return opts.map((o, i) => `<option value="${i + 1}" ${String(selected) === String(i + 1) ? 'selected' : ''}>${o}</option>`).join('');
+}
+
+function getWorkStatusOptions(selected) {
+    const opts = ['Regular/Permanent', 'Contractual', 'Worker for different employers', 'Others', 'Not Applicable'];
+    return opts.map((o, i) => `<option value="${i + 1}" ${String(selected) === String(i + 1) ? 'selected' : ''}>${o}</option>`).join('');
+}
+
+// Save edit button handler
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'saveEditBtn') {
+        saveParticipantChanges();
+    }
+});
+
+async function saveParticipantChanges() {
+    if (!currentEditData) {
+        alert('No data to save');
+        return;
+    }
+    
+    const form = document.getElementById('editForm');
+    const formData = new FormData(form);
+    
+    // Build update data
+    const updateData = {
+        household: {
+            purok_gimong: formData.get('purok_gimong'),
+            barangay_name: formData.get('barangay_name'),
+            municipality: formData.get('municipality'),
+            province: formData.get('province'),
+            parish_name: formData.get('parish_name'),
+            years_residency: formData.get('years_residency') ? parseInt(formData.get('years_residency')) : null,
+            num_family_members: formData.get('num_family_members') ? parseInt(formData.get('num_family_members')) : null,
+            family_structure: formData.get('family_structure')
+        },
+        health_conditions: {
+            potable_water_source_code: formData.get('potable_water_source_code'),
+            lighting_source_code: formData.get('lighting_source_code'),
+            cooking_source_code: formData.get('cooking_source_code'),
+            toilet_facility_code: formData.get('toilet_facility_code'),
+            garbage_disposal_code: formData.get('garbage_disposal_code')
+        },
+        socio_economic: {
+            income_monthly_code: formData.get('income_monthly_code'),
+            expenses_weekly_code: formData.get('expenses_weekly_code'),
+            has_savings: formData.get('has_savings') === 'true' ? true : (formData.get('has_savings') === 'false' ? false : null),
+            house_lot_ownership_code: formData.get('house_lot_ownership_code'),
+            house_classification_code: formData.get('house_classification_code')
+        },
+        family_members: []
+    };
+    
+    // Get family members data from table
+    const familyRows = document.querySelectorAll('#editFamilyTable tbody tr');
+    familyRows.forEach(row => {
+        const memberId = row.querySelector('input[name="member_id"]')?.value;
+        if (memberId) {
+            updateData.family_members.push({
+                member_id: parseInt(memberId),
+                full_name: row.querySelector('input[name="full_name"]')?.value,
+                relation_to_head_code: row.querySelector('select[name="relation_to_head_code"]')?.value,
+                sex_code: row.querySelector('select[name="sex_code"]')?.value ? parseInt(row.querySelector('select[name="sex_code"]').value) : null,
+                age: row.querySelector('input[name="age"]')?.value ? parseInt(row.querySelector('input[name="age"]').value) : null,
+                civil_status_code: row.querySelector('select[name="civil_status_code"]')?.value,
+                religion_code: row.querySelector('select[name="religion_code"]')?.value,
+                sacraments_code: row.querySelector('select[name="sacraments_code"]')?.value,
+                is_studying: row.querySelector('select[name="is_studying"]')?.value === 'true' ? true : (row.querySelector('select[name="is_studying"]')?.value === 'false' ? false : null),
+                highest_educ_attainment: row.querySelector('select[name="highest_educ_attainment"]')?.value,
+                occupation: row.querySelector('input[name="occupation"]')?.value,
+                status_of_work_code: row.querySelector('select[name="status_of_work_code"]')?.value,
+                organization_code: row.querySelector('input[name="organization_code"]')?.value,
+                position: row.querySelector('input[name="position"]')?.value
+            });
+        }
+    });
+    
+    try {
+        const response = await fetch(`${API_URL}/participant/${currentEditData.household?.household_id ? currentEditData.family_members?.[0]?.member_id : 0}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Username': username
+            },
+            body: JSON.stringify(updateData)
+        });
+        
+        if (response.ok) {
+            editModal.hide();
+            loadAllParticipants();
+            alert('Participant updated successfully');
+        } else {
+            const error = await response.json().catch(() => ({}));
+            alert(error.error || 'Failed to update participant');
+        }
+    } catch (err) {
+        alert('Failed to save changes');
+    }
+}
+
 // Ensure the HTML is fully "drawn" before we try to find the dropdowns
 document.addEventListener('DOMContentLoaded', () => {
     loadParishes();

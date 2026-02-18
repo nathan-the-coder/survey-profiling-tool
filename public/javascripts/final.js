@@ -107,7 +107,7 @@ function submitEntry() {
     });
     
     // 4. API Call
-    axios.post('https://survey-profiling-tool-backend.vercel.app/submit-survey', { data: allData })
+    axios.post(`${window.API_URL || 'https://survey-profiling-tool-backend.vercel.app'}/submit-survey`, { data: allData })
         .then(response => {
             Swal.fire({
                 icon: 'success',

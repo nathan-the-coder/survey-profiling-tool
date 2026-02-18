@@ -19,6 +19,10 @@
     
     <%- typeof extraStyles !== 'undefined' ? extraStyles : '' %>
     
+    <script>
+        window.API_URL = '<%= apiUrl %>';
+    </script>
+    
     <style>
         .bg-church { background-color: #457507; }
         .btn-church { background-color: #457507; color: white; border-color: #457507; }

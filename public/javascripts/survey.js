@@ -112,7 +112,7 @@ function loadParishes() {
 	];
 
 	// Add cache-busting and proper headers
-	fetch("https://survey-profiling-tool-backend.vercel.app/parishes", {
+	fetch(`${window.API_URL || 'https://survey-profiling-tool-backend.vercel.app'}/parishes`, {
 		headers: {
 			"X-Username": sessionStorage.getItem("username") || "Guest",
 			"Cache-Control": "no-cache, no-store, must-revalidate",

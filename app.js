@@ -42,6 +42,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// Make API_URL available to all templates
+app.locals.apiUrl = process.env.API_URL || 'https://survey-profiling-tool-backend.vercel.app';
+
 // Authentication middleware
 app.use((req, res, next) => {
   const username = req.headers['x-username'] || req.session?.username;

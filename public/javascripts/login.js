@@ -25,10 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         try {
-            // Use local API for development
-            const apiUrl = window.location.hostname === 'localhost' 
-                ? 'http://localhost:5500' 
-                : 'https://survey-profiling-tool-backend.vercel.app';
+            // Use API_URL from environment
+            const apiUrl = window.API_URL || 'https://survey-profiling-tool-backend.vercel.app';
             
             const response = await axios.post(`${apiUrl}/api/login`, {
                 username: username,

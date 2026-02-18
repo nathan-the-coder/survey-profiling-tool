@@ -256,28 +256,6 @@
                                             </div>
 
                                             <div class="col-md-4">
-                    <label class="form-label">Organization Involved</label>
-                    <select name="m_organization[]" class="form-select" onchange="toggleOrgOthers(this, 'm_org_others_${memberNum}')">
-                        <option value="">Select...</option>
-                        <option value="Religious" ${data.organization === "Religious" ? "selected" : ""}>Religious</option>
-                        <option value="Youth" ${data.organization === "Youth" ? "selected" : ""}>Youth</option>
-                        <option value="Cultural" ${data.organization === "Cultural" ? "selected" : ""}>Cultural</option>
-                        <option value="Political" ${data.organization === "Political" ? "selected" : ""}>Political</option>
-                        <option value="Women's" ${data.organization === "Women's" ? "selected" : ""}>Women's</option>
-                        <option value="Agricultural" ${data.organization === "Agricultural" ? "selected" : ""}>Agricultural</option>
-                        <option value="Labor" ${data.organization === "Labor" ? "selected" : ""}>Labor</option>
-                        <option value="Civic" ${data.organization === "Civic" ? "selected" : ""}>Civic</option>
-                        <option value="Cooperatives" ${data.organization === "Cooperatives" ? "selected" : ""}>Cooperatives</option>
-                        <option value="Others" ${data.organization === "Others" ? "selected" : ""}>Others</option>
-                    </select>
-                    <input type="text" name="m_organization_others" id="m_org_others_${memberNum}" class="form-control mt-2 ${data.organization !== "Others" ? "d-none" : ""}" placeholder="Please specify organization" value="${data.organization_others || ""}">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Position</label>
-                    <input type="text" name="m_position[]" class="form-control" value="${data.position || ""}" placeholder="Enter position">
-                </div>
-
-                                            <div class="col-md-4">
                                                 <label class="form-label">Email</label>
                                                 <input type="email" name="spouse_email" class="form-control" placeholder="Enter email address">
                                             </div>

@@ -1,5 +1,5 @@
 <%- include('../layouts/layout', {
-    title: 'Household Profiling - Step 2',
+    title: 'Family Profiling - Step 2',
     bodyClass: 'd-flex flex-column min-vh-100',
     headerType: 'survey',
     extraStyles: `
@@ -50,7 +50,7 @@
                                 
                                 <div class="row g-4">
                                     <div class="col-12 mb-3">
-                                        <span class="role-badge">Household Head</span>
+                                        <span class="role-badge">Head of the Family</span>
                                         <div class="row g-3">
                                             <div class="col-md-4">
                                                 <label class="form-label">Full Name</label>
@@ -62,6 +62,7 @@
                                                     <option value="">Select...</option>
                                                     <option value="1">Civil</option>
                                                     <option value="2">Church</option>
+                                                    <option value="3">N/A</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-4">
@@ -83,18 +84,39 @@
                                                 <input type="text" name="head_religion_others" id="head_religion_others" class="form-control mt-2 d-none" placeholder="Please specify religion">
                                             </div>
 
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <label class="form-label">Email</label>
-                                                    <input type="text" name="head_email" class="form-control" placeholder="Enter email address" required>
-                                                </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Email</label>
+                                                <input type="text" name="head_email" class="form-control" placeholder="Enter email address" required>
+                                            </div>
     
-                                                <div class="col-md-4">
-                                                    <label class="form-label">Phone Number</label>
-                                                    <input type="text" name="head_phone_number" class="form-control" placeholder="Enter phone number" required>
-                                                </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Phone Number</label>
+                                                <input type="text" name="head_phone_number" class="form-control" placeholder="Enter phone number" required>
                                             </div>
 
+                                            <div class="col-md-4">
+                                                <label class="form-label">Organization Involved</label>
+                                                <select name="head_organization" class="form-select" id="head_organization" onchange="toggleOrgOthers(this, 'head_org_others')">
+                                                    <option value="">Select...</option>
+                                                    <option value="Religious">Religious</option>
+                                                    <option value="Youth">Youth</option>
+                                                    <option value="Cultural">Cultural</option>
+                                                    <option value="Political">Political</option>
+                                                    <option value="Women's">Women's</option>
+                                                    <option value="Agricultural">Agricultural</option>
+                                                    <option value="Labor">Labor</option>
+                                                    <option value="Civic">Civic</option>
+                                                    <option value="Cooperatives">Cooperatives</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
+                                                <input type="text" name="head_organization_others" id="head_org_others" class="form-control mt-2 d-none" placeholder="Please specify organization">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label">Position</label>
+                                                <input type="text" name="head_position" class="form-control" placeholder="Enter position">
+                                            </div>
+                                            
                                             <div class="col-md-6">
                                                 <label class="form-label">Sacraments</label>
                                                 <div class="row g-2">
@@ -211,6 +233,7 @@
                                                     <option value="">Select...</option>
                                                     <option value="1">Civil</option>
                                                     <option value="2">Church</option>
+                                                    <option value="3">N/A</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-4">
@@ -233,6 +256,28 @@
                                             </div>
 
                                             <div class="col-md-4">
+                    <label class="form-label">Organization Involved</label>
+                    <select name="m_organization[]" class="form-select" onchange="toggleOrgOthers(this, 'm_org_others_${memberNum}')">
+                        <option value="">Select...</option>
+                        <option value="Religious" ${data.organization === "Religious" ? "selected" : ""}>Religious</option>
+                        <option value="Youth" ${data.organization === "Youth" ? "selected" : ""}>Youth</option>
+                        <option value="Cultural" ${data.organization === "Cultural" ? "selected" : ""}>Cultural</option>
+                        <option value="Political" ${data.organization === "Political" ? "selected" : ""}>Political</option>
+                        <option value="Women's" ${data.organization === "Women's" ? "selected" : ""}>Women's</option>
+                        <option value="Agricultural" ${data.organization === "Agricultural" ? "selected" : ""}>Agricultural</option>
+                        <option value="Labor" ${data.organization === "Labor" ? "selected" : ""}>Labor</option>
+                        <option value="Civic" ${data.organization === "Civic" ? "selected" : ""}>Civic</option>
+                        <option value="Cooperatives" ${data.organization === "Cooperatives" ? "selected" : ""}>Cooperatives</option>
+                        <option value="Others" ${data.organization === "Others" ? "selected" : ""}>Others</option>
+                    </select>
+                    <input type="text" name="m_organization_others" id="m_org_others_${memberNum}" class="form-control mt-2 ${data.organization !== "Others" ? "d-none" : ""}" placeholder="Please specify organization" value="${data.organization_others || ""}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Position</label>
+                    <input type="text" name="m_position[]" class="form-control" value="${data.position || ""}" placeholder="Enter position">
+                </div>
+
+                                            <div class="col-md-4">
                                                 <label class="form-label">Email</label>
                                                 <input type="email" name="spouse_email" class="form-control" placeholder="Enter email address">
                                             </div>
@@ -240,6 +285,29 @@
                                             <div class="col-md-4">
                                                 <label class="form-label">Phone Number</label>
                                                 <input type="text" name="spouse_phone_number" class="form-control" placeholder="Enter phone number">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label">Organization Involved</label>
+                                                <select name="spouse_organization" class="form-select" id="spouse_organization" onchange="toggleOrgOthers(this, 'spouse_org_others')">
+                                                    <option value="">Select...</option>
+                                                    <option value="Religious">Religious</option>
+                                                    <option value="Youth">Youth</option>
+                                                    <option value="Cultural">Cultural</option>
+                                                    <option value="Political">Political</option>
+                                                    <option value="Women's">Women's</option>
+                                                    <option value="Agricultural">Agricultural</option>
+                                                    <option value="Labor">Labor</option>
+                                                    <option value="Civic">Civic</option>
+                                                    <option value="Cooperatives">Cooperatives</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
+                                                <input type="text" name="spouse_organization_others" id="spouse_org_others" class="form-control mt-2 d-none" placeholder="Please specify organization">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label">Position</label>
+                                                <input type="text" name="spouse_position" class="form-control" placeholder="Enter position">
                                             </div>
 
                                             <div class="col-md-6">

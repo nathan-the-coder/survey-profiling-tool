@@ -28,6 +28,7 @@ const municipalities = [
 	"Santo Niño (Faire)",
 	"Solana",
 	"Tuao",
+	"Tuguegarao City",
 ];
 
 function saveFormData() {

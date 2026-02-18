@@ -655,6 +655,7 @@ class DatabaseAdapter {
                     occupation: getValue(primary, 'head_job'),
                     status_of_work_code: getValue(primary, 'head_work_status'),
                     organization_code: getValue(primary, 'head_organization'),
+                    position: getValue(primary, 'head_position') || '',
                     email: getValue(primary, 'head_email') || '',
                     phone_number: getValue(primary, 'head_phone_number') || ''
                 });
@@ -670,6 +671,7 @@ class DatabaseAdapter {
                     occupation: getValue(primary, 'spouse_job') || '',
                     status_of_work_code: getValue(primary, 'spouse_work_status') || '',
                     organization_code: getValue(primary, 'spouse_organization'),
+                    position: getValue(primary, 'spouse_position') || '',
                     email: getValue(primary, 'spouse_email') || '',
                     phone_number: getValue(primary, 'spouse_phone_number') || ''
                 });
@@ -789,6 +791,7 @@ class DatabaseAdapter {
                     occupation: getValue(primary, 'head_job'),
                     status_of_work_code: getValue(primary, 'head_work_status'),
                     organization_code: getValue(primary, 'head_organization'),
+                    position: getValue(primary, 'head_position') || '',
                     email: getValue(primary, 'head_email') || '',
                     phone_number: getValue(primary, 'head_phone_number') || ''
                 });
@@ -804,6 +807,7 @@ class DatabaseAdapter {
                     occupation: getValue(primary, 'spouse_job') || '',
                     status_of_work_code: getValue(primary, 'spouse_work_status') || '',
                     organization_code: getValue(primary, 'spouse_organization'),
+                    position: getValue(primary, 'spouse_position') || '',
                     email: getValue(primary, 'spouse_email') || '',
                     phone_number: getValue(primary, 'spouse_phone_number') || ''
                 });

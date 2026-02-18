@@ -415,6 +415,8 @@ function loadSavedData() {
 		"head_job",
 		"head_email",
 		"head_phone_number",
+		"head_organization",
+		"head_position",
 	];
 	headFields.forEach((field) => {
 		const el = document.querySelector(`[name="${field}"]`);
@@ -444,6 +446,15 @@ function loadSavedData() {
 		}
 	}
 
+	// Load head organization others
+	if (saved.head_organization === "Others") {
+		document.getElementById("head_org_others").classList.remove("d-none");
+		if (saved.head_organization_others) {
+			document.getElementById("head_org_others").value =
+				saved.head_organization_others;
+		}
+	}
+
 	// Load head sacraments (checkbox array)
 	if (saved.head_sacraments && Array.isArray(saved.head_sacraments)) {
 		saved.head_sacraments.forEach((val) => {
@@ -466,6 +477,8 @@ function loadSavedData() {
 		"spouse_job",
 		"spouse_email",
 		"spouse_phone_number",
+		"spouse_organization",
+		"spouse_position",
 	];
 	spouseFields.forEach((field) => {
 		const el = document.querySelector(`[name="${field}"]`);
@@ -494,6 +507,17 @@ function loadSavedData() {
 		if (saved.spouse_religion_others) {
 			document.getElementById("spouse_religion_others").value =
 				saved.spouse_religion_others;
+		}
+	}
+
+	// Load spouse organization others
+	if (saved.spouse_organization === "Others") {
+		document
+			.getElementById("spouse_org_others")
+			.classList.remove("d-none");
+		if (saved.spouse_organization_others) {
+			document.getElementById("spouse_org_others").value =
+				saved.spouse_organization_others;
 		}
 	}
 

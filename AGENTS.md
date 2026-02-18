@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a Node.js/Express 5.x web application using EJS templates for server-side rendering. It supports both MySQL (development) and Supabase (production) databases. The app serves a household profiling survey tool with role-based access (parish, archdiocese, admin).
+This is a Node.js/Express 5.x web application using EJS templates for server-side rendering. It supports both MySQL (development) and Supabase (production) databases. The app serves a family profiling survey tool with role-based access (parish, archdiocese, admin).
 
 ## Build & Run Commands
 

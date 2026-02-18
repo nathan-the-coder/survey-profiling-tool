@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 icon: 'warning',
                 title: 'Missing Information',
                 text: 'Please enter both username and password',
-                confirmButtonColor: '#457507',
+                confirmButtonColor: '#457807',
             });
             return;
         }
@@ -25,7 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         try {
-            const response = await axios.post('https://survey-profiling-tool-backend.vercel.app/login', {
+            // Use local API for development
+            const apiUrl = window.location.hostname === 'localhost' 
+                ? 'http://localhost:5500' 
+                : 'https://survey-profiling-tool-backend.vercel.app';
+            
+            const response = await axios.post(`${apiUrl}/api/login`, {
                 username: username,
                 password: password,
             });
@@ -33,20 +38,20 @@ document.addEventListener('DOMContentLoaded', () => {
             Swal.fire({
                 icon: 'success',
                 title: 'Login Successfully!',
-                confirmButtonColor: '#457507',
+                confirmButtonColor: '#457807',
                 timer: 2000,
                 timerProgressBar: true,
             }).then(() => {
                 sessionStorage.setItem('username', response.data.user.username);
+                sessionStorage.setItem('userRole', response.data.user.role);
+                sessionStorage.setItem('parish_id', response.data.user.parish_id);
                 
-                // Determine user role and redirect accordingly
-                const userRole = response.data.user.role || 
-                    (username === 'Archdiocese of Tuguegarao' ? 'archdiocese' : 
-                    username.toLowerCase().includes('admin') ? 'admin' : 'parish');
+                // Use role from server response
+                const userRole = response.data.user.role || 'parish';
                 
-                if (userRole === 'admin' || username.toLowerCase().includes('admin')) {
+                if (userRole === 'admin') {
                     window.location.href = '/admin';
-                } else if (username === 'Archdiocese of Tuguegarao' || userRole === 'archdiocese') {
+                } else if (userRole === 'archdiocese') {
                     window.location.href = '/archdiocese';
                 } else {
                     window.location.href = '/user';
@@ -70,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 icon: 'error',
                 title: 'Login Failed',
                 text: errorMessage,
-                confirmButtonColor: '#457507',
+                confirmButtonColor: '#457807',
             });
         }
     });

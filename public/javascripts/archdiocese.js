@@ -451,8 +451,10 @@ function showParticipantDetails(data) {
             <td>${maps.workStatus[String(m.status_of_work_code)] || '-'}</td>
             <td>${mapArrayValue(m.organization_code, maps.organization) || '-'}</td>
             <td>${m.position || '-'}</td>
+            <td>${m.email || '-'}</td>
+            <td>${m.phone_number || '-'}</td>
         </tr>
-    `).join('') || '<tr><td colspan="13">No family members</td></tr>';
+    `).join('') || '<tr><td colspan="15">No family members</td></tr>';
 
     // Health & Living Conditions
     setText('health-illness', mapArrayValue(health_conditions?.common_illness_codes, maps.illness));
@@ -581,8 +583,10 @@ function populateEditForm(data) {
             <td><select class="form-select form-select-sm" name="status_of_work_code"><option value="">Select...</option>${getWorkStatusOptions(m.status_of_work_code)}</select></td>
             <td><input type="text" class="form-control form-control-sm" name="organization_code" value="${typeof m.organization_code === 'string' ? m.organization_code.replace(/[\[\]"]/g, '') : ''}"></td>
             <td><input type="text" class="form-control form-control-sm" name="position" value="${m.position || ''}"></td>
+            <td><input type="email" class="form-control form-control-sm" name="email" value="${m.email || ''}"></td>
+            <td><input type="text" class="form-control form-control-sm" name="phone_number" value="${m.phone_number || ''}"></td>
         </tr>
-    `).join('') || '<tr><td colspan="13">No family members</td></tr>';
+    `).join('') || '<tr><td colspan="15">No family members</td></tr>';
     
     editModal.show();
 }
@@ -686,7 +690,9 @@ async function saveParticipantChanges() {
                 occupation: row.querySelector('input[name="occupation"]')?.value,
                 status_of_work_code: row.querySelector('select[name="status_of_work_code"]')?.value,
                 organization_code: row.querySelector('input[name="organization_code"]')?.value,
-                position: row.querySelector('input[name="position"]')?.value
+                position: row.querySelector('input[name="position"]')?.value,
+                email: row.querySelector('input[name="email"]')?.value,
+                phone_number: row.querySelector('input[name="phone_number"]')?.value
             });
         }
     });

@@ -79,7 +79,7 @@ function goNext() {
 			name: "Transportation",
 			value: 1,
 		},
-		{ field: "roadStructure", type: "select", name: "Road Structure" },
+		{ field: "road_Structure", type: "select", name: "Road Structure" },
 		{
 			field: "yrOfResInTheCommunity",
 			type: "select",

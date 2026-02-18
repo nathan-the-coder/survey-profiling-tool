@@ -417,13 +417,13 @@ class DatabaseAdapter {
             if (this.useSupabase) {
                 const { data, error } = await this.supabaseClient
                     .from('users')
-                    .select('*')
+                    .select('id, username, role, parish_id')
                     .order('username');
                 
                 if (error) throw error;
                 return data;
             } else {
-                const [rows] = await this.mysqlPool.execute('SELECT * FROM users ORDER BY username');
+                const [rows] = await this.mysqlPool.execute('SELECT id, username, role, parish_id FROM users ORDER BY username');
                 return rows;
             }
         } catch (error) {
@@ -434,22 +434,22 @@ class DatabaseAdapter {
     // Create new user
     async createUser(userData) {
         try {
-            const { username, password, role, parish } = userData;
+            const { username, password, role, parish_id } = userData;
             
             if (this.useSupabase) {
                 const { data, error } = await this.supabaseClient
                     .from('users')
-                    .insert([{ username, password, role, parish }])
+                    .insert([{ username, password, role, parish_id }])
                     .select();
                 
                 if (error) throw error;
                 return data[0];
             } else {
                 const [result] = await this.mysqlPool.execute(
-                    'INSERT INTO users (username, password, role, parish) VALUES (?, ?, ?, ?)',
-                    [username, password, role, parish]
+                    'INSERT INTO users (username, password, role, parish_id) VALUES (?, ?, ?, ?)',
+                    [username, password, role, parish_id]
                 );
-                return { id: result.insertId, username, role, parish };
+                return { id: result.insertId, username, role, parish_id };
             }
         } catch (error) {
             throw error;
@@ -459,10 +459,10 @@ class DatabaseAdapter {
     // Update user
     async updateUser(userId, userData) {
         try {
-            const { username, password, role, parish } = userData;
+            const { username, password, role, parish_id } = userData;
             
             if (this.useSupabase) {
-                const updateObj = { username, role, parish };
+                const updateObj = { username, role, parish_id };
                 if (password) updateObj.password = password;
                 
                 const { data, error } = await this.supabaseClient
@@ -474,8 +474,8 @@ class DatabaseAdapter {
                 if (error) throw error;
                 return data[0];
             } else {
-                let sql = 'UPDATE users SET username = ?, role = ?, parish = ?';
-                let params = [username, role, parish];
+                let sql = 'UPDATE users SET username = ?, role = ?, parish_id = ?';
+                let params = [username, role, parish_id];
                 
                 if (password) {
                     sql += ', password = ?';
@@ -486,7 +486,7 @@ class DatabaseAdapter {
                 params.push(userId);
                 
                 await this.mysqlPool.execute(sql, params);
-                return { id: userId, username, role, parish };
+                return { id: userId, username, role, parish_id };
             }
         } catch (error) {
             throw error;
@@ -533,20 +533,20 @@ class DatabaseAdapter {
         }
     }
 
-    // Get all parishes from users table
+    // Get all parishes
     async getAllParishes() {
         try {
             if (this.useSupabase) {
                 const { data, error } = await this.supabaseClient
-                    .from('users')
-                    .select('username')
-                    .order('username');
+                    .from('parishes')
+                    .select('*')
+                    .order('name');
                 
                 if (error) throw error;
-                return data.map(item => item.username);
+                return data;
             } else {
-                const [rows] = await this.mysqlPool.execute('SELECT username FROM users ORDER BY username');
-                return rows.map(item => item.username);
+                const [rows] = await this.mysqlPool.execute('SELECT * FROM parishes ORDER BY name');
+                return rows;
             }
         } catch (error) {
             throw error;
@@ -559,7 +559,7 @@ class DatabaseAdapter {
             if (this.useSupabase) {
                 const { data, error } = await this.supabaseClient
                     .from('users')
-                    .select('*')
+                    .select('*, parishes:parish_id(name)')
                     .eq('username', username)
                     .eq('password', password)
                     .single();
@@ -568,7 +568,7 @@ class DatabaseAdapter {
                 return data;
             } else {
                 const [rows] = await this.mysqlPool.execute(
-                    'SELECT * FROM users WHERE username = ? AND password = ?',
+                    'SELECT u.*, p.name as parish_name FROM users u LEFT JOIN parishes p ON u.parish_id = p.id WHERE u.username = ? AND u.password = ?',
                     [username, password]
                 );
                 return rows[0] || null;
@@ -653,7 +653,10 @@ class DatabaseAdapter {
                     age: toNumber(getValue(primary, 'head_age')),
                     highest_educ_attainment: getValue(primary, 'head_educ'),
                     occupation: getValue(primary, 'head_job'),
-                    status_of_work_code: getValue(primary, 'head_work_status')
+                    status_of_work_code: getValue(primary, 'head_work_status'),
+                    organization_code: getValue(primary, 'head_organization'),
+                    email: getValue(primary, 'head_email') || '',
+                    phone_number: getValue(primary, 'head_phone_number') || ''
                 });
 
                 await insertMember('Spouse', {
@@ -665,7 +668,10 @@ class DatabaseAdapter {
                     age: toNumber(getValue(primary, 'spouse_age')) || '',
                     highest_educ_attainment: getValue(primary, 'spouse_educ') || '',
                     occupation: getValue(primary, 'spouse_job') || '',
-                    status_of_work_code: getValue(primary, 'spouse_work_status') || ''
+                    status_of_work_code: getValue(primary, 'spouse_work_status') || '',
+                    organization_code: getValue(primary, 'spouse_organization'),
+                    email: getValue(primary, 'spouse_email') || '',
+                    phone_number: getValue(primary, 'spouse_phone_number') || ''
                 });
 
                 if (primary?.m_name && Array.isArray(primary.m_name)) {
@@ -687,7 +693,9 @@ class DatabaseAdapter {
                             status_of_work_code: primary.m_work_status?.[i],
                             fully_immunized_child: toBoolean(primary.m_immunized?.[i]),
                             organization_code: getArrayValue({ m_organization: primary.m_organization }, 'm_organization'),
-                            position: primary.m_position?.[i] || null
+                            position: primary.m_position?.[i] || null,
+                            email: primary.m_email?.[i] || '',
+                            phone_number: primary.m_phone_number?.[i] || ''
                         };
                     }).filter(Boolean);
 
@@ -721,9 +729,7 @@ class DatabaseAdapter {
                     house_classification_code: getArrayValue(socio, 'house_classification'),
                     land_area_hectares: toNumber(getValue(socio, 'land_area')),
                     dist_from_church_code: getValue(socio, 'distance_church'),
-                    dist_from_market_code: getValue(socio, 'distance_market'),
-                    organizations: getArrayValue(socio, 'organizations'),
-                    organizations_others_text: getValue(socio, 'organizations_others_text')
+                    dist_from_market_code: getValue(socio, 'distance_market')
                 };
                 await this.supabaseClient.from('socio_economic').insert([socioData]);
 
@@ -781,7 +787,10 @@ class DatabaseAdapter {
                     age: toNumber(getValue(primary, 'head_age')),
                     highest_educ_attainment: getValue(primary, 'head_educ'),
                     occupation: getValue(primary, 'head_job'),
-                    status_of_work_code: getValue(primary, 'head_work_status')
+                    status_of_work_code: getValue(primary, 'head_work_status'),
+                    organization_code: getValue(primary, 'head_organization'),
+                    email: getValue(primary, 'head_email') || '',
+                    phone_number: getValue(primary, 'head_phone_number') || ''
                 });
 
                 await insertMember('Spouse', {
@@ -793,7 +802,10 @@ class DatabaseAdapter {
                     age: toNumber(getValue(primary, 'spouse_age')) || '',
                     highest_educ_attainment: getValue(primary, 'spouse_educ') || '',
                     occupation: getValue(primary, 'spouse_job') || '',
-                    status_of_work_code: getValue(primary, 'spouse_work_status') || ''
+                    status_of_work_code: getValue(primary, 'spouse_work_status') || '',
+                    organization_code: getValue(primary, 'spouse_organization'),
+                    email: getValue(primary, 'spouse_email') || '',
+                    phone_number: getValue(primary, 'spouse_phone_number') || ''
                 });
 
                 if (primary?.m_name && Array.isArray(primary.m_name)) {
@@ -814,7 +826,9 @@ class DatabaseAdapter {
                             status_of_work_code: primary.m_work_status?.[i],
                             fully_immunized_child: toBoolean(primary.m_immunized?.[i]),
                             organization_code: getArrayValue({ m_organization: primary.m_organization }, 'm_organization')?.join(','),
-                            position: primary.m_position?.[i] || null
+                            position: primary.m_position?.[i] || null,
+                            email: primary.m_email?.[i] || '',
+                            phone_number: primary.m_phone_number?.[i] || ''
                         };
                         await insertMember('Member', memberData);
                     }
@@ -851,9 +865,7 @@ class DatabaseAdapter {
                     house_classification_code: getArrayValue(socio, 'house_classification')?.join(','),
                     land_area_hectares: toNumber(getValue(socio, 'land_area')),
                     dist_from_church_code: getValue(socio, 'distance_church'),
-                    dist_from_market_code: getValue(socio, 'distance_market'),
-                    organizations: getArrayValue(socio, 'organizations')?.join(','),
-                    organizations_others_text: getValue(socio, 'organizations_others_text')
+                    dist_from_market_code: getValue(socio, 'distance_market')
                 };
                 const socioFields = Object.keys(socioData).filter(k => socioData[k] !== null);
                 const socioValues = socioFields.map(k => socioData[k]);

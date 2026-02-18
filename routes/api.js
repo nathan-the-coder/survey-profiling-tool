@@ -8,14 +8,7 @@ const db = new DatabaseAdapter();
 // Authentication middleware to extract user info
 const authMiddleware = (req, res, next) => {
   const username = req.headers['x-username'] || 'Guest';
-  
-  // Determine user role
-  let userRole = 'parish';
-  if (username === 'Archdiocese of Tuguegarao') {
-    userRole = 'archdiocese';
-  } else if (username === 'admin' || username.toLowerCase().includes('admin')) {
-    userRole = 'admin';
-  }
+  const userRole = req.headers['x-user-role'] || 'parish';
   
   req.userRole = userRole;
   req.userParish = username;
@@ -44,13 +37,9 @@ router.post('/login', async function(req, res, next) {
       });
     }
     
-    // Determine role
-    let role = 'parish';
-    if (user.username === 'Archdiocese of Tuguegarao') {
-      role = 'archdiocese';
-    } else if (user.username.toLowerCase().includes('admin') || user.role === 'admin') {
-      role = 'admin';
-    }
+    // Use role from database
+    const role = user.role || 'parish';
+    const parishName = user.parish_name || user.parish || username;
     
     res.json({
       success: true,
@@ -59,7 +48,8 @@ router.post('/login', async function(req, res, next) {
         id: user.id,
         username: user.username,
         role: role,
-        parish: user.parish
+        parish: parishName,
+        parish_id: user.parish_id
       }
     });
   } catch (error) {

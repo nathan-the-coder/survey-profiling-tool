@@ -307,6 +307,14 @@ function createMemberCardHTML(data, index) {
                     <label class="form-label">Position</label>
                     <input type="text" name="m_position[]" class="form-control" value="${data.position || ""}" placeholder="Enter position">
                 </div>
+                <div class="col-md-4">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="m_email[]" class="form-control" value="${data.email || ""}" placeholder="Enter email address">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Phone Number</label>
+                    <input type="text" name="m_phone_number[]" class="form-control" value="${data.phone_number || ""}" placeholder="Enter phone number">
+                </div>
             </div>
         </div>
     `;
@@ -405,6 +413,8 @@ function loadSavedData() {
 		"head_educ",
 		"head_work_status",
 		"head_job",
+		"head_email",
+		"head_phone_number",
 	];
 	headFields.forEach((field) => {
 		const el = document.querySelector(`[name="${field}"]`);
@@ -454,6 +464,8 @@ function loadSavedData() {
 		"spouse_educ",
 		"spouse_work_status",
 		"spouse_job",
+		"spouse_email",
+		"spouse_phone_number",
 	];
 	spouseFields.forEach((field) => {
 		const el = document.querySelector(`[name="${field}"]`);
@@ -517,6 +529,8 @@ function loadSavedData() {
 				organization: saved.m_organization?.[idx],
 				organization_others: saved.m_organization_others?.[idx],
 				position: saved.m_position?.[idx],
+				email: saved.m_email?.[idx],
+				phone_number: saved.m_phone_number?.[idx],
 			};
 			const div = document.createElement("div");
 			div.innerHTML = createMemberCardHTML(cardData, idx);

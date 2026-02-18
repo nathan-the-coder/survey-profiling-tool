@@ -1,22 +1,22 @@
-const API_URL = 'https://survey-profiling-tool-backend.vercel.app';
+const API_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5500' 
+    : 'https://survey-profiling-tool-backend.vercel.app';
 const searchInput = document.getElementById('searchInput');
 const autocompleteList = document.getElementById('autocompleteList');
 const detailsContent = document.getElementById('detailsContent');
 let debounceTimer;
 let allParticipants = [];
-let userParish = '';
 
-// Get username and determine parish
+// Get username and role from sessionStorage
 const username = sessionStorage.getItem('username') || 'Guest';
-userParish = username; // Parish name is the username for parish users
+let userRole = sessionStorage.getItem('userRole') || 'parish';
+let userParish = username;
 
+// Update role badge
 document.querySelector('#name').textContent = username;
-
-// Add role indicator
-let userRole = 'Parish';
 const roleBadge = document.createElement('span');
 roleBadge.className = 'badge ms-2 bg-primary';
-roleBadge.textContent = userRole;
+roleBadge.textContent = userRole.charAt(0).toUpperCase() + userRole.slice(1);
 document.querySelector('#name').appendChild(roleBadge);
 
 // Filter elements

@@ -378,10 +378,7 @@ function goNext() {
 	if (!headJob) errors.push("Head Occupation is required");
 	if (!headWorkStatus) errors.push("Head Work Status is required");
 
-	const memberCards = document.querySelectorAll(".member-card");
-	if (memberCards.length === 0) {
-		errors.push("At least one family member is required");
-	}
+	// Family members are now optional (supports newlyweds)
 
 	if (errors.length > 0) {
 		FormValidator.showFieldErrors(errors);

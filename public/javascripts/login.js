@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Password toggle functionality
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+    const toggleIcon = document.getElementById('toggleIcon');
+    
+    if (togglePassword && passwordInput && toggleIcon) {
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            toggleIcon.classList.toggle('bi-eye-slash');
+            toggleIcon.classList.toggle('bi-eye');
+        });
+    }
+    
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         
@@ -26,9 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         try {
             // Use API_URL from environment
-            const apiUrl = window.API_URL || 'https://survey-profiling-tool-backend.vercel.app';
+            const apiUrl = window.API_URL || 'http://localhost:5000';
             
-            const response = await axios.post(`${apiUrl}/api/login`, {
+            const response = await axios.post(`${apiUrl}/login`, {
                 username: username,
                 password: password,
             });

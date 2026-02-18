@@ -98,6 +98,24 @@
                 border-left: none;
                 border-radius: 0 10px 10px 0;
             }
+            .password-toggle {
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                color: #666;
+                cursor: pointer;
+                padding: 4px;
+                z-index: 5;
+            }
+            .password-toggle:hover {
+                color: #457507;
+            }
+            .input-group.has-toggle .form-control {
+                padding-right: 40px;
+            }
             .form-check-input:checked {
                 background-color: #457507;
                 border-color: #457507;
@@ -220,9 +238,12 @@
                     
                     <div class="mb-3">
                         <label class="form-label">Password</label>
-                        <div class="input-group">
+                        <div class="input-group has-toggle">
                             <span class="input-group-text"><i class="bi bi-lock"></i></span>
                             <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                            <button type="button" class="password-toggle" id="togglePassword" aria-label="Toggle password visibility">
+                                <i class="bi bi-eye-slash" id="toggleIcon"></i>
+                            </button>
                         </div>
                     </div>
                     

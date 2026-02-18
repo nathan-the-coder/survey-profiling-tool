@@ -1,4 +1,4 @@
-const API_URL = window.API_URL || 'https://survey-profiling-tool-backend.vercel.app';
+const API_URL = window.API_URL || 'http://localhost:5000';
 const searchInput = document.getElementById('searchInput');
 const autocompleteList = document.getElementById('autocompleteList');
 const participantModal = new bootstrap.Modal(document.getElementById('participantModal'));

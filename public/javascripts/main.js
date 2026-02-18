@@ -1,6 +1,6 @@
 
 // API base URL - uses environment variable from layout.ejs
-const API_BASE_URL = window.API_URL || 'https://survey-profiling-tool-backend.vercel.app';
+const API_BASE_URL = window.API_URL || 'http://localhost:5000';
 
 const forms = document.querySelectorAll("form");
 

@@ -1,4 +1,4 @@
-const API_URL = window.API_URL || 'https://survey-profiling-tool-backend.vercel.app';
+const API_URL = window.API_URL || 'http://localhost:5000';
 const searchInput = document.getElementById('searchInput');
 const autocompleteList = document.getElementById('autocompleteList');
 const detailsContent = document.getElementById('detailsContent');
@@ -11,11 +11,14 @@ let userRole = sessionStorage.getItem('userRole') || 'parish';
 let userParish = username;
 
 // Update role badge
-document.querySelector('#name').textContent = username;
-const roleBadge = document.createElement('span');
-roleBadge.className = 'badge ms-2 bg-primary';
-roleBadge.textContent = userRole.charAt(0).toUpperCase() + userRole.slice(1);
-document.querySelector('#name').appendChild(roleBadge);
+const nameDisplay = document.getElementById('nameDisplay');
+if (nameDisplay) {
+    nameDisplay.textContent = username;
+    const roleBadge = document.createElement('span');
+    roleBadge.className = 'badge ms-2 bg-primary';
+    roleBadge.textContent = userRole.charAt(0).toUpperCase() + userRole.slice(1);
+    nameDisplay.appendChild(roleBadge);
+}
 
 // Filter elements
 const filterName = document.getElementById('filterName');

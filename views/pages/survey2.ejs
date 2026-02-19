@@ -85,16 +85,6 @@
                                             </div>
 
                                             <div class="col-md-4">
-                                                <label class="form-label">Email</label>
-                                                <input type="text" name="head_email" class="form-control" placeholder="Enter email address" required>
-                                            </div>
-    
-                                            <div class="col-md-4">
-                                                <label class="form-label">Phone Number</label>
-                                                <input type="text" name="head_phone_number" class="form-control" placeholder="Enter phone number" required>
-                                            </div>
-
-                                            <div class="col-md-4">
                                                 <label class="form-label">Organization Involved</label>
                                                 <select name="head_organization" class="form-select" id="head_organization" onchange="toggleOrgOthers(this, 'head_org_others')">
                                                     <option value="">Select...</option>
@@ -111,12 +101,22 @@
                                                 </select>
                                                 <input type="text" name="head_organization_others" id="head_org_others" class="form-control mt-2 d-none" placeholder="Please specify organization">
                                             </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label">Position</label>
+                                                <input type="text" name="head_position" class="form-control" placeholder="Enter position">
+                                            </div>
                                         </div>
 
                                         <div class="row mb-3">
                                             <div class="col-md-4">
-                                                <label class="form-label">Position</label>
-                                                <input type="text" name="head_position" class="form-control" placeholder="Enter position">
+                                                <label class="form-label">Email</label>
+                                                <input type="text" name="head_email" class="form-control" placeholder="Enter email address" required>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label">Phone Number</label>
+                                                <input type="text" name="head_phone_number" class="form-control" placeholder="Enter phone number" required>
                                             </div>
 
                                             <div class="col-md-4">
@@ -284,12 +284,47 @@
                                                 </select>
                                                 <input type="text" name="spouse_organization_others" id="spouse_org_others" class="form-control mt-2 d-none" placeholder="Please specify organization">
                                             </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label">Position</label>
+                                                <input type="text" name="spouse_position" class="form-control" placeholder="Enter position">
+                                            </div>
                                         </div>
 
                                         <div class="row mb-3">
                                             <div class="col-md-4">
+                                                <label class="form-label">Organization Involved</label>
+                                                <select name="spouse_organization" class="form-select" id="spouse_organization" onchange="toggleOrgOthers(this, 'spouse_org_others')">
+                                                    <option value="">Select...</option>
+                                                    <option value="Religious">Religious</option>
+                                                    <option value="Youth">Youth</option>
+                                                    <option value="Cultural">Cultural</option>
+                                                    <option value="Political">Political</option>
+                                                    <option value="Women's">Women's</option>
+                                                    <option value="Agricultural">Agricultural</option>
+                                                    <option value="Labor">Labor</option>
+                                                    <option value="Civic">Civic</option>
+                                                    <option value="Cooperatives">Cooperatives</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
+                                                <input type="text" name="spouse_organization_others" id="spouse_org_others" class="form-control mt-2 d-none" placeholder="Please specify organization">
+                                            </div>
+
+                                            <div class="col-md-4">
                                                 <label class="form-label">Position</label>
                                                 <input type="text" name="spouse_position" class="form-control" placeholder="Enter position">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label">Email</label>
+                                                <input type="email" name="spouse_email" class="form-control" placeholder="Enter email address">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label class="form-label">Phone Number</label>
+                                                <input type="text" name="spouse_phone_number" class="form-control" placeholder="Enter phone number">
                                             </div>
 
                                             <div class="col-md-6">

@@ -306,7 +306,7 @@ function createMemberCardHTML(data, index) {
             </div>
             <div class="row g-3">
                 <div class="col-md-4">
-                    <label class="form-label">Position</label>
+                    <label class="form-label">Position <small class="text-muted">(in Organization)</small></label>
                     <input type="text" name="m_position[]" class="form-control" value="${data.position || ''}" placeholder="Enter position">
                 </div>
             </div>

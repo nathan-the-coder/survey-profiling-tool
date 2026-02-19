@@ -303,6 +303,8 @@ function createMemberCardHTML(data, index) {
                     </select>
                     <input type="text" name="m_organization_others" id="m_org_others_${memberNum}" class="form-control mt-2 ${data.organization !== "Others" ? "d-none" : ""}" placeholder="Please specify organization" value="${data.organization_others || ""}">
                 </div>
+            </div>
+            <div class="row g-3">
                 <div class="col-md-4">
                     <label class="form-label">Position</label>
                     <input type="text" name="m_position[]" class="form-control" value="${data.position || ""}" placeholder="Enter position">

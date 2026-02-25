@@ -306,7 +306,7 @@ function loadParishes() {
         parishSelect.innerHTML = '<option value="">All Parishes</option>';
         
         const list = Array.isArray(data) ? data : (data.parishes || []);
-        list.filter(p => p !== 'SJCB_Admin' && p !== 'Archdiocese of Tuguegarao').forEach(p => {
+        list.forEach(p => {
             const option = document.createElement('option');
             option.value = p;
             option.textContent = p;

@@ -4,17 +4,29 @@ const DatabaseAdapter = require('./database');
 
 // Initialize database adapter
 const db = new DatabaseAdapter();
+const normalizeText = (value) => (value || '').toString().trim().toLowerCase();
 
 // Authentication middleware to extract user info
-const authMiddleware = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
   const username = req.headers['x-username'] || 'Guest';
-  const userRole = req.headers['x-user-role'] || 'parish';
-  
-  req.userRole = userRole;
-  req.userParish = username;
-  req.username = username;
-  
-  next();
+  const headerRole = req.headers['x-user-role'];
+  const headerParishId = req.headers['x-parish-id'];
+
+  try {
+    const userContext = await db.getUserAccessContext(username);
+
+    req.userRole = headerRole || userContext.role || 'parish';
+    req.userParishId = headerParishId ? Number(headerParishId) : userContext.parishId;
+    req.userParish = userContext.parishName || username;
+    req.username = userContext.username || username;
+    next();
+  } catch (_error) {
+    req.userRole = headerRole || 'parish';
+    req.userParishId = headerParishId ? Number(headerParishId) : null;
+    req.userParish = username;
+    req.username = username;
+    next();
+  }
 };
 
 // Login endpoint (no auth required)
@@ -66,9 +78,9 @@ router.use(authMiddleware);
 // Get all participants with role-based filtering
 router.get('/all-participants', async function(req, res, next) {
   try {
-    const { userRole, userParish } = req;
+    const { userRole, userParish, userParishId } = req;
     
-    const results = await db.getAllParticipants(userRole, userParish);
+    const results = await db.getAllParticipants(userRole, userParish, userParishId);
     res.json(results);
   } catch (error) {
     res.status(500).json({ 
@@ -82,13 +94,13 @@ router.get('/all-participants', async function(req, res, next) {
 router.get('/search-participants', async function(req, res, next) {
   try {
     const query = req.query.q;
-    const { userRole, userParish } = req;
+    const { userRole, userParish, userParishId } = req;
     
     if (!query || query.length < 2) {
       return res.json([]);
     }
     
-    const results = await db.searchParticipants(query, userRole, userParish);
+    const results = await db.searchParticipants(query, userRole, userParish, userParishId);
     res.json(results);
   } catch (error) {
     res.status(500).json({ 
@@ -102,15 +114,21 @@ router.get('/search-participants', async function(req, res, next) {
 router.get('/participant/:id', async function(req, res, next) {
   try {
     const participantId = req.params.id;
-    const { userRole, userParish } = req;
+    const { userRole, userParish, userParishId } = req;
     
-    const data = await db.getParticipantDetails(participantId, userRole, userParish);
+    const data = await db.getParticipantDetails(participantId, userRole, userParish, userParishId);
     
     // Check access for parish users
-    if (userRole === 'parish' && data.household?.parish_name !== userParish) {
+    if (userRole === 'parish') {
+      const householdParishId = data.household?.parish_id;
+      const hasParishIdMismatch = userParishId && householdParishId && Number(userParishId) !== Number(householdParishId);
+      const hasParishNameMismatch = !userParishId && normalizeText(data.household?.parish_name) !== normalizeText(userParish);
+
+      if (hasParishIdMismatch || hasParishNameMismatch) {
       return res.status(403).json({ 
         error: 'Access denied. You can only view participants from your parish.' 
       });
+      }
     }
     
     res.json(data);
@@ -283,12 +301,13 @@ router.delete('/users/:id', async function(req, res, next) {
 // Get current user info
 router.get('/me', async function(req, res, next) {
   try {
-    const { username, userRole, userParish } = req;
+    const { username, userRole, userParish, userParishId } = req;
     
     res.json({
       username,
       role: userRole,
-      parish: userParish
+      parish: userParish,
+      parish_id: userParishId
     });
   } catch (error) {
     res.status(500).json({ 
@@ -334,13 +353,13 @@ router.get('/test-connection', async function(req, res, next) {
 router.get('/search', async function(req, res, next) {
   try {
     const query = req.query.q;
-    const { userRole, userParish } = req;
+    const { userRole, userParish, userParishId } = req;
     
     if (!query || query.length < 2) {
       return res.json([]);
     }
     
-    const results = await db.searchParticipants(query, userRole, userParish);
+    const results = await db.searchParticipants(query, userRole, userParish, userParishId);
     res.json(results);
   } catch (error) {
     res.status(500).json({ error: 'Search failed' });

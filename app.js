@@ -29,7 +29,7 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Username', 'X-Requested-With']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Username', 'X-User-Role', 'X-Parish-Id', 'X-Requested-With']
 }));
 
 app.use(logger('dev'));

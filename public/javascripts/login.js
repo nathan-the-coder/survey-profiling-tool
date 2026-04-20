@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 sessionStorage.setItem('username', response.data.user.username);
                 sessionStorage.setItem('userRole', response.data.user.role);
                 sessionStorage.setItem('parish_id', response.data.user.parish_id);
+                sessionStorage.setItem('parish_name', response.data.user.parish || '');
                 
                 // Use role from server response
                 const userRole = response.data.user.role || 'parish';

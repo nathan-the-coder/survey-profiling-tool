@@ -39,8 +39,63 @@ class DatabaseAdapter {
         }
     }
 
+    async getUserAccessContext(username) {
+        if (!username) {
+            return {
+                username: 'Guest',
+                role: 'parish',
+                parishId: null,
+                parishName: null
+            };
+        }
+
+        try {
+            if (this.useSupabase) {
+                const { data, error } = await this.supabaseClient
+                    .from('users')
+                    .select('username, role, parish_id, parishes:parish_id(name)')
+                    .eq('username', username)
+                    .maybeSingle();
+
+                if (error || !data) {
+                    return { username, role: 'parish', parishId: null, parishName: null };
+                }
+
+                return {
+                    username: data.username || username,
+                    role: data.role || 'parish',
+                    parishId: data.parish_id || null,
+                    parishName: data.parishes?.name || null
+                };
+            }
+
+            const [rows] = await this.mysqlPool.execute(
+                `SELECT u.username, u.role, u.parish_id, p.name AS parish_name
+                 FROM users u
+                 LEFT JOIN parishes p ON p.id = u.parish_id
+                 WHERE u.username = ?
+                 LIMIT 1`,
+                [username]
+            );
+
+            const user = rows[0];
+            if (!user) {
+                return { username, role: 'parish', parishId: null, parishName: null };
+            }
+
+            return {
+                username: user.username || username,
+                role: user.role || 'parish',
+                parishId: user.parish_id || null,
+                parishName: user.parish_name || null
+            };
+        } catch (_error) {
+            return { username, role: 'parish', parishId: null, parishName: null };
+        }
+    }
+
     // Get all participants with role-based filtering
-    async getAllParticipants(userRole, userParish) {
+    async getAllParticipants(userRole, userParishName, userParishId) {
         try {
             if (this.useSupabase) {
                 // Supabase implementation
@@ -53,16 +108,22 @@ class DatabaseAdapter {
                         relation_to_head_code,
                         age,
                         occupation,
-                        purok_gimong,
-                        barangay_name,
+                        household_id,
                         households!inner(
-                            parish_name
+                            parish_id,
+                            parish_name,
+                            purok_gimong,
+                            barangay_name
                         )
                     `);
 
                 // Apply role-based filtering
-                if (userRole === 'parish' && userParish) {
-                    supabaseQuery = supabaseQuery.eq('households.parish_name', userParish);
+                if (userRole === 'parish') {
+                    if (userParishId) {
+                        supabaseQuery = supabaseQuery.eq('households.parish_id', userParishId);
+                    } else if (userParishName) {
+                        supabaseQuery = supabaseQuery.eq('households.parish_name', userParishName);
+                    }
                 }
 
                 const { data, error } = await supabaseQuery.order('full_name');
@@ -77,9 +138,10 @@ class DatabaseAdapter {
                     relation_to_head_code: item.relation_to_head_code,
                     age: item.age,
                     occupation: item.occupation,
-                    purok_gimong: item.purok_gimong,
-                    barangay_name: item.barangay_name,
-                    parish_name: item.households?.parish_name
+                    purok_gimong: item.households?.purok_gimong,
+                    barangay_name: item.households?.barangay_name,
+                    parish_name: item.households?.parish_name,
+                    parish_id: item.households?.parish_id
                 }));
             } else {
                 // MySQL implementation
@@ -91,9 +153,10 @@ class DatabaseAdapter {
                         fm.relation_to_head_code,
                         fm.age,
                         fm.occupation,
-                        fm.purok_gimong,
-                        fm.barangay_name,
-                        h.parish_name
+                        h.purok_gimong,
+                        h.barangay_name,
+                        h.parish_name,
+                        h.parish_id
                     FROM family_members fm
                     INNER JOIN households h ON fm.household_id = h.household_id
                 `;
@@ -101,9 +164,14 @@ class DatabaseAdapter {
                 const params = [];
                 
                 // Apply role-based filtering
-                if (userRole === 'parish' && userParish) {
-                    sql += ' WHERE h.parish_name = ?';
-                    params.push(userParish);
+                if (userRole === 'parish') {
+                    if (userParishId) {
+                        sql += ' WHERE h.parish_id = ?';
+                        params.push(userParishId);
+                    } else if (userParishName) {
+                        sql += ' WHERE LOWER(TRIM(h.parish_name)) = LOWER(TRIM(?))';
+                        params.push(userParishName);
+                    }
                 }
                 
                 sql += ' ORDER BY fm.full_name';
@@ -117,7 +185,7 @@ class DatabaseAdapter {
     }
 
     // Search participants method
-    async searchParticipants(query, userRole, userParish) {
+    async searchParticipants(query, userRole, userParishName, userParishId) {
         try {
             if (this.useSupabase) {
                 // Supabase implementation
@@ -127,17 +195,23 @@ class DatabaseAdapter {
                         member_id,
                         full_name,
                         relation_to_head_code,
-                        purok_gimong,
-                        barangay_name,
+                        household_id,
                         households!inner(
-                            parish_name
+                            parish_id,
+                            parish_name,
+                            purok_gimong,
+                            barangay_name
                         )
                     `)
-                    .or(`full_name.ilike.%${query}%,purok_gimong.ilike.%${query}%,barangay_name.ilike.%${query}%`);
+                    .or(`full_name.ilike.%${query}%,households.purok_gimong.ilike.%${query}%,households.barangay_name.ilike.%${query}%`);
 
                 // Apply role-based filtering
-                if (userRole === 'parish' && userParish) {
-                    supabaseQuery = supabaseQuery.eq('households.parish_name', userParish);
+                if (userRole === 'parish') {
+                    if (userParishId) {
+                        supabaseQuery = supabaseQuery.eq('households.parish_id', userParishId);
+                    } else if (userParishName) {
+                        supabaseQuery = supabaseQuery.eq('households.parish_name', userParishName);
+                    }
                 }
 
                 const { data, error } = await supabaseQuery.limit(20);
@@ -149,9 +223,10 @@ class DatabaseAdapter {
                     id: item.member_id,
                     full_name: item.full_name,
                     relation_to_head_code: item.relation_to_head_code,
-                    purok_gimong: item.purok_gimong,
-                    barangay_name: item.barangay_name,
-                    parish_name: item.households?.parish_name
+                    purok_gimong: item.households?.purok_gimong,
+                    barangay_name: item.households?.barangay_name,
+                    parish_name: item.households?.parish_name,
+                    parish_id: item.households?.parish_id
                 }));
             } else {
                 // MySQL implementation
@@ -160,22 +235,30 @@ class DatabaseAdapter {
                         fm.member_id as id,
                         fm.full_name,
                         fm.relation_to_head_code,
-                        fm.purok_gimong,
-                        fm.barangay_name,
-                        h.parish_name
+                        h.purok_gimong,
+                        h.barangay_name,
+                        h.parish_name,
+                        h.parish_id
                     FROM family_members fm
                     INNER JOIN households h ON fm.household_id = h.household_id
-                    WHERE fm.full_name LIKE ? 
-                       OR fm.purok_gimong LIKE ?
-                       OR fm.barangay_name LIKE ?
+                    WHERE (
+                        fm.full_name LIKE ? 
+                        OR h.purok_gimong LIKE ?
+                        OR h.barangay_name LIKE ?
+                    )
                 `;
                 
                 const params = [`%${query}%`, `%${query}%`, `%${query}%`];
                 
                 // Apply role-based filtering
-                if (userRole === 'parish' && userParish) {
-                    sql += ' AND h.parish_name = ?';
-                    params.push(userParish);
+                if (userRole === 'parish') {
+                    if (userParishId) {
+                        sql += ' AND h.parish_id = ?';
+                        params.push(userParishId);
+                    } else if (userParishName) {
+                        sql += ' AND LOWER(TRIM(h.parish_name)) = LOWER(TRIM(?))';
+                        params.push(userParishName);
+                    }
                 }
                 
                 sql += ' LIMIT 20';
@@ -189,9 +272,9 @@ class DatabaseAdapter {
     }
 
     // Get participant details
-    async getParticipantDetails(participantId, userRole, userParish) {
+    async getParticipantDetails(participantId, userRole, userParishName, userParishId) {
         try {
-            console.log(`Fetching participant details for ID: ${participantId}, userRole: ${userRole}, userParish: ${userParish}`);
+            console.log(`Fetching participant details for ID: ${participantId}, userRole: ${userRole}, userParishName: ${userParishName}, userParishId: ${userParishId}`);
             
             // First get the household_id from family_members table using member_id
             let householdId;
@@ -237,7 +320,7 @@ class DatabaseAdapter {
                 const { data: household, error: householdError } = await this.supabaseClient
                     .from('households')
                     .select('*')
-                    .eq('id', householdId)
+                    .eq('household_id', householdId)
                     .single();
 
                 // Get family members
@@ -270,7 +353,8 @@ class DatabaseAdapter {
                     health_conditions: healthConditions || {},
                     socio_economic: socioEconomic || {},
                     userRole,
-                    userParish
+                    userParishName,
+                    userParishId
                 };
             } else {
                 // MySQL implementation
@@ -293,7 +377,8 @@ class DatabaseAdapter {
                     health_conditions: healthRows[0] || {},
                     socio_economic: socioRows[0] || {},
                     userRole,
-                    userParish
+                    userParishName,
+                    userParishId
                 };
             }
         } catch (error) {
@@ -319,7 +404,7 @@ class DatabaseAdapter {
                     await this.supabaseClient
                         .from('households')
                         .update(household)
-                        .eq('id', householdId);
+                        .eq('household_id', householdId);
                 }
                 
                 // Update family members
@@ -395,7 +480,7 @@ class DatabaseAdapter {
                 await this.supabaseClient.from('family_members').delete().eq('household_id', householdId);
                 await this.supabaseClient.from('health_conditions').delete().eq('household_id', householdId);
                 await this.supabaseClient.from('socio_economic').delete().eq('household_id', householdId);
-                await this.supabaseClient.from('households').delete().eq('id', householdId);
+                await this.supabaseClient.from('households').delete().eq('household_id', householdId);
             } else {
                 await this.mysqlPool.execute('DELETE FROM family_members WHERE household_id = ?', [householdId]);
                 await this.mysqlPool.execute('DELETE FROM health_conditions WHERE household_id = ?', [householdId]);
@@ -519,7 +604,7 @@ class DatabaseAdapter {
             if (this.useSupabase) {
                 const { data, error } = await this.supabaseClient
                     .from('households')
-                    .select('id')
+                    .select('household_id')
                     .limit(1);
                 
                 if (error) throw error;

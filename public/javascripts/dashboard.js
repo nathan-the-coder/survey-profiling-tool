@@ -8,10 +8,14 @@ let currentUserRole = '';
 let currentUsername = '';
 
 const username = sessionStorage.getItem('username') || 'Guest';
+const storedRole = sessionStorage.getItem('userRole') || '';
+const userParishId = sessionStorage.getItem('parish_id');
 currentUsername = username;
 
 // Determine user role
-if (username === 'Archdiocese of Tuguegarao') {
+if (storedRole) {
+    currentUserRole = storedRole;
+} else if (username === 'Archdiocese of Tuguegarao') {
     currentUserRole = 'archdiocese';
 } else if (username === 'SJCB_Admin' || username.toLowerCase().includes('admin')) {
     currentUserRole = 'admin';
@@ -20,6 +24,12 @@ if (username === 'Archdiocese of Tuguegarao') {
 } else {
     currentUserRole = 'parish';
 }
+
+const authHeaders = () => ({
+    'X-Username': username,
+    'X-User-Role': currentUserRole,
+    ...(userParishId ? { 'X-Parish-Id': userParishId } : {})
+});
 
 // Display user role
 document.getElementById('userRoleDisplay').textContent = `${username} (${currentUserRole.charAt(0).toUpperCase() + currentUserRole.slice(1)})`;
@@ -96,7 +106,7 @@ searchInput.addEventListener('input', () => {
 async function fetchParticipants(query) {
     try {
         const response = await fetch(`${API_URL}/search-participants?q=${encodeURIComponent(query)}`, {
-            headers: { 'X-Username': username }
+            headers: authHeaders()
         });
         const data = await response.json();
         const results = Array.isArray(data) ? data : (data.results || []);
@@ -129,7 +139,7 @@ async function loadDashboardStats() {
     try {
         // Get stats from participants data
         const response = await fetch(`${API_URL}/all-participants`, {
-            headers: { 'X-Username': username }
+            headers: authHeaders()
         });
         const data = await response.json();
         
@@ -155,7 +165,7 @@ async function loadAllParticipants() {
     const tbody = document.getElementById('participantsTableBody');
     try {
         const response = await fetch(`${API_URL}/all-participants`, {
-            headers: { 'X-Username': username }
+            headers: authHeaders()
         });
         const data = await response.json();
         allParticipants = data || [];
@@ -259,7 +269,7 @@ async function fetchParticipantDetails(id) {
     try {
         console.log('Fetching details for participant ID:', id);
         const response = await fetch(`${API_URL}/participant/${id}`, {
-            headers: { 'X-Username': username }
+            headers: authHeaders()
         });
         
         console.log('Response status:', response.status);
@@ -397,7 +407,7 @@ async function deleteParticipant(participantId) {
     try {
         const response = await fetch(`${API_URL}/participant/${participantId}`, {
             method: 'DELETE',
-            headers: { 'X-Username': username }
+            headers: authHeaders()
         });
         
         if (response.ok) {

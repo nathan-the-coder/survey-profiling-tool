@@ -8,7 +8,14 @@ let allParticipants = [];
 // Get username and role from sessionStorage
 const username = sessionStorage.getItem('username') || 'Guest';
 let userRole = sessionStorage.getItem('userRole') || 'parish';
-let userParish = username;
+let userParish = sessionStorage.getItem('parish_name') || username;
+const userParishId = sessionStorage.getItem('parish_id');
+
+const authHeaders = () => ({
+    'X-Username': username,
+    'X-User-Role': userRole,
+    ...(userParishId ? { 'X-Parish-Id': userParishId } : {})
+});
 
 // Update role badge
 const nameDisplay = document.getElementById('nameDisplay');
@@ -50,7 +57,7 @@ async function fetchParticipants(query) {
     try {
         const url = `${API_URL}/search-participants?q=${encodeURIComponent(query)}`;
         const response = await fetch(url, {
-            headers: { 'X-Username': username }
+            headers: authHeaders()
         });
         const data = await response.json();
         const results = Array.isArray(data) ? data : data.results || data.data || [];
@@ -85,7 +92,7 @@ function showAutocomplete(results) {
 async function fetchParticipantDetails(participantId) {
     try {
         const response = await fetch(`${API_URL}/participant/${participantId}`, {
-            headers: { 'X-Username': username }
+            headers: authHeaders()
         });
         
         if (!response.ok) {
@@ -167,7 +174,7 @@ loadAllParticipants();
 async function loadAllParticipants() {
     try {
         const response = await fetch(`${API_URL}/all-participants`, {
-            headers: { 'X-Username': username }
+            headers: authHeaders()
         });
         
         if (!response.ok) {

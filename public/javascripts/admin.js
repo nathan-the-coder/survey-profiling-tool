@@ -10,23 +10,24 @@ const itemsPerPage = 15;
 let currentEditData = null; // Store current edit data for saving
 
 const username = sessionStorage.getItem('username');
+const userRole = sessionStorage.getItem('userRole') || 'admin';
+const userParishId = sessionStorage.getItem('parish_id');
+
 if (!username) {
     window.location.href = '/login';
     throw new Error('No user logged in');
 }
 document.getElementById('nameDisplay').textContent = username;
 
-let userRole = 'Guest';
-if (username === 'Archdiocese of Tuguegarao') {
-    userRole = 'Archdiocese';
-} else if (username.includes('Parish')) {
-    userRole = 'Parish';
-} else if (username.toLowerCase().includes('admin') || username === 'SJCB_Admin') {
-    userRole = 'Admin';
-}
+const authHeaders = () => ({
+    'X-Username': username,
+    'X-User-Role': userRole,
+    'Content-Type': 'application/json',
+    ...(userParishId ? { 'X-Parish-Id': userParishId } : {})
+});
 
 const userRoleDisplay = document.getElementById('userRoleDisplay');
-if (userRoleDisplay) userRoleDisplay.textContent = userRole === 'Guest' ? 'Guest User' : `${userRole} User`;
+if (userRoleDisplay) userRoleDisplay.textContent = userRole === 'Guest' ? 'Guest User' : `${userRole.charAt(0).toUpperCase() + userRole.slice(1)} User`;
 
 // Filter elements
 const filterOccupation = document.getElementById('filterOccupation');
@@ -50,7 +51,7 @@ searchInput.addEventListener('input', () => {
 async function fetchParticipants(query) {
     try {
         const response = await fetch(`${API_URL}/search-participants?q=${encodeURIComponent(query)}`, {
-            headers: { 'X-Username': username }
+            headers: authHeaders()
         });
         const data = await response.json();
         const results = Array.isArray(data) ? data : (data.results || []);
@@ -85,10 +86,7 @@ async function loadAllParticipants() {
     
     try {
         const response = await fetch(`${API_URL}/all-participants`, {
-            headers: {
-                'X-Username': username,
-                'Content-Type': 'application/json'
-            }
+            headers: authHeaders()
         });
  
         if (!response.ok) {
@@ -326,7 +324,7 @@ function loadParishes() {
 async function fetchParticipantDetails(id) {
     try {
         const response = await fetch(`${API_URL}/participant/${id}`, {
-            headers: { 'X-Username': username }
+            headers: authHeaders()
         });
         if (!response.ok) {
             const err = await response.json().catch(() => ({}));

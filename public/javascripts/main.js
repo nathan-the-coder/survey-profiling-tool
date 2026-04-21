@@ -8,11 +8,17 @@ let overallData = [];
 
 // API helper functions
 async function apiCall(endpoint, method = 'GET', data = null) {
+    const username = sessionStorage.getItem('username') || localStorage.getItem('username') || 'Guest';
+    const userRole = sessionStorage.getItem('userRole') || 'parish';
+    const userParishId = sessionStorage.getItem('parish_id');
+
     const options = {
         method,
         headers: {
             'Content-Type': 'application/json',
-            'X-Username': localStorage.getItem('username') || 'Archdiocese of Tuguegarao'
+            'X-Username': username,
+            'X-User-Role': userRole,
+            ...(userParishId ? { 'X-Parish-Id': userParishId } : {})
         }
     };
 

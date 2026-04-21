@@ -10,7 +10,12 @@ let overallData = [];
 async function apiCall(endpoint, method = 'GET', data = null) {
     const username = sessionStorage.getItem('username') || localStorage.getItem('username') || 'Guest';
     const userRole = sessionStorage.getItem('userRole') || 'parish';
-    const userParishId = sessionStorage.getItem('parish_id');
+    let userParishId = sessionStorage.getItem('parish_id');
+
+    // Handle "null" string from sessionStorage
+    if (userParishId === 'null' || userParishId === 'undefined') {
+        userParishId = null;
+    }
 
     const options = {
         method,

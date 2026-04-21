@@ -11,7 +11,12 @@ let currentEditData = null; // Store current edit data for saving
 
 const username = sessionStorage.getItem('username');
 const userRole = sessionStorage.getItem('userRole') || 'archdiocese';
-const userParishId = sessionStorage.getItem('parish_id');
+let userParishId = sessionStorage.getItem('parish_id');
+
+// Handle "null" string from sessionStorage
+if (userParishId === 'null' || userParishId === 'undefined') {
+    userParishId = null;
+}
 
 if (!username) {
     window.location.href = '/login';

@@ -9,7 +9,12 @@ let allParticipants = [];
 const username = sessionStorage.getItem('username') || 'Guest';
 let userRole = sessionStorage.getItem('userRole') || 'parish';
 let userParish = sessionStorage.getItem('parish_name') || username;
-const userParishId = sessionStorage.getItem('parish_id');
+let userParishId = sessionStorage.getItem('parish_id');
+
+// Handle "null" string from sessionStorage
+if (userParishId === 'null' || userParishId === 'undefined') {
+    userParishId = null;
+}
 
 const authHeaders = () => ({
     'X-Username': username,
@@ -238,9 +243,10 @@ function applyFilters() {
         );
     }
     
-    // Parish filter - already filtered by backend, but apply additional client-side filtering
+    // Parish filter - already filtered by backend for parish users
+    // Only apply if user is NOT a parish user or if they explicitly changed the filter
     const parishFilter = filterParish?.value?.toLowerCase() || '';
-    if (parishFilter && parishFilter !== userParish.toLowerCase()) {
+    if (parishFilter && userRole !== 'parish') {
         filtered = filtered.filter(p => p.parish_name?.toLowerCase().includes(parishFilter));
     }
     

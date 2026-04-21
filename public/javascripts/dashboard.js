@@ -9,7 +9,12 @@ let currentUsername = '';
 
 const username = sessionStorage.getItem('username') || 'Guest';
 const storedRole = sessionStorage.getItem('userRole') || '';
-const userParishId = sessionStorage.getItem('parish_id');
+let userParishId = sessionStorage.getItem('parish_id');
+
+// Handle "null" string from sessionStorage
+if (userParishId === 'null' || userParishId === 'undefined') {
+    userParishId = null;
+}
 currentUsername = username;
 
 // Determine user role
